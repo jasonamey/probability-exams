@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5 Exam C</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 5 Exam C: Continuous Random Variables</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels. None of the setups repeat the first two Chapter 5 exams.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough. Some standard normal values are below; you will not need all of them.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.50</td><td>0.67</td><td>0.83</td><td>0.85</td><td>1.00</td><td>1.28</td><td>1.33</td><td>1.39</td><td>1.645</td><td>1.96</td><td>2.00</td><td>2.33</td></tr>
+    <tr><th>Φ(z)</th><td>0.6915</td><td>0.7486</td><td>0.7967</td><td>0.8023</td><td>0.8413</td><td>0.8997</td><td>0.9082</td><td>0.9177</td><td>0.9500</td><td>0.9750</td><td>0.9772</td><td>0.9901</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A traffic light runs a 90-second cycle: green for 50 seconds, then red for 40 seconds. A driver arrives at a time uniformly distributed over the cycle. If the light is green the driver goes through without waiting; if it is red the driver waits until it turns green. Let \(W\) be the wait in seconds.</p>
+  <ol>
+    <li>Find \(P\{W=0\}\) and \(P\{W&gt;10\}\).</li>
+    <li>Find the CDF of \(W\). Is \(W\) a continuous random variable?</li>
+    <li>Find \(E[W]\).</li>
+    <li>A commute passes through 5 such lights, operating independently. Find the expected total waiting time and the probability that the driver never has to stop.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(U\sim\mathrm{Unif}(0,90)\) be the arrival time within the cycle, with green on \([0,50)\) and red on \([50,90)\). Then \(W=0\) if \(U&lt;50\) and \(W=90-U\) if \(U\ge50\).</p>
+    <p>(a) \(P\{W=0\}=\tfrac{50}{90}=\tfrac59\). \(W&gt;10\iff 50\le U&lt;80\): \(\tfrac{30}{90}=\tfrac13\).</p>
+    <p>(b) For \(0\le w\le40\): \(F(w)=P\{U&lt;50\}+P\{90-w\le U&lt;90\}=\tfrac59+\tfrac w{90}\). \(F(w)=0\) for \(w&lt;0\) and \(F(w)=1\) for \(w\ge40\). \(F\) jumps by \(\tfrac59\) at 0, so \(W\) is neither discrete nor continuous; it is mixed.</p>
+    <p>(c) Given red, the wait is uniform on \((0,40)\) with mean 20, so \(E[W]=\tfrac49\cdot20=\tfrac{80}9\approx8.89\) seconds.</p>
+    <p>(d) Expected total \(5\cdot\tfrac{80}9\approx44.4\) seconds. Never stopping: \(\left(\tfrac59\right)^5\approx0.0529\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Fish of two species share a lake. Lengths of species A are normal with mean 20 cm and standard deviation 3 cm; lengths of species B are normal with mean 26 cm and standard deviation 3 cm. Thirty percent of the fish are species A. A biologist classifies any fish shorter than 23 cm as species A and the rest as species B.</p>
+  <ol>
+    <li>Find the probability that a randomly caught fish is misclassified.</li>
+    <li>Given that a fish is classified as species A, find the probability that it really is species A.</li>
+    <li>A fish measures exactly 24 cm. Find the probability that it is species A.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(L\) be the length.</p>
+    <p>(a) \(P(\text{error})=0.3\,P\{L&gt;23\mid A\}+0.7\,P\{L&lt;23\mid B\}=0.3[1-\Phi(1)]+0.7\,\Phi(-1)=0.1587\).</p>
+    <p>(b) \(P(A\mid L&lt;23)=\dfrac{0.3\,\Phi(1)}{0.3\,\Phi(1)+0.7\,\Phi(-1)}=\dfrac{0.2524}{0.2524+0.1111}=0.6944\).</p>
+    <p>(c) \(P\{L=24\}=0\), so use densities in Bayes' formula. The normal density with \(\sigma=3\) is proportional to \(e^{-(x-\mu)^2/18}\), and the constants cancel: \(P(A\mid L=24)=\dfrac{0.3e^{-16/18}}{0.3e^{-16/18}+0.7e^{-4/18}}=\dfrac{0.1233}{0.1233+0.5604}=0.1804\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>\(X\) has density \(f(x)=(\theta+1)x^\theta\) for \(0\le x\le1\) and 0 otherwise, where \(\theta&gt;-1\) is a constant. It is known that \(E[X]=\tfrac34\).</p>
+  <ol>
+    <li>Find \(\theta\).</li>
+    <li>Find \(P\{X&gt;\tfrac12\}\) and the median of \(X\).</li>
+    <li>Find \(\mathrm{Var}(X)\).</li>
+    <li>Find the distribution of \(Y=-\ln X\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X]=\int_0^1(\theta+1)x^{\theta+1}dx=\dfrac{\theta+1}{\theta+2}=\tfrac34\Rightarrow\theta=2\), so \(f(x)=3x^2\) and \(F(x)=x^3\) on \([0,1]\).</p>
+    <p>(b) \(1-\tfrac18=\tfrac78\). Median: \(m^3=\tfrac12\Rightarrow m=2^{-1/3}\approx0.7937\).</p>
+    <p>(c) \(E[X^2]=\int_0^13x^4dx=\tfrac35\). \(\mathrm{Var}(X)=\tfrac35-\tfrac9{16}=\tfrac3{80}=0.0375\).</p>
+    <p>(d) For \(y&gt;0\): \(P\{Y&gt;y\}=P\{X&lt;e^{-y}\}=e^{-3y}\). \(Y\) is exponential with rate 3.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>The size of a loss covered by an insurance policy is exponentially distributed with mean $1000. The policy has a $500 deductible: the insurer pays nothing on a loss below $500 and pays the loss minus $500 otherwise.</p>
+  <ol>
+    <li>Find the probability that a loss results in a payment.</li>
+    <li>Find the expected payment per loss.</li>
+    <li>Given that a payment is made, find the distribution of the payment.</li>
+    <li>The policy is changed to cap the payment at $2000. Find the new expected payment per loss.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(X\) be the loss, \(P\{X&gt;x\}=e^{-x/1000}\), and \(Y=\max(X-500,0)\) the payment.</p>
+    <p>(a) \(P\{X&gt;500\}=e^{-0.5}\approx0.6065\).</p>
+    <p>(b) \(E[Y]=\int_{500}^\infty(x-500)\tfrac1{1000}e^{-x/1000}dx\). With \(u=x-500\): \(e^{-0.5}\int_0^\infty u\tfrac1{1000}e^{-u/1000}du=1000e^{-0.5}\approx\$606.53\).</p>
+    <p>(c) \(P\{Y&gt;y\mid Y&gt;0\}=\dfrac{P\{X&gt;500+y\}}{P\{X&gt;500\}}=e^{-y/1000}\): by memorylessness, the payment is again exponential with mean $1000.</p>
+    <p>(d) The payment is \(\min(\max(X-500,0),2000)\). \(E=\int_0^{2000}P\{\text{payment}&gt;y\}dy=\int_0^{2000}e^{-(500+y)/1000}dy=1000\left(e^{-0.5}-e^{-2.5}\right)\approx\$524.45\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A point is chosen uniformly at random inside a circular target of radius 2 (uniform means the probability of landing in a region is proportional to its area). Let \(R\) be the distance from the point to the centre.</p>
+  <ol>
+    <li>Find the CDF and density of \(R\).</li>
+    <li>Find the probability that the point is closer to the centre than to the edge of the target.</li>
+    <li>Find \(E[R]\) and \(\mathrm{Var}(R)\).</li>
+    <li>A circle is drawn through the point, centred at the target's centre. Find the expected area enclosed by that circle.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P\{R\le r\}=\dfrac{\pi r^2}{4\pi}=\dfrac{r^2}4\) for \(0\le r\le2\), so \(f(r)=\dfrac r2\) on \([0,2]\).</p>
+    <p>(b) Closer to the centre than to the edge means \(R&lt;2-R\), i.e. \(R&lt;1\): \(\tfrac14\).</p>
+    <p>(c) \(E[R]=\int_0^2\tfrac{r^2}2dr=\tfrac43\). \(E[R^2]=\int_0^2\tfrac{r^3}2dr=2\). \(\mathrm{Var}(R)=2-\tfrac{16}9=\tfrac29\).</p>
+    <p>(d) \(E[\pi R^2]=2\pi\approx6.28\), half the target's area, as it should be: \(\pi R^2\) is uniform on \((0,4\pi)\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>In a city election, 52% of voters support candidate X. A pollster samples 500 voters at random (treat the responses as independent).</p>
+  <ol>
+    <li>Approximate the probability that a strict majority of the sample supports X. Check that your approximation is justified.</li>
+    <li>Approximate the probability that the sample proportion supporting X is within 3 percentage points of 52%.</li>
+    <li>Ignoring the continuity correction, approximately how large a sample is needed for the probability in (a) to be at least 0.95?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(S\sim\mathrm{Bin}(500,0.52)\): \(\mu=260\), \(np(1-p)=124.8\ge10\), \(\sigma=11.17\).</p>
+    <p>(a) Majority means \(S\ge251\). \(P\{S\ge250.5\}\approx1-\Phi\!\left(\tfrac{250.5-260}{11.17}\right)=1-\Phi(-0.85)=\Phi(0.85)=0.8023\).</p>
+    <p>(b) Within 3 points means \(245\le S\le275\). \(P\{244.5\le S\le275.5\}\approx\Phi\!\left(\tfrac{15.5}{11.17}\right)-\Phi\!\left(-\tfrac{15.5}{11.17}\right)=2\Phi(1.39)-1=2(0.9177)-1=0.8354\).</p>
+    <p>(c) Need \(P\{S&gt;n/2\}\approx1-\Phi\!\left(\tfrac{0.5n-0.52n}{\sqrt{n(0.2496)}}\right)=\Phi\!\left(\tfrac{0.02\sqrt n}{0.4996}\right)\ge0.95\), so \(\tfrac{0.02\sqrt n}{0.4996}\ge1.645\), \(\sqrt n\ge41.09\), \(n\ge1689\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>\(X\) has density \(f(x)=c\,e^{-|x|/2}\) for all real \(x\).</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find \(P\{|X|&gt;2\}\) and \(P\{X\le1\}\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find \(P\{X&gt;3\mid X&gt;1\}\) and compare it with \(P\{X&gt;2\mid X&gt;0\}\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) By symmetry \(\int_{-\infty}^\infty ce^{-|x|/2}dx=2c\int_0^\infty e^{-x/2}dx=4c=1\), so \(c=\tfrac14\).</p>
+    <p>(b) For \(x\ge0\), \(P\{X&gt;x\}=\int_x^\infty\tfrac14e^{-t/2}dt=\tfrac12e^{-x/2}\). So \(P\{|X|&gt;2\}=2\cdot\tfrac12e^{-1}=e^{-1}\approx0.3679\) and \(P\{X\le1\}=1-\tfrac12e^{-1/2}\approx0.6967\).</p>
+    <p>(c) \(E[X]=0\) by symmetry. \(\mathrm{Var}(X)=E[X^2]=2\int_0^\infty\tfrac14x^2e^{-x/2}dx=\tfrac12\int_0^\infty x^2e^{-x/2}dx=\tfrac12\cdot16=8\).</p>
+    <p>(d) \(P\{X&gt;3\mid X&gt;1\}=\dfrac{\frac12e^{-3/2}}{\frac12e^{-1/2}}=e^{-1}\), and \(P\{X&gt;2\mid X&gt;0\}=\dfrac{\frac12e^{-1}}{\frac12}=e^{-1}\). They are equal: on the positive side the tail behaves like an exponential with mean 2.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Ball bearings are made with radii uniformly distributed between 0.9 cm and 1.1 cm. Let \(V=\tfrac43\pi R^3\) be the volume of a bearing.</p>
+  <ol>
+    <li>Find \(E[V]\) and compare it with the volume of a bearing of radius 1 cm.</li>
+    <li>Find the probability that a bearing has volume greater than 4.5 cm³.</li>
+    <li>Find the density of \(V\), stating where it is positive.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[R^3]=\int_{0.9}^{1.1}\dfrac{r^3}{0.2}dr=\dfrac{1.1^4-0.9^4}{0.8}=1.01\), so \(E[V]=\tfrac43\pi(1.01)\approx4.2307\) cm³, slightly more than \(\tfrac43\pi\approx4.1888\): \(E[R^3]\ne(E[R])^3\).</p>
+    <p>(b) \(V&gt;4.5\iff R&gt;\left(\tfrac{3(4.5)}{4\pi}\right)^{1/3}=1.0242\). Probability \(\dfrac{1.1-1.0242}{0.2}\approx0.3791\).</p>
+    <p>(c) \(V=g(R)\) with \(g\) increasing; \(R=g^{-1}(v)=\left(\tfrac{3v}{4\pi}\right)^{1/3}\), \(\tfrac{d}{dv}g^{-1}(v)=\tfrac13\left(\tfrac3{4\pi}\right)^{1/3}v^{-2/3}\). So \(f_V(v)=5\cdot\tfrac13\left(\tfrac3{4\pi}\right)^{1/3}v^{-2/3}\approx1.0332\,v^{-2/3}\) for \(\tfrac43\pi(0.9)^3\approx3.054&lt;v&lt;\tfrac43\pi(1.1)^3\approx5.575\), and 0 otherwise.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A consultant has a 9:00 meeting. The drive takes a time \(T\) uniformly distributed between 20 and 40 minutes. Each minute early costs the consultant $1 in wasted time, and each minute late costs $3 in goodwill.</p>
+  <ol>
+    <li>If the consultant leaves at 8:30, find the probability of being late and the expected cost.</li>
+    <li>Find the departure time that minimises the expected cost, and the minimum expected cost.</li>
+    <li>At the optimal departure time, find the probability of being late.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Leaving \(x\) minutes before 9:00, the cost is \((x-T)^+ +3(T-x)^+\) for \(20\le x\le40\).</p>
+    <p>\(E[(x-T)^+]=\int_{20}^x\tfrac{x-t}{20}dt=\tfrac{(x-20)^2}{40}\) and \(E[(T-x)^+]=\tfrac{(40-x)^2}{40}\), so \(E[\text{cost}]=\tfrac{(x-20)^2+3(40-x)^2}{40}\).</p>
+    <p>(a) \(x=30\): \(P\{T&gt;30\}=\tfrac12\); expected cost \(\tfrac{100+300}{40}=\$10\).</p>
+    <p>(b) Derivative \(\tfrac{2(x-20)-6(40-x)}{40}=0\Rightarrow x=35\). Leave at 8:25; expected cost \(\tfrac{225+75}{40}=\$7.50\).</p>
+    <p>(c) \(P\{T&gt;35\}=\tfrac14\), matching the ratio \(\tfrac{1}{1+3}\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A new appliance has a failure rate of 0.1 per year during its first 2 years. After that, wear sets in and the failure rate is 0.3 per year. Let \(T\) be the lifetime in years.</p>
+  <ol>
+    <li>Find \(P\{T&gt;t\}\) for all \(t\ge0\).</li>
+    <li>Find \(P\{T&gt;5\}\) and \(P\{T&gt;5\mid T&gt;3\}\).</li>
+    <li>Find the median lifetime.</li>
+    <li>Find \(E[T]\). You may use \(E[T]=\int_0^\infty P\{T&gt;t\}\,dt\) for a nonnegative random variable.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>The hazard rate is \(\lambda(t)=0.1\) for \(t&lt;2\) and \(0.3\) for \(t\ge2\).</p>
+    <p>(a) \(P\{T&gt;t\}=e^{-\int_0^t\lambda}\): \(e^{-0.1t}\) for \(0\le t&lt;2\), and \(e^{-0.2-0.3(t-2)}\) for \(t\ge2\).</p>
+    <p>(b) \(P\{T&gt;5\}=e^{-1.1}\approx0.3329\). \(P\{T&gt;5\mid T&gt;3\}=e^{-0.3(2)}=e^{-0.6}\approx0.5488\).</p>
+    <p>(c) \(P\{T&gt;2\}=e^{-0.2}=0.8187&gt;\tfrac12\), so the median is past 2: \(0.2+0.3(m-2)=\ln2\Rightarrow m\approx3.644\) years.</p>
+    <p>(d) \(\int_0^2e^{-0.1t}dt+\int_2^\infty e^{-0.2-0.3(t-2)}dt=\tfrac{1-e^{-0.2}}{0.1}+\tfrac{e^{-0.2}}{0.3}=1.8127+2.7291\approx4.542\) years.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A commuter can take route A, whose travel time is normal with mean 30 minutes and standard deviation 6, or route B, whose travel time is normal with mean 34 minutes and standard deviation 2. The commuter picks the route that maximises the probability of arriving on time.</p>
+  <ol>
+    <li>Which route should the commuter take with 38 minutes available? With 35 minutes?</li>
+    <li>For what amount of available time are the two routes equally good?</li>
+    <li>With 35 minutes available, the commuter takes the better route every day for 5 days. Find the probability of being late at least once.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) 38 minutes: A gives \(\Phi(\tfrac86)=\Phi(1.33)=0.9082\); B gives \(\Phi(2)=0.9772\). Take B. 35 minutes: A gives \(\Phi(0.83)=0.7967\); B gives \(\Phi(0.5)=0.6915\). Take A.</p>
+    <p>(b) \(\tfrac{t-30}6=\tfrac{t-34}2\Rightarrow t=36\) minutes, where both give \(\Phi(1)=0.8413\). With less time take A, which has the smaller mean; with more, take B, which is less variable.</p>
+    <p>(c) Route A, independent days: \(1-0.7967^5\approx0.6790\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Customers arrive at a food truck one at a time, and the times between consecutive arrivals are independent and exponentially distributed with mean 3 minutes.</p>
+  <ol>
+    <li>Find the probability that a 10-minute stretch passes with no customers.</li>
+    <li>Find the expected number of customers in an hour.</li>
+    <li>The owner takes a 5-minute break. Find the probability that at least 2 customers arrive during it.</li>
+    <li>Given that the first customer after opening arrived within 6 minutes, find the probability that it arrived within 3 minutes.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Arrivals form a Poisson process with rate \(\lambda=\tfrac13\) per minute.</p>
+    <p>(a) \(e^{-10/3}\approx0.0357\).</p>
+    <p>(b) \(60\lambda=20\).</p>
+    <p>(c) The count in 5 minutes is Poisson with mean \(\tfrac53\): \(1-e^{-5/3}\left(1+\tfrac53\right)\approx0.4963\).</p>
+    <p>(d) \(\dfrac{P\{T\le3\}}{P\{T\le6\}}=\dfrac{1-e^{-1}}{1-e^{-2}}\approx0.7311\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 5 slides; no setup repeats the earlier Chapter 5 exams.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

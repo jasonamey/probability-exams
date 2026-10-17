@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STA 9715 Ch 4 Unseen Problems</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-sheet style; each problem tagged with the skill it tests, solutions folded. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 { font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px; border-bottom: 2px solid var(--fg); text-wrap: balance; }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.src { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 4px 16px 4px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 4 Unseen Problems: Random Variables</h1>
+  <p>15 problems whose setups do not appear in the slides or in HW 4 and HW 5. The problems are in mixed order with no topic labels, so the first step in each is deciding which tool applies.</p>
+</header>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="src">Round decimals to 4 places unless a fraction is natural.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <p>A 12-question multiple-choice exam has 4 options per question. A student knows the answers to 6 questions and guesses at random on the other 6. Passing requires at least 9 correct.</p>
+  <ol><li>Find the probability the student passes.</li><li>Find the mean and variance of the student's score.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Let \(G\sim\mathrm{Bin}(6,\tfrac14)\) be the number of correct guesses. Passing needs \(G\ge3\): \(1-\left[(0.75)^6+6(0.25)(0.75)^5+15(0.25)^2(0.75)^4\right]=1-(0.1780+0.3560+0.2966)=0.1694\).</p>
+    <p>(b) Score \(=6+G\): mean \(6+1.5=7.5\); variance \(6(0.25)(0.75)=1.125\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <p>A bakery mixes 600 chocolate chips into dough that is divided into 200 cookies. Each chip is equally likely to land in any cookie, independently of the others.</p>
+  <ol><li>State the exact distribution of the number of chips in a given cookie, and a suitable approximation.</li><li>Approximate the probability that a given cookie has no chips.</li><li>Treating cookies as independent, approximate the probability that a box of 12 contains at least one chipless cookie.</li><li>How many chips are needed so that at most 1 percent of cookies have none?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Exactly \(\mathrm{Bin}(600,\tfrac1{200})\); approximately \(\mathrm{Po}(3)\), since \(n\) is large, \(p\) is small, and \(np=3\).</p>
+    <p>(b) \(e^{-3}\approx0.0498\).</p>
+    <p>(c) \(1-(1-e^{-3})^{12}\approx0.4582\).</p>
+    <p>(d) With \(n\) chips, \(\lambda=\tfrac n{200}\). Need \(e^{-n/200}\le0.01\Rightarrow n\ge200\ln100\approx921.03\), so 922 chips.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <p>A drawer holds a fair coin and a biased coin that lands heads with probability 0.8. One coin is chosen at random and flipped 5 times, giving exactly 4 heads.</p>
+  <ol><li>Find the probability that the biased coin was chosen.</li><li>Find the probability that a sixth flip of the same coin lands heads.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Likelihoods: biased \(5(0.8)^4(0.2)=0.4096\); fair \(5(0.5)^5=0.15625\). Equal priors cancel: \(\dfrac{0.4096}{0.4096+0.15625}\approx0.7239\).</p>
+    <p>(b) \(0.7239(0.8)+0.2761(0.5)\approx0.7172\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <p>Two teams play a best-of-seven series; the first to win 4 games takes it. Team A wins each game independently with probability 0.6.</p>
+  <ol><li>Find the probability that A wins the series in exactly 6 games.</li><li>Find the probability that A wins the series.</li><li>Find the probability that the series goes to 7 games.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) A's 4th win on game 6: \(\binom53(0.6)^4(0.4)^2=10(0.1296)(0.16)\approx0.2074\).</p>
+    <p>(b) \(\sum_{n=4}^7\binom{n-1}3(0.6)^4(0.4)^{n-4}=0.1296\,(1+1.6+1.6+1.28)\approx0.7102\).</p>
+    <p>(c) The first 6 games split 3–3: \(\binom63(0.6)^3(0.4)^3=20(0.216)(0.064)\approx0.2765\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <p>A newsstand buys papers for $1.00 each and sells them for $2.50. Unsold papers are worthless. Daily demand \(D\) has this PMF:</p>
+  <div class="tablewrap"><table>
+    <tr><th>d</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+    <tr><th>P{D = d}</th><td>0.1</td><td>0.3</td><td>0.4</td><td>0.2</td></tr>
+  </table></div>
+  <ol><li>If the stand stocks \(s\) papers, write the profit as a function of \(D\).</li><li>Find the expected profit for \(s=1\), \(s=2\), and \(s=3\). How many papers should it stock?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Profit \(=2.5\min(D,s)-s\).</p>
+    <p>(b) \(E[\min(D,1)]=0.9\), \(E[\min(D,2)]=0.3+2(0.6)=1.5\), \(E[\min(D,3)]=E[D]=1.7\). Expected profits: \(s=1\): \(2.25-1=\$1.25\); \(s=2\): \(3.75-2=\$1.75\); \(s=3\): \(4.25-3=\$1.25\). Stock 2.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <p>A fair die is rolled repeatedly.</p>
+  <ol><li>Let \(X\) be the number of rolls until the first 6. Find \(P\{X&gt;6\}\) and the probability that \(X\) is even.</li><li>Let \(T\) be the number of rolls until all six faces have appeared at least once. Find \(E[T]\). Hint: write \(T\) as a sum of waiting times for each new face.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P\{X&gt;6\}=(\tfrac56)^6\approx0.3349\). With \(q=\tfrac56\), \(p=\tfrac16\): \(P(\text{even})=\sum_{k\ge1}q^{2k-1}p=\dfrac{qp}{1-q^2}=\dfrac q{1+q}=\dfrac5{11}\).</p>
+    <p>(b) After \(i\) distinct faces have appeared, the wait for a new one is geometric with \(p=\tfrac{6-i}6\) and mean \(\tfrac6{6-i}\). \(E[T]=6\left(\tfrac16+\tfrac15+\tfrac14+\tfrac13+\tfrac12+1\right)=14.7\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <p>A system works if a majority of its components work. Components work independently, each with probability \(p\).</p>
+  <ol><li>With \(p=0.9\), find the probability that a 5-component system works, and that a 3-component system works. Which is more reliable?</li><li>Repeat with \(p=0.4\).</li><li>Explain in one sentence why the answer flips.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Five: \(\binom53(0.9)^3(0.1)^2+\binom54(0.9)^4(0.1)+(0.9)^5=0.0729+0.3281+0.5905=0.9914\). Three: \(3(0.9)^2(0.1)+(0.9)^3=0.972\). Five is better.</p>
+    <p>(b) Five: \(0.2304+0.0768+0.0102=0.3174\). Three: \(3(0.4)^2(0.6)+(0.4)^3=0.352\). Three is better.</p>
+    <p>(c) More components make the working fraction concentrate near \(p\), which helps when \(p&gt;\tfrac12\) and hurts when \(p&lt;\tfrac12\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <p>In its first year a laptop needs a full replacement costing $900 with probability 0.06, needs a $200 repair with probability 0.10, and otherwise costs nothing. A one-year warranty that covers everything costs $95.</p>
+  <ol><li>Find the expected out-of-pocket cost without the warranty. Is the warranty a good deal on average?</li><li>Find the standard deviation of the cost without the warranty.</li><li>At what replacement probability would the warranty break even, keeping the repair probability at 0.10?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[C]=900(0.06)+200(0.10)=\$74&lt;\$95\). On average the warranty costs $21 more than it saves.</p>
+    <p>(b) \(E[C^2]=810000(0.06)+40000(0.10)=52600\). \(\mathrm{Var}(C)=52600-74^2=47124\). \(\mathrm{SD}(C)\approx\$217.08\).</p>
+    <p>(c) \(900q+20=95\Rightarrow q=\tfrac{75}{900}\approx0.0833\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <p>Ten people board an elevator on the ground floor of a building with 6 upper floors. Each person independently gets off at a uniformly chosen upper floor. Let \(X\) be the number of floors at which the elevator stops.</p>
+  <ol><li>Find \(E[X]\).</li><li>Find \(\mathrm{Var}(X)\). You will need the probability that the elevator stops at both of two given floors.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Let \(I_j\) indicate a stop at floor \(j\). \(P(I_j=1)=1-(\tfrac56)^{10}\approx0.8385\). \(E[X]=6(0.8385)\approx5.031\).</p>
+    <p>(b) For \(i\ne j\), by inclusion–exclusion on "no stop at \(i\)" and "no stop at \(j\)": \(P(I_i=I_j=1)=1-2(\tfrac56)^{10}+(\tfrac46)^{10}\approx0.6943\). \(E[X^2]=6(0.8385)+30(0.6943)\approx25.861\). \(\mathrm{Var}(X)\approx25.861-5.031^2\approx0.550\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <p>Two fair four-sided dice, each numbered 1 through 4, are rolled. Let \(X\) be the larger of the two numbers (or the common value if they match).</p>
+  <ol><li>Find the CDF of \(X\) at \(x=1,2,3,4\). Start from the CDF, not the PMF.</li><li>Use the CDF to get the PMF.</li><li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(X\le k\) iff both dice are at most \(k\): \(F(k)=\left(\tfrac k4\right)^2=\tfrac{k^2}{16}\), so \(\tfrac1{16},\tfrac4{16},\tfrac9{16},1\).</p>
+    <p>(b) \(p(k)=F(k)-F(k-1)=\tfrac{2k-1}{16}\): \(\tfrac1{16},\tfrac3{16},\tfrac5{16},\tfrac7{16}\).</p>
+    <p>(c) \(E[X]=\tfrac{1+6+15+28}{16}=\tfrac{25}8=3.125\). \(E[X^2]=\tfrac{1+12+45+112}{16}=\tfrac{85}8\). \(\mathrm{Var}(X)=\tfrac{85}8-\tfrac{625}{64}=\tfrac{55}{64}\approx0.8594\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <p>A random variable \(X\) has \(E[X]=3\) and \(\mathrm{Var}(X)=4\). Nothing else is known about its distribution.</p>
+  <ol><li>Find \(E[X^2]\) and \(E[(2X-1)^2]\).</li><li>Find \(\mathrm{Var}(7-3X)\) and \(\mathrm{SD}(7-3X)\).</li><li>Show that \(E[(X-c)^2]\) is smallest when \(c=E[X]\), and give the minimum value.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X^2]=\mathrm{Var}(X)+(E[X])^2=13\). \(E[4X^2-4X+1]=52-12+1=41\).</p>
+    <p>(b) \(\mathrm{Var}(7-3X)=9(4)=36\); SD \(=6\).</p>
+    <p>(c) \(E[(X-c)^2]=E[X^2]-2cE[X]+c^2=13-6c+c^2=(c-3)^2+4\), minimized at \(c=3\) with value \(4=\mathrm{Var}(X)\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <p>\(X\) is a Poisson random variable with \(P\{X=1\}=P\{X=2\}\).</p>
+  <ol><li>Find \(\lambda\).</li><li>Find \(P\{X=4\}\) and \(P\{X\ge3\}\).</li><li>Find \(E[X^2]\).</li><li>Find the probability that \(X\) is even. Hint: add the series for \(e^{\lambda}\) and \(e^{-\lambda}\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\lambda e^{-\lambda}=\tfrac{\lambda^2}2e^{-\lambda}\Rightarrow\lambda=2\).</p>
+    <p>(b) \(P\{X=4\}=e^{-2}\tfrac{16}{24}\approx0.0902\). \(P\{X\ge3\}=1-e^{-2}(1+2+2)\approx0.3233\).</p>
+    <p>(c) \(E[X^2]=\lambda+\lambda^2=6\).</p>
+    <p>(d) \(\sum_{k\text{ even}}\tfrac{\lambda^k}{k!}=\tfrac{e^{\lambda}+e^{-\lambda}}2\), so \(P(\text{even})=\tfrac{1+e^{-2\lambda}}2=\tfrac{1+e^{-4}}2\approx0.5092\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">13</div><div class="body">
+  <p>A random variable \(X\) has PMF \(p(k)=\dfrac{c}{k(k+1)}\) for \(k=1,2,3,\dots\)</p>
+  <ol><li>Find \(c\). Hint: \(\tfrac1{k(k+1)}=\tfrac1k-\tfrac1{k+1}\).</li><li>Find \(P\{X&gt;n\}\) for a positive integer \(n\), then \(P\{3\le X\le6\}\).</li><li>Show that \(E[X]\) is infinite.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) The sum telescopes: \(\sum_{k\ge1}\left(\tfrac1k-\tfrac1{k+1}\right)=1\), so \(c=1\).</p>
+    <p>(b) \(P\{X&gt;n\}=\sum_{k&gt;n}\left(\tfrac1k-\tfrac1{k+1}\right)=\tfrac1{n+1}\). \(P\{3\le X\le6\}=P\{X&gt;2\}-P\{X&gt;6\}=\tfrac13-\tfrac17=\tfrac4{21}\).</p>
+    <p>(c) \(E[X]=\sum_{k\ge1}k\cdot\tfrac1{k(k+1)}=\sum_{k\ge1}\tfrac1{k+1}\), the harmonic series, which diverges.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">14</div><div class="body">
+  <p>Calls reach a help desk according to the three Poisson assumptions at a rate of 6 per hour.</p>
+  <ol><li>Find the probability of no calls in a 10-minute break.</li><li>Given that exactly 2 calls arrived in a particular hour, find the probability that both arrived in the first 20 minutes.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(N(\tfrac16)\sim\mathrm{Po}(1)\): \(e^{-1}\approx0.3679\).</p>
+    <p>(b) Counts in the first 20 minutes and last 40 minutes are independent \(\mathrm{Po}(2)\) and \(\mathrm{Po}(4)\):</p>
+    $$\frac{P\{\mathrm{Po}(2)=2\}\,P\{\mathrm{Po}(4)=0\}}{P\{\mathrm{Po}(6)=2\}}=\frac{2e^{-2}\cdot e^{-4}}{18e^{-6}}=\frac19.$$
+    <p>This equals \((\tfrac13)^2\): given the count, each call falls in the first third of the hour with probability \(\tfrac13\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">15</div><div class="body">
+  <p>A lake holds 500 fish, 50 of which were tagged last month. A biologist now nets 40 fish at random without replacement; \(X\) is the number of tagged fish in the net.</p>
+  <ol><li>Write the exact expression for \(P\{X=4\}\), then approximate it with a binomial.</li><li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li><li>Suppose the lake's size \(N\) were unknown and the net held 5 tagged fish. Estimate \(N\) by matching the observed count to \(E[X]\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{\binom{50}4\binom{450}{36}}{\binom{500}{40}}\approx0.2146\). Binomial \((40,0.1)\): \(\binom{40}4(0.1)^4(0.9)^{36}\approx0.2059\).</p>
+    <p>(b) \(E[X]=40\cdot\tfrac{50}{500}=4\). \(\mathrm{Var}(X)=40(0.1)(0.9)\cdot\tfrac{460}{499}\approx3.3186\).</p>
+    <p>(c) \(40\cdot\tfrac{50}N=5\Rightarrow N=400\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. None of these setups appear in the slides or in HW 4 and HW 5.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

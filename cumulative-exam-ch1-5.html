@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STA 9715 Cumulative Practice Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Cumulative Practice Exam, Chapters 1–5</h1>
+  <p>14 problems, 100 points. Every problem is a variation on a slide example or a homework problem, with new numbers.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: 2.5 to 3 hours in one sitting. This is longer than a typical exam so that every chapter gets covered.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough. The standard normal values you need are below.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>1.00</td><td>1.28</td><td>1.50</td><td>1.58</td><td>2.00</td></tr>
+    <tr><th>Φ(z)</th><td>0.8413</td><td>0.8997</td><td>0.9332</td><td>0.9429</td><td>0.9772</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>A school with 120 students offers three electives. There are 45 students in art, 38 in band, and 30 in chess; 15 are in both art and band, 12 in both art and chess, 10 in both band and chess, and 5 are in all three.</p>
+  <ol>
+    <li>A student is chosen at random. What is the probability they are in none of the electives?</li>
+    <li>What is the probability they are in exactly one elective?</li>
+    <li>If 2 students are chosen at random, what is the probability that at least 1 is in an elective?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Inclusion–exclusion: \(|A\cup B\cup C|=(45+38+30)-(15+12+10)+5=81\). None: \(\tfrac{39}{120}=0.325\).</p>
+    <p>(b) Art only \(=45-15-12+5=23\); band only \(=38-15-10+5=18\); chess only \(=30-12-10+5=13\). \(\tfrac{54}{120}=0.45\).</p>
+    <p>(c) \(1-\dfrac{\binom{39}2}{\binom{120}2}=1-\dfrac{741}{7140}=\dfrac{2133}{2380}\approx0.8962\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">7 points</span>
+  <ol>
+    <li>Six people, A through F, are arranged in a line, all orders equally likely. Find the probability that there is exactly one person between A and B.</li>
+    <li>Find the probability that A and B are next to each other in the line.</li>
+    <li>Find the probability that A and B are next to each other if the six are seated at random around a circle.</li>
+    <li>An urn contains 10 red, 8 blue, and 6 green balls. Five balls are withdrawn at random. Find the probability of getting 2 red, 2 blue, and 1 green.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) The pair of positions for A and B is one of \(6\cdot5=30\) equally likely ordered pairs. Positions two apart: \((1,3),(2,4),(3,5),(4,6)\), each in 2 orders: \(\tfrac8{30}=\tfrac4{15}\).</p>
+    <p>(b) 5 adjacent position pairs, 2 orders: \(\tfrac{10}{30}=\tfrac13\).</p>
+    <p>(c) Fix A's seat. B is equally likely to be in any of the other 5 seats, 2 of which are next to A: \(\tfrac25\).</p>
+    <p>(d) \(\dfrac{\binom{10}2\binom82\binom61}{\binom{24}5}=\dfrac{45\cdot28\cdot6}{42504}=\dfrac{45}{253}\approx0.1779\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <ol>
+    <li>Exam scores are normal with mean 70 and variance 100. Find \(P\{60&lt;X&lt;85\}\) and \(P\{X&gt;90\}\).</li>
+    <li>Find \(P\{|X-70|&gt;15\}\).</li>
+    <li>Find the score at the 90th percentile.</li>
+    <li>Forty percent of voters support a measure. In a random sample of 150 voters, use the normal approximation with continuity correction to find the probability that at least 70 support it. Check the condition for the approximation.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(\sigma=10\).</p>
+    <p>(a) \(\Phi(1.5)-\Phi(-1)=0.9332-(1-0.8413)=0.7745\). \(P\{X&gt;90\}=1-\Phi(2)=0.0228\).</p>
+    <p>(b) \(2\,(1-\Phi(1.5))=2(0.0668)=0.1336\).</p>
+    <p>(c) \(\Phi(1.28)\approx0.90\), so \(x=70+1.28(10)=82.8\).</p>
+    <p>(d) \(S\sim\mathrm{Bin}(150,0.4)\): \(np=60\), \(np(1-p)=36\ge10\), so the approximation is good; \(\sigma=6\). \(P\{S\ge70\}=P\{S&gt;69.5\}\approx1-\Phi\!\left(\tfrac{69.5-60}{6}\right)=1-\Phi(1.58)=0.0571\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <ol>
+    <li>A basketball player makes each free throw independently with probability 0.7. Find the probability that the first make comes on the third attempt.</li>
+    <li>Find the probability that the third make comes on the fifth attempt.</li>
+    <li>Find the mean and variance of the number of attempts needed to get 3 makes.</li>
+    <li>A committee of 5 is chosen at random from 8 women and 7 men. Find the probability it has exactly 3 women, and the expected number of women.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Geometric: \((0.3)^2(0.7)=0.063\).</p>
+    <p>(b) Negative binomial, \(r=3\): \(\binom42(0.7)^3(0.3)^2=6(0.343)(0.09)\approx0.1852\).</p>
+    <p>(c) \(E[X]=\tfrac{r}{p}=\tfrac3{0.7}\approx4.286\). \(\mathrm{Var}(X)=\tfrac{r(1-p)}{p^2}=\tfrac{0.9}{0.49}\approx1.837\).</p>
+    <p>(d) Hypergeometric: \(\dfrac{\binom83\binom72}{\binom{15}5}=\dfrac{56\cdot21}{3003}=\dfrac{56}{143}\approx0.3916\). \(E=5\cdot\tfrac8{15}=\tfrac83\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <ol>
+    <li>Trains arrive at a station at 8:00, 8:20, and 8:40. A passenger arrives at a time uniformly distributed between 8:00 and 8:40. Find the probability they wait less than 5 minutes, and the probability they wait more than 12 minutes.</li>
+    <li>A battery's lifetime is exponential with mean 8 hours. Find the probability it lasts more than 12 hours, and the probability it lasts more than 12 hours given that it has already lasted 4.</li>
+    <li>A component has hazard rate \(\lambda(t)=t/2\), \(t&gt;0\). Find its CDF, \(P\{X&gt;2\}\), and \(P\{X&gt;4\mid X&gt;2\}\). Is this lifetime memoryless?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Wait under 5 minutes: arrive in (8:15, 8:20) or (8:35, 8:40), probability \(\tfrac{10}{40}=\tfrac14\). Wait over 12 minutes: arrive in (8:00, 8:08) or (8:20, 8:28), probability \(\tfrac{16}{40}=\tfrac25\).</p>
+    <p>(b) \(\lambda=\tfrac18\). \(P\{X&gt;12\}=e^{-1.5}\approx0.2231\). By memorylessness, \(P\{X&gt;12\mid X&gt;4\}=P\{X&gt;8\}=e^{-1}\approx0.3679\).</p>
+    <p>(c) \(\int_0^t\tfrac s2ds=\tfrac{t^2}4\), so \(F(t)=1-e^{-t^2/4}\) for \(t&gt;0\). \(P\{X&gt;2\}=e^{-1}\approx0.3679\). \(P\{X&gt;4\mid X&gt;2\}=\dfrac{e^{-4}}{e^{-1}}=e^{-3}\approx0.0498\). Not memoryless: \(e^{-3}\ne P\{X&gt;2\}\), and the hazard rate is not constant.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">6 points</span>
+  <p>Twelve runners compete in a team race: 4 from the United States, 3 from Kenya, 3 from Ethiopia, and 2 from Japan. The scoring takes account of the runners' countries but not their individual identities.</p>
+  <ol>
+    <li>How many different outcomes are possible from the point of view of scores?</li>
+    <li>How many outcomes have the United States with exactly 2 runners in the top four and 2 in the bottom four?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{12!}{4!\,3!\,3!\,2!}=277{,}200\).</p>
+    <p>(b) Choose the US positions: \(\binom42\binom42=36\). Arrange the other 8 runners in the remaining 8 places: \(\dfrac{8!}{3!\,3!\,2!}=560\). Total \(36\cdot560=20{,}160\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">6 points</span>
+  <p>A blood test detects a disease with probability 0.98 when it is present, and gives a false positive with probability 0.03 when it is not. Two percent of the population has the disease.</p>
+  <ol>
+    <li>A person tests positive. What is the probability they have the disease?</li>
+    <li>The person is tested a second time, and the two results are conditionally independent given disease status. Both tests are positive. What is the probability they have the disease?</li>
+    <li>Are the two test results independent? Justify with a calculation.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{0.98(0.02)}{0.98(0.02)+0.03(0.98)}=\dfrac{0.0196}{0.0490}=0.4\).</p>
+    <p>(b) \(\dfrac{0.98^2(0.02)}{0.98^2(0.02)+0.03^2(0.98)}=\dfrac{0.019208}{0.020090}\approx0.9561\).</p>
+    <p>(c) No. \(P(+_1)=P(+_2)=0.049\), so the product is \(0.0024\), but \(P(+_1+_2)=0.0201\). They are conditionally independent given disease status, not independent.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>The CDF of \(X\) is</p>
+  <div class="cases">$$F(x)=\begin{cases}0 & x&lt;-1\\ 0.2 & -1\le x&lt;0\\ 0.5 & 0\le x&lt;2\\ 0.9 & 2\le x&lt;3\\ 1 & x\ge3\end{cases}$$</div>
+  <ol>
+    <li>Find the PMF of \(X\).</li>
+    <li>Find \(P\{0&lt;X\le3\}\) and \(P\{X\ge2\mid X&gt;-1\}\).</li>
+    <li>Find \(E[X]\), \(\mathrm{Var}(X)\), and \(\mathrm{SD}(X)\).</li>
+    <li>Find \(E[(X-1)^2]\) and \(\mathrm{Var}(5-2X)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Jumps: \(p(-1)=0.2,\ p(0)=0.3,\ p(2)=0.4,\ p(3)=0.1\).</p>
+    <p>(b) \(F(3)-F(0)=0.5\). \(\dfrac{P\{X\ge2\}}{P\{X&gt;-1\}}=\dfrac{0.5}{0.8}=0.625\).</p>
+    <p>(c) \(E[X]=-0.2+0.8+0.3=0.9\). \(E[X^2]=0.2+1.6+0.9=2.7\). \(\mathrm{Var}(X)=2.7-0.81=1.89\). \(\mathrm{SD}(X)\approx1.3748\).</p>
+    <p>(d) \(E[(X-1)^2]=E[X^2]-2E[X]+1=2.7-1.8+1=1.9\). \(\mathrm{Var}(5-2X)=4(1.89)=7.56\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">6 points</span>
+  <ol>
+    <li>How many different 7-place license plates are possible if the first 3 places are letters and the last 4 are digits?</li>
+    <li>Repeat (a) if no letter or digit can be repeated in a single plate.</li>
+    <li>A student will sell 3 books from a collection of 5 math, 6 science, and 4 economics books. How many choices are possible if all 3 books are on the same subject?</li>
+    <li>How many choices if the 3 books are all on different subjects?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(26^3\cdot10^4=175{,}760{,}000\).</p>
+    <p>(b) \(26\cdot25\cdot24\cdot10\cdot9\cdot8\cdot7=78{,}624{,}000\).</p>
+    <p>(c) \(\binom53+\binom63+\binom43=10+20+4=34\).</p>
+    <p>(d) One from each subject: \(5\cdot6\cdot4=120\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">7 points</span>
+  <ol>
+    <li>A salesperson makes 8 calls a day; each call independently ends in a sale with probability 0.3. Find the probability of at least 2 sales in a day.</li>
+    <li>The salesperson earns $50 per sale and pays a fixed $60 a day in costs. Find the mean and variance of the daily profit.</li>
+    <li>An insurer holds 1000 policies; each independently produces a claim this month with probability 0.003. Use the Poisson approximation to find the probability of at least 2 claims, and write the exact expression it approximates.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(X\sim\mathrm{Bin}(8,0.3)\). \(P\{X\ge2\}=1-0.7^8-8(0.3)(0.7)^7=1-0.0576-0.1977\approx0.7447\).</p>
+    <p>(b) \(E[X]=2.4\), \(\mathrm{Var}(X)=1.68\). Profit \(=50X-60\): mean \(50(2.4)-60=\$60\); variance \(50^2(1.68)=4200\).</p>
+    <p>(c) \(\lambda=3\). \(P\{Y\ge2\}\approx1-e^{-3}(1+3)=1-4e^{-3}\approx0.8009\). Exact: \(1-0.997^{1000}-1000(0.003)(0.997)^{999}\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">6 points</span>
+  <ol>
+    <li>Two fair dice are rolled. Let \(E\) be the event that the sum is 7, \(F\) that the first die shows 2, and \(G\) that the second die shows 5. Show that the three events are pairwise independent.</li>
+    <li>Are \(E\), \(F\), \(G\) independent? Are \(F\) and \(G\) mutually exclusive?</li>
+    <li>A class has 6 first-year boys, 9 first-year girls, 4 sophomore boys, and \(x\) sophomore girls. Find \(x\) so that sex and class year are independent when a student is selected at random.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(E)=P(F)=P(G)=\tfrac16\). Each pairwise intersection is the single outcome \((2,5)\), so \(P(EF)=P(EG)=P(FG)=\tfrac1{36}=\tfrac16\cdot\tfrac16\).</p>
+    <p>(b) Not independent: \(EFG=\{(2,5)\}\), so \(P(EFG)=\tfrac1{36}\ne\tfrac1{216}\). \(F\) and \(G\) are not mutually exclusive, since \(FG=\{(2,5)\}\ne\varnothing\).</p>
+    <p>(c) With \(n=19+x\): \(P(\text{boy})=\tfrac{10}n\), \(P(\text{first-year})=\tfrac{15}n\), \(P(\text{both})=\tfrac6n\). Need \(\tfrac6n=\tfrac{150}{n^2}\Rightarrow n=25\Rightarrow x=6\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>\(X\) is continuous with density \(f(x)=cx^2\) for \(0\le x\le3\), and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find the CDF of \(X\) and \(P\{1&lt;X&lt;2\}\).</li>
+    <li>Find \(E[X]\), \(\mathrm{Var}(X)\), and \(\mathrm{SD}(X)\).</li>
+    <li>Find the PDF of \(Y=X^2\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_0^3cx^2\,dx=9c=1\Rightarrow c=\tfrac19\).</p>
+    <p>(b) \(F(x)=\tfrac{x^3}{27}\) for \(0\le x\le3\); 0 for \(x&lt;0\); 1 for \(x&gt;3\). \(P\{1&lt;X&lt;2\}=\tfrac{8-1}{27}=\tfrac7{27}\approx0.2593\).</p>
+    <p>(c) \(E[X]=\int_0^3\tfrac{x^3}9dx=\tfrac{81}{36}=\tfrac94\). \(E[X^2]=\int_0^3\tfrac{x^4}9dx=\tfrac{243}{45}=\tfrac{27}5\). \(\mathrm{Var}(X)=\tfrac{27}5-\tfrac{81}{16}=\tfrac{27}{80}=0.3375\). \(\mathrm{SD}(X)\approx0.5809\).</p>
+    <p>(d) For \(0\le y\le9\): \(F_Y(y)=P\{X\le\sqrt y\}=\tfrac{y^{3/2}}{27}\), so \(f_Y(y)=\tfrac{\sqrt y}{18}\) on \([0,9]\), 0 otherwise. Theorem 5.7.1 gives the same: \(f_X(\sqrt y)\cdot\tfrac1{2\sqrt y}=\tfrac y9\cdot\tfrac1{2\sqrt y}\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">13</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>An insurance company classifies people as good, average, or bad risks. The probabilities that a good-, average-, and bad-risk person has an accident in a year are 0.04, 0.12, and 0.25. Of the population, 25 percent are good risks, 55 percent average, and 20 percent bad. Given a person's class, accidents in different years are independent.</p>
+  <ol>
+    <li>What proportion of people have an accident in a fixed year?</li>
+    <li>A policyholder had no accident this year. What is the probability they are a good risk?</li>
+    <li>A policyholder had an accident this year. What is the probability they are a bad risk?</li>
+    <li>A policyholder had an accident this year. What is the probability they have one next year?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Law of total probability: \(0.25(0.04)+0.55(0.12)+0.20(0.25)=0.01+0.066+0.05=0.126\).</p>
+    <p>(b) \(\dfrac{0.25(0.96)}{1-0.126}=\dfrac{0.24}{0.874}\approx0.2746\).</p>
+    <p>(c) \(\dfrac{0.05}{0.126}\approx0.3968\).</p>
+    <p>(d) \(P(A_2\mid A_1)=\dfrac{P(A_1A_2)}{P(A_1)}=\dfrac{0.25(0.04)^2+0.55(0.12)^2+0.20(0.25)^2}{0.126}=\dfrac{0.02082}{0.126}\approx0.1652\). This is larger than 0.126 because the first accident shifts weight toward the riskier classes.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">14</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Emails arrive in an inbox according to the three Poisson assumptions at a rate of 4 per hour.</p>
+  <ol>
+    <li>Find the probability that exactly 2 emails arrive in the next 30 minutes.</li>
+    <li>Find the probability that at least 1 email arrives in the next 15 minutes.</li>
+    <li>Let \(T\) be the time in hours until the next email. Find the CDF of \(T\), name its distribution, and give \(E[T]\).</li>
+    <li>Split the next 2 hours into eight 15-minute intervals. Find the expected number of intervals with no emails, and the probability that every interval has at least one email.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(N(t)\sim\mathrm{Po}(4t)\).</p>
+    <p>(a) \(N(0.5)\sim\mathrm{Po}(2)\): \(e^{-2}\tfrac{2^2}{2!}=2e^{-2}\approx0.2707\).</p>
+    <p>(b) \(N(0.25)\sim\mathrm{Po}(1)\): \(1-e^{-1}\approx0.6321\).</p>
+    <p>(c) \(P\{T&gt;t\}=P\{N(t)=0\}=e^{-4t}\), so \(F(t)=1-e^{-4t}\) for \(t\ge0\). \(T\sim\mathrm{Exp}(4)\), \(E[T]=\tfrac14\) hour, which is 15 minutes.</p>
+    <p>(d) Disjoint intervals are independent, each empty with probability \(e^{-1}\). The number of empty intervals is \(\mathrm{Bin}(8,e^{-1})\), with mean \(8e^{-1}\approx2.943\). All non-empty: \((1-e^{-1})^8\approx0.0255\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no chapter labels. The Chapter 5 topics the slides mark self-study are not tested here.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

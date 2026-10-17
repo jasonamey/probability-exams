@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STA 9715 Chapter 5 Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 5 Exam: Continuous Random Variables</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels. The setups are new, built on the Chapter 5 slides.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough. Some standard normal values are below; you will not need all of them.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.50</td><td>0.67</td><td>0.69</td><td>1.00</td><td>1.19</td><td>1.28</td><td>1.31</td><td>1.50</td><td>1.645</td><td>2.00</td><td>2.33</td></tr>
+    <tr><th>Φ(z)</th><td>0.6915</td><td>0.7486</td><td>0.7549</td><td>0.8413</td><td>0.8830</td><td>0.8997</td><td>0.9049</td><td>0.9332</td><td>0.9500</td><td>0.9772</td><td>0.9901</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>The time a technician needs to repair a machine has density \(f(x)=\tfrac12e^{-x/2}\) for \(x\ge0\), with \(x\) in hours. The technician charges a flat $80 plus $50 per hour.</p>
+  <ol>
+    <li>Find the probability that a repair takes more than 3 hours, and the probability that it takes between 1 and 2 hours.</li>
+    <li>A repair has already been going for 4 hours. Find the probability that it lasts at least 1 more hour.</li>
+    <li>Find the mean and standard deviation of the charge.</li>
+    <li>Find the probability that the charge exceeds $280.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(X\sim\mathrm{Exp}(\tfrac12)\), so \(P\{X&gt;x\}=e^{-x/2}\).</p>
+    <p>(a) \(e^{-1.5}\approx0.2231\). \(e^{-0.5}-e^{-1}\approx0.2387\).</p>
+    <p>(b) Memoryless: \(P\{X&gt;5\mid X&gt;4\}=P\{X&gt;1\}=e^{-0.5}\approx0.6065\).</p>
+    <p>(c) \(E[X]=2\), \(\mathrm{SD}(X)=2\). Charge \(=80+50X\): mean \(\$180\), SD \(\$100\).</p>
+    <p>(d) \(80+50X&gt;280\iff X&gt;4\): \(e^{-2}\approx0.1353\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>\(X\) has density \(f(x)=x\) for \(0\le x\le1\), \(f(x)=2-x\) for \(1&lt;x\le2\), and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Verify that \(f\) is a density.</li>
+    <li>Find the CDF of \(X\).</li>
+    <li>Find \(P\{\tfrac12&lt;X&lt;\tfrac32\}\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(f\ge0\), and \(\int_0^1x\,dx+\int_1^2(2-x)\,dx=\tfrac12+\tfrac12=1\).</p>
+    <p>(b) \(F(x)=\tfrac{x^2}2\) for \(0\le x\le1\); \(F(x)=1-\tfrac{(2-x)^2}2\) for \(1&lt;x\le2\); \(F=0\) below 0 and \(F=1\) above 2.</p>
+    <p>(c) \(F(\tfrac32)-F(\tfrac12)=\tfrac78-\tfrac18=\tfrac34\).</p>
+    <p>(d) \(E[X]=1\) by symmetry about 1. \(E[X^2]=\int_0^1x^3dx+\int_1^2x^2(2-x)\,dx=\tfrac14+\tfrac{11}{12}=\tfrac76\). \(\mathrm{Var}(X)=\tfrac76-1=\tfrac16\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>Scores on an aptitude test are normally distributed. Ten percent of test-takers score below 60, and 5 percent score above 90.</p>
+  <ol>
+    <li>Find the mean and standard deviation of the scores.</li>
+    <li>Find the probability that a test-taker scores above the value \(\mu+\sigma\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{60-\mu}\sigma=-1.28\) and \(\dfrac{90-\mu}\sigma=1.645\). Subtracting: \(\dfrac{30}\sigma=2.925\), so \(\sigma\approx10.26\) and \(\mu=60+1.28\sigma\approx73.13\).</p>
+    <p>(b) \(1-\Phi(1)=0.1587\), whatever \(\mu\) and \(\sigma\) are.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Let \(U\) be uniformly distributed on \((0,1)\).</p>
+  <ol>
+    <li>Find the CDF and density of \(Y=-2\ln U\). Name the distribution and give \(E[Y]\).</li>
+    <li>Find the density of \(V=1/U\).</li>
+    <li>Show that \(E[V]\) is infinite.</li>
+    <li>Find \(E[U^3]\) and \(\mathrm{Var}(U^3)\) without finding the density of \(U^3\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) For \(y&gt;0\): \(P\{Y\le y\}=P\{U\ge e^{-y/2}\}=1-e^{-y/2}\), so \(f_Y(y)=\tfrac12e^{-y/2}\). \(Y\sim\mathrm{Exp}(\tfrac12)\), \(E[Y]=2\).</p>
+    <p>(b) For \(v&gt;1\): \(P\{V\le v\}=P\{U\ge\tfrac1v\}=1-\tfrac1v\), so \(f_V(v)=\tfrac1{v^2}\) for \(v&gt;1\), 0 otherwise.</p>
+    <p>(c) \(E[V]=\int_1^\infty v\cdot\tfrac1{v^2}dv=\int_1^\infty\tfrac1vdv=\infty\).</p>
+    <p>(d) \(E[U^3]=\int_0^1u^3du=\tfrac14\). \(E[U^6]=\tfrac17\). \(\mathrm{Var}(U^3)=\tfrac17-\tfrac1{16}=\tfrac9{112}\approx0.0804\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>The size \(X\) of an insurance claim, in thousands of dollars, has density \(f(x)=\dfrac{c}{x^3}\) for \(x\ge1\), and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find the CDF and \(P\{X&gt;3\}\).</li>
+    <li>Find the median claim size.</li>
+    <li>Find \(E[X]\). What happens when you try to compute \(\mathrm{Var}(X)\)?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_1^\infty cx^{-3}dx=\tfrac c2=1\Rightarrow c=2\).</p>
+    <p>(b) \(F(x)=1-\tfrac1{x^2}\) for \(x\ge1\), 0 otherwise. \(P\{X&gt;3\}=\tfrac19\).</p>
+    <p>(c) \(1-\tfrac1{m^2}=\tfrac12\Rightarrow m=\sqrt2\approx1.414\), about $1,414.</p>
+    <p>(d) \(E[X]=\int_1^\infty2x^{-2}dx=2\). \(E[X^2]=\int_1^\infty\tfrac2xdx\) diverges, so the variance is infinite.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A call center takes 400 calls a day. Each call independently needs to be escalated to a supervisor with probability 0.2. The supervisors can handle at most 89 escalations a day.</p>
+  <ol>
+    <li>Approximate the probability that the supervisors are overwhelmed on a given day.</li>
+    <li>Approximate the probability that the number of escalations is between 70 and 85, inclusive.</li>
+    <li>State why the approximation is appropriate here.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(S\sim\mathrm{Bin}(400,0.2)\): \(np=80\), \(np(1-p)=64\), \(\sigma=8\).</p>
+    <p>(a) \(P\{S\ge90\}=P\{S&gt;89.5\}\approx1-\Phi\!\left(\tfrac{9.5}8\right)=1-\Phi(1.19)=0.1170\).</p>
+    <p>(b) \(P\{69.5&lt;S&lt;85.5\}\approx\Phi(0.69)-\Phi(-1.31)=0.7549-0.0951=0.6598\).</p>
+    <p>(c) \(np(1-p)=64\ge10\), so the normal approximation to the binomial is good; the half-unit shifts are the continuity correction.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>A delivery is equally likely to arrive at any moment between 1:00 pm and 5:00 pm.</p>
+  <ol>
+    <li>Find the probability that it arrives after 4:00 pm.</li>
+    <li>It has not arrived by 3:00 pm. Find the probability that it arrives before 3:30 pm.</li>
+    <li>You start waiting at 1:00 pm, and each hour of waiting costs you $15. Find the mean and standard deviation of your cost.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(W\sim\mathrm{Unif}(0,4)\) be the hours after 1:00 pm.</p>
+    <p>(a) \(P\{W&gt;3\}=\tfrac14\).</p>
+    <p>(b) \(\dfrac{P\{2&lt;W&lt;2.5\}}{P\{W&gt;2\}}=\dfrac{0.5/4}{2/4}=\tfrac14\).</p>
+    <p>(c) \(E[W]=2\), \(\mathrm{Var}(W)=\tfrac{16}{12}\). Cost \(=15W\): mean \(\$30\), SD \(15\cdot\tfrac4{\sqrt{12}}\approx\$17.32\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>The lifetime \(X\) of a car, in years, has hazard rate function \(\lambda(t)=0.02+0.004t\) for \(t&gt;0\).</p>
+  <ol>
+    <li>Find the probability that a new car lasts more than 5 years.</li>
+    <li>Find the probability that a 5-year-old car lasts another 5 years.</li>
+    <li>Find the density of \(X\).</li>
+    <li>Is \(X\) memoryless? Explain.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(\int_0^t\lambda(s)\,ds=0.02t+0.002t^2\), so \(P\{X&gt;t\}=e^{-(0.02t+0.002t^2)}\).</p>
+    <p>(a) \(e^{-0.15}\approx0.8607\).</p>
+    <p>(b) \(\dfrac{P\{X&gt;10\}}{P\{X&gt;5\}}=\dfrac{e^{-0.40}}{e^{-0.15}}=e^{-0.25}\approx0.7788\).</p>
+    <p>(c) \(f(t)=(0.02+0.004t)\,e^{-(0.02t+0.002t^2)}\) for \(t&gt;0\).</p>
+    <p>(d) No. The answers to (a) and (b) differ, and the hazard rate is not constant; an older car is more likely to fail.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>The annual return on an investment fund, in percent, is normally distributed with mean 8 and standard deviation 12.</p>
+  <ol>
+    <li>Find the probability that the fund loses money in a year.</li>
+    <li>Find the probability that the return is between 2 and 20 percent.</li>
+    <li>Find the probability that the return exceeds 26 percent.</li>
+    <li>Find the return that the fund beats in 95 percent of years.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\Phi\!\left(\tfrac{0-8}{12}\right)=\Phi(-0.67)=1-0.7486=0.2514\).</p>
+    <p>(b) \(\Phi(1)-\Phi(-0.5)=0.8413-0.3085=0.5328\).</p>
+    <p>(c) \(1-\Phi(1.5)=0.0668\).</p>
+    <p>(d) The 5th percentile: \(8-1.645(12)=-11.74\) percent.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>During a meteor shower, meteors are seen according to the three Poisson assumptions at a rate of 12 per hour.</p>
+  <ol>
+    <li>Find the probability that you wait more than 10 minutes for the first meteor.</li>
+    <li>Name the distribution of the waiting time, in hours, until the first meteor, and give its mean in minutes.</li>
+    <li>Find the probability of seeing exactly 3 meteors in 15 minutes.</li>
+    <li>Find the probability that you wait more than 10 minutes for the second meteor.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(N(t)\sim\mathrm{Po}(12t)\), \(t\) in hours.</p>
+    <p>(a) \(P\{N(\tfrac16)=0\}=e^{-2}\approx0.1353\).</p>
+    <p>(b) \(\mathrm{Exp}(12)\), mean \(\tfrac1{12}\) hour, which is 5 minutes.</p>
+    <p>(c) \(N(\tfrac14)\sim\mathrm{Po}(3)\): \(e^{-3}\tfrac{27}6\approx0.2240\).</p>
+    <p>(d) The second meteor takes more than 10 minutes iff at most 1 is seen in 10 minutes: \(e^{-2}(1+2)\approx0.4060\). The waiting time itself is \(\mathrm{Gamma}(2,12)\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>The CDF of \(X\) is \(F(x)=1-e^{-x^2}\) for \(x\ge0\), and \(F(x)=0\) for \(x&lt;0\).</p>
+  <ol>
+    <li>Find the density of \(X\).</li>
+    <li>Find \(P\{X&gt;1\}\) and the median of \(X\).</li>
+    <li>Find the hazard rate function of \(X\).</li>
+    <li>Find \(P\{X&gt;2\mid X&gt;1\}\) and compare it with \(P\{X&gt;1\}\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(f(x)=F'(x)=2xe^{-x^2}\) for \(x\ge0\).</p>
+    <p>(b) \(P\{X&gt;1\}=e^{-1}\approx0.3679\). Median: \(e^{-m^2}=\tfrac12\Rightarrow m=\sqrt{\ln2}\approx0.8326\).</p>
+    <p>(c) \(\lambda(t)=\dfrac{f(t)}{1-F(t)}=2t\).</p>
+    <p>(d) \(\dfrac{e^{-4}}{e^{-1}}=e^{-3}\approx0.0498\), far below \(0.3679\). The hazard rate increases, so the item wears out.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Let \(Z\) be a standard normal random variable and let \(Y=e^Z\).</p>
+  <ol>
+    <li>Find \(P\{Y&gt;e\}\) and the median of \(Y\).</li>
+    <li>Find the density of \(Y\).</li>
+    <li>Find \(E[Y]\). Hint: complete the square in the exponent.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P\{Y&gt;e\}=P\{Z&gt;1\}=0.1587\). \(P\{Y\le1\}=P\{Z\le0\}=\tfrac12\), so the median is 1.</p>
+    <p>(b) \(y=e^z\) is increasing with inverse \(z=\ln y\), \(\tfrac{dz}{dy}=\tfrac1y\). For \(y&gt;0\): \(f_Y(y)=\dfrac1{y\sqrt{2\pi}}e^{-(\ln y)^2/2}\); 0 otherwise.</p>
+    <p>(c) \(E[e^Z]=\int_{-\infty}^\infty\tfrac1{\sqrt{2\pi}}e^{z-z^2/2}dz=e^{1/2}\int_{-\infty}^\infty\tfrac1{\sqrt{2\pi}}e^{-(z-1)^2/2}dz=e^{1/2}\approx1.6487\). The mean is above the median because the distribution is skewed right.</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. There is no Chapter 5 homework in the folder, so this exam is built from the slides alone.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

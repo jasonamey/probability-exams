@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5 Exam B</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 5 Exam B: Continuous Random Variables</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels. None of the setups repeat the first Chapter 5 exam.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough. Some standard normal values are below; you will not need all of them.</li>
+    <li>You may use \(\int_0^\infty x^ne^{-ax}\,dx=\dfrac{n!}{a^{n+1}}\) for \(a&gt;0\) without proof.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.50</td><td>1.00</td><td>1.28</td><td>1.33</td><td>1.47</td><td>1.645</td><td>1.70</td><td>1.96</td><td>2.00</td><td>2.576</td><td>2.67</td></tr>
+    <tr><th>Φ(z)</th><td>0.6915</td><td>0.8413</td><td>0.8997</td><td>0.9082</td><td>0.9292</td><td>0.9500</td><td>0.9554</td><td>0.9750</td><td>0.9772</td><td>0.9950</td><td>0.9962</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A gambler bets $1 on red at roulette 1000 times. Each bet wins $1 with probability \(\tfrac{18}{38}\) and loses $1 otherwise, independently.</p>
+  <ol>
+    <li>Find the gambler's expected net winnings.</li>
+    <li>Approximate the probability that the gambler is ahead after the 1000 bets. Justify the approximation you use.</li>
+    <li>Approximate the probability that the gambler is down $100 or more.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(X\) be the number of wins, \(X\sim\mathrm{Bin}(1000,\tfrac{18}{38})\). Net winnings are \(X-(1000-X)=2X-1000\).</p>
+    <p>(a) \(E[X]=473.68\), so \(E[2X-1000]=-\$52.63\).</p>
+    <p>(b) \(np(1-p)=249.3\ge10\), so the normal approximation is appropriate, with \(\mu=473.68\) and \(\sigma=\sqrt{249.3}=15.79\). Ahead means \(2X-1000&gt;0\), i.e. \(X\ge501\). With the continuity correction, \(P\{X\ge500.5\}\approx1-\Phi\!\left(\tfrac{500.5-473.68}{15.79}\right)=1-\Phi(1.70)=0.0446\).</p>
+    <p>(c) \(2X-1000\le-100\iff X\le450\). \(P\{X\le450.5\}\approx\Phi\!\left(\tfrac{450.5-473.68}{15.79}\right)=\Phi(-1.47)=1-0.9292=0.0708\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A random variable \(X\) has CDF \(F(x)=\dfrac{x}{1+x}\) for \(x\ge0\) and \(F(x)=0\) for \(x&lt;0\).</p>
+  <ol>
+    <li>Find the density of \(X\), its median, and \(P\{X&gt;3\}\).</li>
+    <li>Find \(P\{X&gt;5\mid X&gt;2\}\). Does \(X\) have the memoryless property?</li>
+    <li>Determine whether \(E[X]\) is finite.</li>
+    <li>Find the CDF of \(Y=1/X\). What do you notice?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(f(x)=F'(x)=\dfrac1{(1+x)^2}\) for \(x&gt;0\). Median: \(\tfrac m{1+m}=\tfrac12\Rightarrow m=1\). \(P\{X&gt;3\}=1-\tfrac34=\tfrac14\).</p>
+    <p>(b) \(P\{X&gt;x\}=\tfrac1{1+x}\), so \(P\{X&gt;5\mid X&gt;2\}=\dfrac{1/6}{1/3}=\tfrac12\). Memorylessness would require this to equal \(P\{X&gt;3\}=\tfrac14\). It does not, so \(X\) is not memoryless.</p>
+    <p>(c) \(E[X]=\int_0^\infty\dfrac{x}{(1+x)^2}\,dx\). With \(u=1+x\): \(\int_1^\infty\left(\tfrac1u-\tfrac1{u^2}\right)du=\left[\ln u+\tfrac1u\right]_1^\infty=\infty\). The mean is infinite.</p>
+    <p>(d) For \(y&gt;0\): \(F_Y(y)=P\{1/X\le y\}=P\{X\ge1/y\}=\dfrac1{1+1/y}=\dfrac y{1+y}\). \(Y\) has the same distribution as \(X\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A 12-inch stick is broken at a point chosen uniformly at random along its length.</p>
+  <ol>
+    <li>Find the probability that the shorter piece is less than 2 inches long.</li>
+    <li>Find the probability that the longer piece is at least twice as long as the shorter piece.</li>
+    <li>Find the expected length of the longer piece.</li>
+    <li>The two pieces are used as the sides of a rectangle. Find the expected area of the rectangle.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(X\sim\mathrm{Unif}(0,12)\) be the break point; the pieces are \(X\) and \(12-X\).</p>
+    <p>(a) \(X&lt;2\) or \(X&gt;10\): \(\tfrac4{12}=\tfrac13\).</p>
+    <p>(b) If \(X\) is the shorter piece, need \(12-X\ge2X\), i.e. \(X\le4\). By symmetry the event is \(X\le4\) or \(X\ge8\): \(\tfrac8{12}=\tfrac23\).</p>
+    <p>(c) The longer piece is \(\max(X,12-X)\). \(E=\int_0^6\tfrac{12-x}{12}dx+\int_6^{12}\tfrac x{12}dx=4.5+4.5=9\) inches. (Equivalently, the longer piece is uniform on \((6,12)\).)</p>
+    <p>(d) \(E[X(12-X)]=12E[X]-E[X^2]=72-\int_0^{12}\tfrac{x^2}{12}dx=72-48=24\) square inches.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A warehouse stocks light bulbs from two suppliers. Forty percent come from supplier A, whose bulbs have exponentially distributed lifetimes with mean 1000 hours; the rest come from supplier B, whose bulbs have exponentially distributed lifetimes with mean 2000 hours. A bulb is picked at random and switched on.</p>
+  <ol>
+    <li>Find the probability that the bulb is still working after 1500 hours.</li>
+    <li>Given that it is still working after 1500 hours, find the probability that it came from supplier A.</li>
+    <li>Given that it is still working after 1500 hours, find the probability that it works for at least 1500 more hours. Is the lifetime of a randomly picked bulb memoryless?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(T\) be the lifetime.</p>
+    <p>(a) \(P\{T&gt;1500\}=0.4e^{-1.5}+0.6e^{-0.75}=0.0893+0.2834=0.3727\).</p>
+    <p>(b) \(P(A\mid T&gt;1500)=\dfrac{0.4e^{-1.5}}{0.3727}=0.2395\). Surviving bulbs are more likely to be from B.</p>
+    <p>(c) \(P\{T&gt;3000\mid T&gt;1500\}=\dfrac{0.4e^{-3}+0.6e^{-1.5}}{0.3727}=\dfrac{0.1538}{0.3727}=0.4127\). This is not \(P\{T&gt;1500\}=0.3727\), so \(T\) is not memoryless, even though each supplier's bulbs are. A mixture of exponentials is not exponential.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>The time \(X\), in hours, that a customer spends in a store has density \(f(x)=c\,x\,e^{-2x}\) for \(x&gt;0\), and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find the probability that a customer stays more than 1 hour.</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>The amount a customer spends is \(10e^{X}\) dollars. Find the expected amount spent.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_0^\infty xe^{-2x}dx=\tfrac{1!}{2^2}=\tfrac14\), so \(c=4\).</p>
+    <p>(b) By parts, \(\int_1^\infty4xe^{-2x}dx=\left[-2xe^{-2x}-e^{-2x}\right]_1^\infty=3e^{-2}\approx0.4060\).</p>
+    <p>(c) \(E[X]=4\int_0^\infty x^2e^{-2x}dx=4\cdot\tfrac{2}{8}=1\). \(E[X^2]=4\int_0^\infty x^3e^{-2x}dx=4\cdot\tfrac{6}{16}=\tfrac32\). \(\mathrm{Var}(X)=\tfrac32-1=\tfrac12\).</p>
+    <p>(d) \(E[10e^X]=10\int_0^\infty e^x\cdot4xe^{-2x}dx=40\int_0^\infty xe^{-x}dx=40\). Note this is not \(10e^{E[X]}=27.18\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A machine produces shafts whose diameters are normally distributed with mean 10.1 mm and standard deviation 0.15 mm. A shaft is acceptable if its diameter is between 9.7 mm and 10.3 mm.</p>
+  <ol>
+    <li>Find the probability that a shaft is acceptable.</li>
+    <li>Five shafts are produced independently. Find the probability that at least four are acceptable.</li>
+    <li>The machine is recalibrated so that the mean is 10.0 mm, with the same standard deviation. Find the new probability that a shaft is acceptable.</li>
+    <li>With the mean at 10.0 mm, how small must the standard deviation be for 99% of shafts to be acceptable?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\Phi\!\left(\tfrac{10.3-10.1}{0.15}\right)-\Phi\!\left(\tfrac{9.7-10.1}{0.15}\right)=\Phi(1.33)-\Phi(-2.67)=0.9082-0.0038=0.9044\).</p>
+    <p>(b) The number acceptable is \(\mathrm{Bin}(5,0.9044)\): \(5(0.9044)^4(0.0956)+(0.9044)^5=0.3198+0.6051=0.9249\).</p>
+    <p>(c) \(\Phi(2)-\Phi(-2)=2(0.9772)-1=0.9544\).</p>
+    <p>(d) Need \(2\Phi(0.3/\sigma)-1=0.99\), so \(\Phi(0.3/\sigma)=0.995\), \(0.3/\sigma=2.576\), \(\sigma\le0.1165\) mm.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>\(X\) is uniformly distributed on \((-1,2)\), and \(Y=X^2\).</p>
+  <ol>
+    <li>Find the CDF of \(Y\).</li>
+    <li>Find the density of \(Y\).</li>
+    <li>Find \(P\{Y&gt;\tfrac14\}\) and \(E[Y]\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(Y\) takes values in \([0,4)\), and \(x\mapsto x^2\) is not monotone on \((-1,2)\), so work from the CDF.</p>
+    <p>(a) For \(0\le y\le1\): \(F_Y(y)=P\{-\sqrt y\le X\le\sqrt y\}=\dfrac{2\sqrt y}3\). For \(1&lt;y&lt;4\): the constraint \(X\ge-\sqrt y\) always holds, so \(F_Y(y)=P\{X\le\sqrt y\}=\dfrac{\sqrt y+1}3\). \(F_Y=0\) for \(y&lt;0\) and \(F_Y=1\) for \(y\ge4\). (Check: both pieces give \(\tfrac23\) at \(y=1\).)</p>
+    <p>(b) \(f_Y(y)=\dfrac1{3\sqrt y}\) for \(0&lt;y&lt;1\), \(f_Y(y)=\dfrac1{6\sqrt y}\) for \(1&lt;y&lt;4\), and 0 otherwise.</p>
+    <p>(c) \(P\{Y&gt;\tfrac14\}=1-\tfrac{2(1/2)}3=\tfrac23\). \(E[Y]=E[X^2]=\int_{-1}^2\tfrac{x^2}3dx=\tfrac13\cdot\tfrac{8+1}3=1\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>The length of a phone call is exponentially distributed with mean 2 minutes. The phone company bills in whole minutes, rounding every call up: a call of 2.3 minutes is billed as 3 minutes. Let \(N\) be the number of minutes billed.</p>
+  <ol>
+    <li>Find \(P\{N=k\}\) for \(k=1,2,3,\dots\) and identify the distribution of \(N\).</li>
+    <li>Find \(E[N]\). On average, how many minutes per call are billed but not used?</li>
+    <li>Find the probability that a call is billed for 4 or more minutes.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(X\) be the call length, \(P\{X&gt;x\}=e^{-x/2}\).</p>
+    <p>(a) \(P\{N=k\}=P\{k-1&lt;X\le k\}=e^{-(k-1)/2}-e^{-k/2}=\left(e^{-1/2}\right)^{k-1}\left(1-e^{-1/2}\right)\). This is geometric with \(p=1-e^{-1/2}\approx0.3935\).</p>
+    <p>(b) \(E[N]=\dfrac1p=\dfrac1{1-e^{-1/2}}\approx2.541\) minutes. Since \(E[X]=2\), about 0.541 minutes per call are billed but not used.</p>
+    <p>(c) \(P\{N\ge4\}=P\{X&gt;3\}=e^{-1.5}\approx0.2231\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>The lifetime \(T\), in years, of an electronic component has hazard rate \(\lambda(t)=\dfrac{2}{t+5}\) for \(t\ge0\).</p>
+  <ol>
+    <li>Find \(P\{T&gt;t\}\).</li>
+    <li>Compare the probability that a new component lasts 10 years with the probability that a 5-year-old working component lasts 10 more years. Explain the comparison in terms of the hazard rate.</li>
+    <li>Find the median lifetime.</li>
+    <li>Find the mean lifetime.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P\{T&gt;t\}=\exp\!\left(-\int_0^t\tfrac2{s+5}ds\right)=\exp\!\left(-2\ln\tfrac{t+5}5\right)=\left(\dfrac5{t+5}\right)^2\).</p>
+    <p>(b) New: \(\left(\tfrac5{15}\right)^2=\tfrac19\). Used: \(\dfrac{P\{T&gt;15\}}{P\{T&gt;5\}}=\dfrac{1/16}{1/4}=\tfrac14\). The used component is more likely to last, because the hazard rate is decreasing: the longer a component has survived, the lower its instantaneous failure rate.</p>
+    <p>(c) \(\left(\tfrac5{m+5}\right)^2=\tfrac12\Rightarrow m=5(\sqrt2-1)\approx2.07\) years.</p>
+    <p>(d) The density is \(f(t)=-\tfrac d{dt}P\{T&gt;t\}=\dfrac{50}{(t+5)^3}\). With \(u=t+5\): \(E[T]=\int_5^\infty\dfrac{50(u-5)}{u^3}du=50\left[-\tfrac1u+\tfrac5{2u^2}\right]_5^\infty=50\left(\tfrac15-\tfrac1{10}\right)=5\) years.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A dart is aimed at a vertical line on a board. The horizontal miss \(X\), in cm, is normally distributed with mean 0 and standard deviation 2; negative values are misses to the left.</p>
+  <ol>
+    <li>Find the probability that the dart lands within 1 cm of the line.</li>
+    <li>Find the distance \(d\) such that 90% of darts land within \(d\) cm of the line.</li>
+    <li>Find the expected distance \(E[|X|]\) between the dart and the line.</li>
+    <li>Find \(\mathrm{Var}(|X|)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P\{|X|\le1\}=2\Phi(0.5)-1=0.3830\).</p>
+    <p>(b) \(2\Phi(d/2)-1=0.90\Rightarrow\Phi(d/2)=0.95\Rightarrow d=2(1.645)=3.29\) cm.</p>
+    <p>(c) By symmetry, \(E[|X|]=2\int_0^\infty x\,\dfrac1{2\sqrt{2\pi}}e^{-x^2/8}dx=\dfrac1{\sqrt{2\pi}}\left[-4e^{-x^2/8}\right]_0^\infty=\dfrac4{\sqrt{2\pi}}=2\sqrt{\tfrac2\pi}\approx1.596\) cm.</p>
+    <p>(d) \(E[|X|^2]=E[X^2]=\sigma^2=4\). \(\mathrm{Var}(|X|)=4-\tfrac8\pi\approx1.454\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A gas station's weekly demand for premium fuel is uniformly distributed between 0 and 1000 gallons. At the start of the week the owner buys \(q\) gallons at $1 per gallon and sells at $3 per gallon. Fuel left at the end of the week is worthless, and demand beyond \(q\) is lost.</p>
+  <ol>
+    <li>Find the expected profit if \(q=500\).</li>
+    <li>Find the expected profit as a function of \(q\), for \(0\le q\le1000\), and the value of \(q\) that maximizes it.</li>
+    <li>At the optimal \(q\), find the probability that the station sells out.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(X\sim\mathrm{Unif}(0,1000)\). Gallons sold are \(\min(X,q)\), so profit is \(3\min(X,q)-q\).</p>
+    <p>\(E[\min(X,q)]=\int_0^q\tfrac x{1000}dx+q\,P\{X&gt;q\}=\tfrac{q^2}{2000}+q\left(1-\tfrac q{1000}\right)=q-\tfrac{q^2}{2000}\).</p>
+    <p>(a) \(3(500-125)-500=\$625\).</p>
+    <p>(b) \(g(q)=3\left(q-\tfrac{q^2}{2000}\right)-q=2q-\tfrac{3q^2}{2000}\). \(g'(q)=2-\tfrac{3q}{1000}=0\Rightarrow q=\tfrac{2000}3\approx667\) gallons, a maximum since \(g''&lt;0\). The maximum expected profit is \(g(\tfrac{2000}3)\approx\$666.67\).</p>
+    <p>(c) \(P\{X&gt;\tfrac{2000}3\}=\tfrac13\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A device contains three components that fail independently. Each has an exponentially distributed lifetime with mean 6 years.</p>
+  <ol>
+    <li>Suppose the device works only while all three components work. Find the probability that it works for more than 2 years.</li>
+    <li>In the setting of part (a), find the distribution of the device's lifetime and its mean.</li>
+    <li>Suppose instead the device works as long as at least one component works. Find the probability that it fails within 3 years.</li>
+    <li>In the setting of part (c), find the median lifetime of the device.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Each component has \(P\{T_i&gt;t\}=e^{-t/6}\).</p>
+    <p>(a) \(P\{\text{all}&gt;2\}=\left(e^{-2/6}\right)^3=e^{-1}\approx0.3679\).</p>
+    <p>(b) \(P\{\min&gt;t\}=\left(e^{-t/6}\right)^3=e^{-t/2}\): exponential with rate \(\tfrac12\), mean 2 years.</p>
+    <p>(c) \(P\{\max\le3\}=\left(1-e^{-1/2}\right)^3=(0.3935)^3\approx0.0609\).</p>
+    <p>(d) \(\left(1-e^{-m/6}\right)^3=\tfrac12\Rightarrow e^{-m/6}=1-2^{-1/3}=0.2063\Rightarrow m=-6\ln(0.2063)\approx9.47\) years.</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 5 slides; no setup repeats the first Chapter 5 exam.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

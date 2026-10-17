@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STA 9715 Ch 4 Practice Problems</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-sheet style; problems numbered, answers folded under each. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+}
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.formulas {
+  background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px;
+}
+.formulas .tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; }
+th, td { text-align: left; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; }
+.body ol li { margin-top: 4px; }
+ol.parts { list-style: lower-alpha; }
+.src { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { break-inside: avoid; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 4 Practice Problems: Random Variables</h1>
+  <p>22 worked-solution problems modeled on the Chapter 4 slides and HW 4 and HW 5. Each one is a variation, with new numbers or an added part, so you have to redo the reasoning. Work each on paper first, then open the solution.</p>
+</header>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="src">Round decimals to 4 places unless a fraction is natural.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <p>Five cards are dealt from a standard 52-card deck. Let \(X\) be the number of aces.</p>
+  <ol class="parts"><li>Using indicators and the result of Problem 5, find \(E[X]\) and \(E[X^2]\).</li><li>Find \(\mathrm{Var}(X)\) and confirm it matches the hypergeometric variance formula.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(I_i\) = card \(i\) is an ace, \(p_i=\tfrac4{52}=\tfrac1{13}\). \(E[X]=\tfrac5{13}\approx0.3846\). For \(i\ne j\), \(P(I_i=I_j=1)=\tfrac4{52}\cdot\tfrac3{51}=\tfrac1{221}\), so \(E[X^2]=\tfrac5{13}+20\cdot\tfrac1{221}=\tfrac{105}{221}\approx0.4751\).</p>
+    <p>(b) \(\mathrm{Var}(X)=\tfrac{105}{221}-\tfrac{25}{169}\approx0.3272\). Formula: \(5\cdot\tfrac1{13}\cdot\tfrac{12}{13}\cdot\tfrac{47}{51}\approx0.3272\). ✓</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <p>The number of colds a person contracts in a year is Poisson with \(\lambda=4\). A new drug lowers the parameter to \(\lambda=2\) for 60 percent of the population and has no effect on the other 40 percent. A person takes the drug for a year.</p>
+  <ol class="parts"><li>If they have exactly 1 cold that year, how likely is it that the drug is beneficial for them?</li><li>If they have 0 colds?</li><li>What is the unconditional probability that they have 0 colds?</li></ol>
+  <details><summary>Solution</summary>
+    <p>Bayes with \(B\) = drug is beneficial.</p>
+    <p>(a) \(\displaystyle P(B\mid1)=\frac{0.6\cdot2e^{-2}}{0.6\cdot2e^{-2}+0.4\cdot4e^{-4}}=\frac{0.16240}{0.16240+0.02930}\approx0.8471\).</p>
+    <p>(b) \(\displaystyle P(B\mid0)=\frac{0.6e^{-2}}{0.6e^{-2}+0.4e^{-4}}\approx0.9172\).</p>
+    <p>(c) \(0.6e^{-2}+0.4e^{-4}\approx0.0812+0.0073=0.0885\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <p>Binomial properties.</p>
+  <ol class="parts"><li>Let \(X\sim\mathrm{Bin}(10,0.4)\). Find \(E[X]\), \(\mathrm{Var}(X)\), the most likely value of \(X\), and the probability of that value.</li><li>A binomial random variable \(Y\) has \(E[Y]=6\) and \(\mathrm{Var}(Y)=2.4\). Find \(n\) and \(p\), then \(P\{Y\ge9\}\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X]=4\), \(\mathrm{Var}(X)=2.4\). The mode is \(\lfloor(n+1)p\rfloor=\lfloor4.4\rfloor=4\); \(P\{X=4\}=\binom{10}4(0.4)^4(0.6)^6\approx0.2508\).</p>
+    <p>(b) \(1-p=\frac{2.4}{6}=0.4\Rightarrow p=0.6\), \(n=10\). \(P\{Y\ge9\}=10(0.6)^9(0.4)+(0.6)^{10}\approx0.0464\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <p>A buyer purchases components in lots of size 12. The policy is to inspect 4 components at random from a lot and accept the lot only if all 4 are non-defective. Forty percent of lots have 3 defective components and 60 percent have 1.</p>
+  <ol class="parts"><li>What proportion of lots does the buyer reject?</li><li>Given that a lot was rejected, what is the probability it had 3 defectives?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(\text{accept}\mid3\text{ def})=\binom94\big/\binom{12}4=\tfrac{126}{495}=\tfrac{14}{55}\). \(P(\text{accept}\mid1\text{ def})=\binom{11}4\big/\binom{12}4=\tfrac{330}{495}=\tfrac23\).</p>
+    <p>\(P(\text{reject})=0.4\cdot\tfrac{41}{55}+0.6\cdot\tfrac13=\tfrac{137}{275}\approx0.4982\).</p>
+    <p>(b) \(\dfrac{0.4\cdot\frac{41}{55}}{\frac{137}{275}}=\dfrac{82}{137}\approx0.5985\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <p>Let \(X\) be the number of successes in \(n\) trials, where trial \(i\) is a success with probability \(p_i\). The trials need not be independent.</p>
+  <ol class="parts"><li>Find \(E[X]\).</li><li>Derive an expression for \(E[X^2]\).</li><li>Use (a) and (b) to obtain the mean and variance of \(\mathrm{Bin}(n,p)\).</li><li>A professor returns 20 graded exams to 20 students completely at random. Find the expected number of students who get their own exam.</li></ol>
+  <details><summary>Solution</summary>
+    <p>Write \(X=\sum_{i=1}^nI_i\), where \(I_i\) indicates success on trial \(i\).</p>
+    <p>(a) \(E[X]=\sum_iE[I_i]=\sum_ip_i\).</p>
+    <p>(b) \(X^2=\sum_iI_i^2+\sum_{i\ne j}I_iI_j\), and \(I_i^2=I_i\), so \(E[X^2]=\sum_ip_i+\sum_{i\ne j}P(\text{trials }i\text{ and }j\text{ both succeed})\).</p>
+    <p>(c) Independent trials with \(p_i=p\): \(E[X]=np\); \(E[X^2]=np+n(n-1)p^2\); \(\mathrm{Var}(X)=np+n(n-1)p^2-n^2p^2=np(1-p)\).</p>
+    <p>(d) \(p_i=\tfrac1{20}\) for each student, so \(E[X]=20\cdot\tfrac1{20}=1\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <p>The numbers of daily accidents on three highways are Poisson random variables with parameters 0.4, 0.6, and 1.0.</p>
+  <ol class="parts"><li>Find the expected total number of accidents on these highways today.</li><li>Find the expected total over a 7-day week.</li><li>Let \(X\sim\mathrm{Po}(1.0)\) be the count on the third highway. The daily cleanup cost is \(C=200+150X+50X^2\) dollars. Find \(E[C]\).</li><li>Did part (a) need independence? Explain.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X_1+X_2+X_3]=0.4+0.6+1.0=2.0\).</p>
+    <p>(b) \(7\times2=14\).</p>
+    <p>(c) \(E[X^2]=\mathrm{Var}(X)+(E[X])^2=1+1=2\). \(E[C]=200+150(1)+50(2)=\$450\).</p>
+    <p>(d) No. \(E\left[\sum X_i\right]=\sum E[X_i]\) holds for any random variables, dependent or not.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <p>A batch of 50 items contains 5 defectives. A sample of 8 items is drawn at random without replacement; \(X\) is the number of defectives in the sample.</p>
+  <ol class="parts"><li>Name the distribution of \(X\) and its parameters.</li><li>Find \(P\{X=0\}\) and \(P\{X\ge2\}\).</li><li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li><li>Approximate \(P\{X=0\}\) with a binomial. Why is the approximation rough here?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(X\sim\mathrm{hypergeo}(N=50,\,n=8,\,m=5)\).</p>
+    <p>(b) \(P\{X=0\}=\binom{45}8\big/\binom{50}8\approx0.4015\). \(P\{X=1\}=5\binom{45}7\big/\binom{50}8\approx0.4226\). \(P\{X\ge2\}\approx1-0.4015-0.4226=0.1759\).</p>
+    <p>(c) \(E[X]=8\cdot\tfrac5{50}=0.8\). \(\mathrm{Var}(X)=8(0.1)(0.9)\cdot\tfrac{42}{49}\approx0.6171\).</p>
+    <p>(d) \(\mathrm{Bin}(8,0.1)\): \(0.9^8\approx0.4305\). The sample is 16 percent of the batch, so \(N\) and \(m\) are not large relative to \(n\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <p>A box contains 4 red and 6 blue marbles. Two marbles are withdrawn at random. If they are the same color you win $1.20; if they are different colors you lose $1.00.</p>
+  <ol class="parts"><li>Find the expected value of the amount you win.</li><li>Find the variance of the amount you win.</li></ol>
+  <details><summary>Solution</summary>
+    <p>\(P(\text{same})=\frac{\binom42+\binom62}{\binom{10}2}=\frac{6+15}{45}=\frac7{15}\), \(P(\text{different})=\frac8{15}\).</p>
+    <p>(a) \(E[X]=1.20\cdot\tfrac7{15}-1.00\cdot\tfrac8{15}=\tfrac{0.4}{15}=\tfrac2{75}\approx0.0267\).</p>
+    <p>(b) \(E[X^2]=1.44\cdot\tfrac7{15}+1\cdot\tfrac8{15}=\tfrac{18.08}{15}\approx1.2053\). \(\mathrm{Var}(X)=1.2053-(0.0267)^2\approx1.2046\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <p>The Banach match problem. A mathematician carries two matchboxes, one in each pocket, each initially holding \(N\) matches. Each time a match is needed, either pocket is equally likely to be chosen. Consider the moment the mathematician first discovers that one box is empty.</p>
+  <ol class="parts"><li>Find the probability that exactly \(k\) matches remain in the other box, \(k=0,1,\dots,N\).</li><li>Evaluate it for \(N=3\) and \(k=0,1,2,3\), and check the values sum to 1.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) Let \(E\) = the right box is found empty with \(k\) left in the left box. That happens when the \((N+1)\)st choice of the right pocket occurs on trial \(N+1+N-k=2N-k+1\). By the negative binomial with \(r=N+1\), \(p=\tfrac12\):</p>
+    $$P(E)=\binom{2N-k}{N}\left(\tfrac12\right)^{2N-k+1}.$$
+    <p>By symmetry the answer is \(2P(E)=\binom{2N-k}{N}\left(\tfrac12\right)^{2N-k}\).</p>
+    <p>(b) \(k=0\): \(\tfrac{20}{64}\); \(k=1\): \(\tfrac{10}{32}=\tfrac{20}{64}\); \(k=2\): \(\tfrac4{16}=\tfrac{16}{64}\); \(k=3\): \(\tfrac18=\tfrac8{64}\). Sum \(=\tfrac{64}{64}=1\). ✓</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <p>A 400-page book is typeset so that each page independently contains at least one typo with probability 0.005.</p>
+  <ol class="parts"><li>Use the Poisson approximation to find the probability that at least 3 pages contain a typo.</li><li>Why is the approximation reasonable here? Write the exact expression it approximates.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\lambda=400(0.005)=2\). \(P\{X\ge3\}\approx1-e^{-2}\left(1+2+\tfrac{4}{2}\right)=1-5e^{-2}\approx0.3233\).</p>
+    <p>(b) \(n\) is large, \(p\) is small, \(np=2\) is moderate. Exact: \(1-\sum_{i=0}^2\binom{400}i(0.005)^i(0.995)^{400-i}\approx0.3233\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <p>Let \(X\sim\mathrm{geo}(p)\).</p>
+  <ol class="parts"><li>Show that \(P\{X\ge k\}=(1-p)^{k-1}\) for \(k=1,2,\dots\)</li><li>Use (a) to prove the memoryless property: \(P\{X\ge n+k\mid X&gt;n\}=P\{X\ge k\}\) for \(n\ge0\), \(k\ge1\).</li><li>Write the CDF of \(X\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(X\ge k\) iff the first \(k-1\) trials all fail, probability \((1-p)^{k-1}\). (Or sum the geometric series \(\sum_{n\ge k}(1-p)^{n-1}p\).)</p>
+    <p>(b) \(\{X&gt;n\}=\{X\ge n+1\}\), which contains \(\{X\ge n+k\}\). So the conditional probability is \(\dfrac{(1-p)^{n+k-1}}{(1-p)^{n}}=(1-p)^{k-1}=P\{X\ge k\}\).</p>
+    <p>(c) \(F(x)=1-(1-p)^{\lfloor x\rfloor}\) for \(x\ge1\), and \(F(x)=0\) for \(x&lt;1\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <p>Screws produced by a company are defective with probability 0.02, independently of one another. The screws are sold in packages of 20 with a money-back guarantee that at most 1 of the 20 is defective.</p>
+  <ol class="parts"><li>What proportion of packages must the company replace? Give the exact answer.</li><li>Redo (a) with the Poisson approximation.</li><li>A customer buys 3 packages. What is the probability exactly one is returned? Use the answer from (a).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(X\sim\mathrm{Bin}(20,0.02)\). \(P\{X&gt;1\}=1-0.98^{20}-20(0.02)(0.98)^{19}\approx1-0.6676-0.2725=0.0599\).</p>
+    <p>(b) \(\lambda=np=0.4\). \(P\{X&gt;1\}\approx1-e^{-0.4}(1+0.4)\approx0.0616\).</p>
+    <p>(c) Number returned is \(\mathrm{Bin}(3,0.0599)\): \(3(0.0599)(0.9401)^2\approx0.1588\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">13</div><div class="body">
+  <p>A player bets on one of the numbers 1 through 6. Three fair dice are rolled independently. If the player's number appears \(i\) times, \(i=1,2,3\), the player wins \(i\) units; if it does not appear, the player loses 1 unit.</p>
+  <ol class="parts"><li>Is the game fair to the player?</li><li>Find the variance of the player's winnings.</li><li>Keeping the other payoffs fixed, what payoff for three matches would make the game fair?</li></ol>
+  <details><summary>Solution</summary>
+    <p>The number of matches is \(\mathrm{Bin}(3,\tfrac16)\): probabilities \(\tfrac{125}{216},\tfrac{75}{216},\tfrac{15}{216},\tfrac1{216}\) for \(0,1,2,3\) matches.</p>
+    <p>(a) \(E[X]=\frac{-125+75+30+3}{216}=-\frac{17}{216}\approx-0.0787\). Not fair; the player loses on average.</p>
+    <p>(b) \(E[X^2]=\frac{125+75+60+9}{216}=\frac{269}{216}\); \(\mathrm{Var}(X)=\frac{269}{216}-\left(\frac{17}{216}\right)^2\approx1.2392\).</p>
+    <p>(c) Need \(-125+75+30+w=0\Rightarrow w=20\) units.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">14</div><div class="body">
+  <p>Four men and 6 women are ranked according to their exam scores. No two scores are alike and all \(10!\) rankings are equally likely. Let \(X\) be the highest ranking achieved by a man (so \(X=1\) if the top-ranked person is male).</p>
+  <ol class="parts"><li>Find \(P\{X=i\}\) for \(i=1,2,\dots,10\).</li><li>Verify the probabilities sum to 1.</li><li>Find \(E[X]\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>Only the set of positions held by the 4 men matters: \(\binom{10}{4}=210\) equally likely sets. \(X=i\) means a man is at rank \(i\) and the other 3 men are among the \(10-i\) lower ranks:</p>
+    $$P\{X=i\}=\frac{\binom{10-i}{3}}{\binom{10}{4}},\quad i=1,\dots,7;\qquad P\{X=i\}=0,\ i=8,9,10.$$
+    <p>Values: \(\tfrac{84}{210}=\tfrac25,\ \tfrac{56}{210}=\tfrac4{15},\ \tfrac{35}{210}=\tfrac16,\ \tfrac{20}{210}=\tfrac2{21},\ \tfrac{10}{210}=\tfrac1{21},\ \tfrac4{210}=\tfrac2{105},\ \tfrac1{210}\).</p>
+    <p>(b) \(84+56+35+20+10+4+1=210\). ✓</p>
+    <p>(c) \(E[X]=\frac{1(84)+2(56)+3(35)+4(20)+5(10)+6(4)+7(1)}{210}=\frac{462}{210}=2.2\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">15</div><div class="body">
+  <p>The CDF of \(X\) is</p>
+  <div class="cases">$$F(x)=\begin{cases}0 & x&lt;0\\[2pt] x/3 & 0\le x&lt;1\\[2pt] 1/2 & 1\le x&lt;2\\[2pt] 5/6 & 2\le x&lt;4\\[2pt] 1 & x\ge 4\end{cases}$$</div>
+  <ol class="parts">
+    <li>Sketch \(F\) and check the four properties of a CDF.</li>
+    <li>Find \(P\{X=1\}\), \(P\{X=2\}\), \(P\{X=4\}\), and \(P\{X=3\}\).</li>
+    <li>Find \(P\{X&lt;2\}\), \(P\{X\ge 1\}\), \(P\{\tfrac12&lt;X\le 2\}\), and \(P\{\tfrac12&lt;X&lt;2\}\).</li>
+    <li>Is \(X\) a discrete random variable? Explain.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Nondecreasing, \(F\to1\) as \(x\to\infty\), \(F\to0\) as \(x\to-\infty\), and right continuous at each jump (the value at the jump point is the upper value).</p>
+    <p>(b) A point mass is the jump size, \(P\{X=a\}=F(a)-F(a^-)\): \(P\{X=1\}=\tfrac12-\tfrac13=\tfrac16\); \(P\{X=2\}=\tfrac56-\tfrac12=\tfrac13\); \(P\{X=4\}=1-\tfrac56=\tfrac16\); \(P\{X=3\}=0\) (no jump).</p>
+    <p>(c) \(P\{X&lt;2\}=F(2^-)=\tfrac12\). \(P\{X\ge1\}=1-F(1^-)=1-\tfrac13=\tfrac23\). \(P\{\tfrac12&lt;X\le2\}=F(2)-F(\tfrac12)=\tfrac56-\tfrac16=\tfrac23\). \(P\{\tfrac12&lt;X&lt;2\}=F(2^-)-F(\tfrac12)=\tfrac12-\tfrac16=\tfrac13\).</p>
+    <p>(d) No. The point masses total \(\tfrac16+\tfrac13+\tfrac16=\tfrac23\); the remaining \(\tfrac13\) is spread continuously over \((0,1)\), so \(F\) is not a pure step function.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">16</div><div class="body">
+  <p>A coin with \(P(\text{heads})=p\in(0,1)\) is flipped until either a head occurs or a total of \(n\) flips has been made. Let \(X\) be the number of flips.</p>
+  <ol class="parts"><li>Find \(P\{X=i\}\), \(i=1,\dots,n\).</li><li>Verify that \(\sum_{i=1}^n P\{X=i\}=1\).</li><li>Find \(E[X]\) when \(n=4\) and \(p=\tfrac13\).</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) With \(q=1-p\): \(P\{X=i\}=q^{i-1}p\) for \(i=1,\dots,n-1\), and \(P\{X=n\}=q^{n-1}\) (the first \(n-1\) flips are tails; the last flip can be either).</p>
+    <p>(b) \(\sum_{i=1}^{n-1}q^{i-1}p=p\cdot\frac{1-q^{n-1}}{1-q}=1-q^{n-1}\), and adding \(q^{n-1}\) gives 1.</p>
+    <p>(c) PMF: \(\tfrac13,\ \tfrac29,\ \tfrac4{27},\ \tfrac8{27}\). \(E[X]=\tfrac{9+12+12+32}{27}=\tfrac{65}{27}\approx2.4074\). (In general \(E[X]=\frac{1-q^n}{p}\).)</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">17</div><div class="body">
+  <p>\(X\) takes the values \(-2, 0, 1, 3\) with probabilities \(0.1, 0.4, 0.3, 0.2\).</p>
+  <ol class="parts"><li>Find \(E[X]\), \(E[X^2]\), \(\mathrm{Var}(X)\), and \(\mathrm{SD}(X)\).</li><li>Find \(E[3X-2]\) and \(\mathrm{Var}(3X-2)\).</li><li>Find \(E[|X|]\) and \(E[2^X]\).</li><li>Find the PMF of \(Y=X^2\) and recompute \(E[X^2]\) from it.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X]=-0.2+0+0.3+0.6=0.7\). \(E[X^2]=0.4+0+0.3+1.8=2.5\). \(\mathrm{Var}(X)=2.5-0.49=2.01\). \(\mathrm{SD}(X)=\sqrt{2.01}\approx1.4177\).</p>
+    <p>(b) \(E[3X-2]=3(0.7)-2=0.1\). \(\mathrm{Var}(3X-2)=9(2.01)=18.09\).</p>
+    <p>(c) \(E[|X|]=0.2+0+0.3+0.6=1.1\). \(E[2^X]=\tfrac14(0.1)+1(0.4)+2(0.3)+8(0.2)=2.625\).</p>
+    <p>(d) \(Y\) takes \(0,1,4,9\) with probabilities \(0.4,0.3,0.1,0.2\); \(E[Y]=0.3+0.4+1.8=2.5\). ✓</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">18</div><div class="body">
+  <p>A roulette wheel has 38 numbers: 1 through 36, 0, and double 0. Jones always bets that the outcome will be one of the six numbers 1 through 6.</p>
+  <ol class="parts"><li>Find the probability that Jones loses the first 4 bets.</li><li>Find the probability that the first win occurs on the third bet.</li><li>Find the expected number of bets until the first win, and its variance.</li><li>Given that Jones has lost the first 10 bets, find the probability that the first win takes at least 3 more bets.</li><li>Find the probability that Jones's second win occurs on the sixth bet.</li></ol>
+  <details><summary>Solution</summary>
+    <p>\(p=\tfrac6{38}=\tfrac3{19}\), \(q=\tfrac{16}{19}\); \(X\sim\mathrm{geo}(p)\).</p>
+    <p>(a) \(q^4\approx0.5029\).</p>
+    <p>(b) \(q^2p=\left(\tfrac{16}{19}\right)^2\tfrac3{19}\approx0.1120\).</p>
+    <p>(c) \(E[X]=\tfrac1p=\tfrac{19}3\approx6.33\); \(\mathrm{Var}(X)=\tfrac{q}{p^2}=\tfrac{304}{9}\approx33.78\).</p>
+    <p>(d) Memoryless: \(P\{X\ge13\mid X&gt;10\}=P\{X\ge3\}=q^2\approx0.7091\).</p>
+    <p>(e) Negative binomial with \(r=2\): \(\binom51p^2q^4\approx0.0627\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">19</div><div class="body">
+  <p>Customers enter a bank according to the three Poisson assumptions at a rate of 3 per hour.</p>
+  <ol class="parts"><li>Find the probability that at least 2 customers enter in the next 30 minutes.</li><li>Let \(T\) be the time in hours until the next customer enters. Find the CDF of \(T\).</li><li>Find the probability that no customer enters in the next 20 minutes.</li></ol>
+  <details><summary>Solution</summary>
+    <p>\(N(t)\sim\mathrm{Po}(3t)\).</p>
+    <p>(a) \(N(0.5)\sim\mathrm{Po}(1.5)\): \(1-e^{-1.5}(1+1.5)\approx0.4422\).</p>
+    <p>(b) \(\{T&gt;t\}=\{N(t)=0\}\), so \(P\{T&gt;t\}=e^{-3t}\) and \(F(t)=1-e^{-3t}\) for \(t\ge0\), with \(F(t)=0\) for \(t&lt;0\).</p>
+    <p>(c) \(P\{T&gt;\tfrac13\}=e^{-1}\approx0.3679\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">20</div><div class="body">
+  <p>The PMF of \(X\) is \(p(i)=c\left(\tfrac13\right)^i\), \(i=0,1,2,\dots\)</p>
+  <ol class="parts"><li>Find \(c\).</li><li>Find \(P\{X=0\}\) and \(P\{X&gt;2\}\).</li><li>Find the probability that \(X\) is even.</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\sum_{i\ge0}c(1/3)^i=c\cdot\frac{1}{1-1/3}=\tfrac32c=1\Rightarrow c=\tfrac23\).</p>
+    <p>(b) \(P\{X=0\}=\tfrac23\). \(P\{X&gt;2\}=\sum_{i\ge3}\tfrac23(\tfrac13)^i=(\tfrac13)^3=\tfrac1{27}\).</p>
+    <p>(c) \(\sum_{k\ge0}\tfrac23(\tfrac19)^k=\tfrac23\cdot\tfrac98=\tfrac34\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">21</div><div class="body">
+  <p>An interviewer needs to interview 4 people. Each person on a list agrees to be interviewed, independently, with probability \(\tfrac34\). The interviewer works down the list and stops once 4 interviews are done.</p>
+  <ol class="parts"><li>What is the probability the list is long enough if it has 4 people?</li><li>If it has 6 people?</li><li>With the 6-person list, what is the probability the interviewer speaks to exactly 5 people?</li><li>Exactly 6 people and gets the 4 interviews?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \((\tfrac34)^4=\tfrac{81}{256}\approx0.3164\).</p>
+    <p>(b) \(P\{\mathrm{Bin}(6,\tfrac34)\ge4\}=\frac{15\cdot3^4+6\cdot3^5+3^6}{4^6}=\frac{3402}{4096}=\frac{1701}{2048}\approx0.8306\).</p>
+    <p>(c) The 4th success comes on trial 5, a negative binomial: \(\binom43(\tfrac34)^4(\tfrac14)=\tfrac{81}{256}\).</p>
+    <p>(d) \(\binom53(\tfrac34)^4(\tfrac14)^2=\tfrac{405}{2048}\approx0.1978\). Check: \(\tfrac{648+648+405}{2048}=\tfrac{1701}{2048}\), matching (b).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">22</div><div class="body">
+  <p>Short derivations.</p>
+  <ol class="parts"><li>Starting from \(\mathrm{Var}(X)=E[(X-\mu)^2]\), show \(\mathrm{Var}(X)=E[X^2]-(E[X])^2\).</li><li>Show \(\mathrm{Var}(aX+b)=a^2\,\mathrm{Var}(X)\).</li><li>Let \(I_A\) be the indicator of event \(A\). Find \(E[I_A]\) and \(\mathrm{Var}(I_A)\).</li><li>Explain why \(E[X^2]\ge(E[X])^2\) for every random variable. When does equality hold?</li></ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[(X-\mu)^2]=E[X^2-2\mu X+\mu^2]=E[X^2]-2\mu^2+\mu^2=E[X^2]-\mu^2\).</p>
+    <p>(b) \(E[aX+b]=a\mu+b\), so \(\mathrm{Var}(aX+b)=E[(aX+b-a\mu-b)^2]=a^2E[(X-\mu)^2]=a^2\mathrm{Var}(X)\).</p>
+    <p>(c) \(E[I_A]=P(A)\). Since \(I_A^2=I_A\), \(\mathrm{Var}(I_A)=P(A)-P(A)^2=P(A)(1-P(A))\).</p>
+    <p>(d) \(E[X^2]-(E[X])^2=\mathrm{Var}(X)=E[(X-\mu)^2]\ge0\). Equality holds iff \(X\) is constant almost surely.</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Zeta/Zipf is marked not required in the slides and is left out.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var all = document.querySelectorAll("details");
+    var open = btn.dataset.open !== "1";
+    all.forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

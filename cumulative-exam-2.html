@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STA 9715 Cumulative Exam II</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Cumulative Exam II, Chapters 1–5</h1>
+  <p>14 problems, 100 points, in mixed order with no chapter or topic labels. None of these setups appear in the slides or the homework.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: 2.5 to 3 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough. Some standard normal values are below; you will not need all of them.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.10</td><td>0.50</td><td>0.90</td><td>1.00</td><td>1.25</td><td>1.64</td><td>2.00</td><td>2.33</td></tr>
+    <tr><th>Φ(z)</th><td>0.5398</td><td>0.6915</td><td>0.8159</td><td>0.8413</td><td>0.8944</td><td>0.9495</td><td>0.9772</td><td>0.9901</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>A device contains three components. Components 1 and 2 are wired in series, and that pair is wired in parallel with component 3, so the device works if both 1 and 2 work or if 3 works. The components work independently with probabilities 0.9, 0.8, and 0.7.</p>
+  <ol>
+    <li>Find the probability that the device works.</li>
+    <li>Given that the device works, find the probability that component 3 has failed.</li>
+    <li>Are the events “the device works” and “component 3 works” independent? Justify with numbers.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(\text{1 and 2 work})=0.72\). \(P(\text{works})=1-(1-0.72)(1-0.7)=1-0.084=0.916\).</p>
+    <p>(b) The device works with 3 failed only if 1 and 2 both work: \(\dfrac{0.72(0.3)}{0.916}\approx0.2358\).</p>
+    <p>(c) No. \(P(\text{works}\mid\text{3 works})=1\ne0.916\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">6 points</span>
+  <p>Consider the ten letters of the word STATISTICS.</p>
+  <ol>
+    <li>How many different arrangements of the ten letters are there?</li>
+    <li>How many arrangements have the two I's next to each other?</li>
+    <li>How many arrangements begin and end with T?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Three S, three T, two I, one A, one C: \(\dfrac{10!}{3!\,3!\,2!}=50{,}400\).</p>
+    <p>(b) Glue the I's into one block, leaving 9 objects: \(\dfrac{9!}{3!\,3!}=10{,}080\).</p>
+    <p>(c) Place a T at each end and arrange the remaining S, S, S, T, I, I, A, C: \(\dfrac{8!}{3!\,2!}=3{,}360\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>\(X\) has density \(f(x)=k(1-x^2)\) for \(-1&lt;x&lt;1\), and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Find \(k\).</li>
+    <li>Find the CDF of \(X\).</li>
+    <li>Find \(P\{X&gt;\tfrac12\}\) and \(P\{|X|&lt;\tfrac12\}\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_{-1}^1(1-x^2)\,dx=\tfrac43\), so \(k=\tfrac34\).</p>
+    <p>(b) For \(-1&lt;x&lt;1\): \(F(x)=\tfrac34\left(x-\tfrac{x^3}3\right)+\tfrac12\); \(F=0\) for \(x\le-1\) and \(F=1\) for \(x\ge1\).</p>
+    <p>(c) \(P\{X&gt;\tfrac12\}=1-F(\tfrac12)=1-\left(\tfrac34\cdot\tfrac{11}{24}+\tfrac12\right)=\tfrac5{32}\). By symmetry \(P\{|X|&lt;\tfrac12\}=1-2\cdot\tfrac5{32}=\tfrac{11}{16}\).</p>
+    <p>(d) \(E[X]=0\) by symmetry. \(\mathrm{Var}(X)=E[X^2]=\tfrac34\int_{-1}^1(x^2-x^4)\,dx=\tfrac34\left(\tfrac23-\tfrac25\right)=\tfrac15\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>In a soccer league, the number of goals the home team scores in a match is a Poisson random variable with mean 1.5, and the number the away team scores is an independent Poisson random variable with mean 1.0.</p>
+  <ol>
+    <li>Find the probability that a match ends 0–0.</li>
+    <li>Find the probability that a match ends in a draw with at most one goal per side.</li>
+    <li>Find the probability that the home team scores in each of its next 3 home matches.</li>
+    <li>Find the expected total number of goals in 10 matches.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(e^{-1.5}e^{-1.0}=e^{-2.5}\approx0.0821\).</p>
+    <p>(b) 0–0 or 1–1: \(e^{-2.5}+(1.5e^{-1.5})(1.0e^{-1.0})=2.5e^{-2.5}\approx0.2052\).</p>
+    <p>(c) \((1-e^{-1.5})^3\approx0.4689\).</p>
+    <p>(d) \(10(1.5+1.0)=25\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>Four fair six-sided dice are rolled.</p>
+  <ol>
+    <li>Find the probability that all four show different numbers.</li>
+    <li>Find the probability that exactly two dice match and the other two differ from them and from each other.</li>
+    <li>Find the probability that the largest number showing is exactly 4.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{6\cdot5\cdot4\cdot3}{6^4}=\dfrac{360}{1296}=\dfrac5{18}\).</p>
+    <p>(b) Choose the paired value (6), which two dice show it \(\binom42=6\), and ordered distinct values for the other two dice \((5\cdot4)\): \(\dfrac{720}{1296}=\dfrac59\).</p>
+    <p>(c) All at most 4, minus all at most 3: \(\dfrac{4^4-3^4}{6^4}=\dfrac{175}{1296}\approx0.1350\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>An oil company drills wells one at a time. Each well strikes oil independently with probability 0.2 and costs $2 million to drill.</p>
+  <ol>
+    <li>Find the probability that the first strike comes on the fourth well.</li>
+    <li>Find the probability that more than 5 wells are needed for the first strike.</li>
+    <li>Find the probability that the second strike comes on the sixth well.</li>
+    <li>The company will drill until it has 2 strikes. Find the mean and standard deviation of the total drilling cost.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \((0.8)^3(0.2)=0.1024\).</p>
+    <p>(b) The first 5 all miss: \((0.8)^5\approx0.3277\).</p>
+    <p>(c) \(\binom51(0.2)^2(0.8)^4\approx0.0819\).</p>
+    <p>(d) The number of wells is negative binomial with \(r=2\), \(p=0.2\): mean \(\tfrac rp=10\), variance \(\tfrac{r(1-p)}{p^2}=40\). Cost: mean $20 million, SD \(2\sqrt{40}\approx\$12.65\) million.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>A machine fills bottles labeled 500 ml. The amount it dispenses is normally distributed with mean 505 ml and standard deviation 4 ml.</p>
+  <ol>
+    <li>Find the probability that a bottle is underfilled, meaning it holds less than 500 ml.</li>
+    <li>Find the probability that a six-pack contains at least one underfilled bottle, assuming fills are independent.</li>
+    <li>To what mean should the machine be set so that only 1 percent of bottles are underfilled?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\Phi\!\left(\tfrac{500-505}4\right)=\Phi(-1.25)=1-0.8944=0.1056\).</p>
+    <p>(b) \(1-(0.8944)^6\approx0.4881\).</p>
+    <p>(c) Need \(\Phi\!\left(\tfrac{500-\mu}4\right)=0.01\), so \(\tfrac{500-\mu}4=-2.33\) and \(\mu=509.32\) ml.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Thirty percent of incoming email is spam. The word “free” appears in 60 percent of spam and 5 percent of legitimate email. The word “meeting” appears in 10 percent of spam and 40 percent of legitimate email. Given the type of email, the two words appear independently.</p>
+  <ol>
+    <li>An email contains “free”. Find the probability it is spam.</li>
+    <li>An email contains both words. Find the probability it is spam.</li>
+    <li>An email contains “free” but not “meeting”. Find the probability it is spam.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{0.3(0.6)}{0.3(0.6)+0.7(0.05)}=\dfrac{0.18}{0.215}\approx0.8372\).</p>
+    <p>(b) \(\dfrac{0.3(0.6)(0.1)}{0.3(0.6)(0.1)+0.7(0.05)(0.4)}=\dfrac{0.018}{0.032}=0.5625\).</p>
+    <p>(c) \(\dfrac{0.3(0.6)(0.9)}{0.3(0.6)(0.9)+0.7(0.05)(0.6)}=\dfrac{0.162}{0.183}\approx0.8852\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">6 points</span>
+  <p>A taxi drives from one corner of a street grid to a corner 5 blocks east and 4 blocks north, always moving east or north.</p>
+  <ol>
+    <li>How many different routes are there?</li>
+    <li>How many routes pass through the corner 2 blocks east and 2 blocks north of the start?</li>
+    <li>If the driver picks a route at random, all routes equally likely, what is the probability the route avoids that corner?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Choose which 4 of the 9 blocks go north: \(\binom94=126\).</p>
+    <p>(b) \(\binom42\binom52=6\cdot10=60\).</p>
+    <p>(c) \(\dfrac{126-60}{126}=\dfrac{11}{21}\approx0.5238\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>A box holds 8 light bulbs, 3 of which are defective. Bulbs are tested one at a time, without replacement, until a good bulb is found. Let \(X\) be the number of bulbs tested.</p>
+  <ol>
+    <li>Find the PMF of \(X\) and check that it sums to 1.</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Each test costs $3, and there is a $10 setup charge. Find the mean and variance of the total cost.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(p(1)=\tfrac58=\tfrac{35}{56}\); \(p(2)=\tfrac38\cdot\tfrac57=\tfrac{15}{56}\); \(p(3)=\tfrac38\cdot\tfrac27\cdot\tfrac56=\tfrac5{56}\); \(p(4)=\tfrac38\cdot\tfrac27\cdot\tfrac16=\tfrac1{56}\). Sum \(=\tfrac{56}{56}\).</p>
+    <p>(b) \(E[X]=\tfrac{35+30+15+4}{56}=\tfrac32\). \(E[X^2]=\tfrac{35+60+45+16}{56}=\tfrac{39}{14}\). \(\mathrm{Var}(X)=\tfrac{39}{14}-\tfrac94=\tfrac{15}{28}\approx0.5357\).</p>
+    <p>(c) Cost \(=10+3X\): mean \(\$14.50\); variance \(9\cdot\tfrac{15}{28}\approx4.82\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Two short problems.</p>
+  <ol>
+    <li>A point \(X\) is chosen uniformly on the interval \((0,10)\), and a square with side \(X\) is drawn. Find the expected area of the square and the probability that the area exceeds 25.</li>
+    <li>Find the density of the area \(A=X^2\).</li>
+    <li>The lifetime of a component has density \(\lambda e^{-\lambda x}\) for \(x\ge0\), and half of all components last more than 100 hours. Find \(\lambda\) and the mean lifetime.</li>
+    <li>For the component in (c), find the probability it lasts more than 300 hours, and the probability it lasts more than 250 hours given that it has lasted 150.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X^2]=\int_0^{10}\tfrac{x^2}{10}dx=\tfrac{100}3\approx33.33\). \(P\{X^2&gt;25\}=P\{X&gt;5\}=\tfrac12\).</p>
+    <p>(b) For \(0&lt;a&lt;100\): \(F_A(a)=P\{X\le\sqrt a\}=\tfrac{\sqrt a}{10}\), so \(f_A(a)=\tfrac1{20\sqrt a}\); 0 otherwise.</p>
+    <p>(c) \(e^{-100\lambda}=\tfrac12\Rightarrow\lambda=\tfrac{\ln2}{100}\approx0.00693\). Mean \(=\tfrac1\lambda=\tfrac{100}{\ln2}\approx144.27\) hours.</p>
+    <p>(d) \(P\{X&gt;300\}=\left(\tfrac12\right)^3=\tfrac18\). By memorylessness, \(P\{X&gt;250\mid X&gt;150\}=P\{X&gt;100\}=\tfrac12\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>Eight married couples, 16 people in all, are seated at random in a row of 16 chairs. Let \(X\) be the number of couples who end up sitting next to each other.</p>
+  <ol>
+    <li>Find the probability that a particular couple sits together.</li>
+    <li>Find \(E[X]\).</li>
+    <li>Give a reasonable approximation to the probability that no couple sits together, and say why it is reasonable.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Treat the couple as a block: \(\dfrac{2\cdot15!}{16!}=\dfrac18\).</p>
+    <p>(b) \(X=\sum_{i=1}^8I_i\), so \(E[X]=8\cdot\tfrac18=1\). No independence is needed.</p>
+    <p>(c) Each event has small probability and the events are only weakly dependent, so by the Poisson paradigm \(X\approx\mathrm{Po}(1)\) and \(P\{X=0\}\approx e^{-1}\approx0.3679\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">13</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A commuter plane has 10 seats. The airline sells 12 tickets at $200 each, and each ticket holder shows up independently with probability 0.85. Every passenger who shows up but cannot be seated is bumped and paid $500 in compensation. The airline keeps all ticket revenue, including from no-shows.</p>
+  <ol>
+    <li>Find the probability that at least one passenger is bumped.</li>
+    <li>Find the expected number of bumped passengers.</li>
+    <li>Find the airline's expected net revenue. Does it beat selling exactly 10 tickets?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(S\sim\mathrm{Bin}(12,0.85)\). \(P\{S=11\}=12(0.85)^{11}(0.15)\approx0.3012\); \(P\{S=12\}=(0.85)^{12}\approx0.1422\). \(P\{S\ge11\}\approx0.4435\).</p>
+    <p>(b) \(1(0.3012)+2(0.1422)\approx0.5857\).</p>
+    <p>(c) \(12(200)-500(0.5857)\approx\$2107\), compared with \(\$2000\) for 10 tickets. Overbooking pays on average.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">14</div><div class="body">
+  <span class="pts">6 points</span>
+  <p>A fair die is rolled 180 times. Let \(S\) be the number of sixes.</p>
+  <ol>
+    <li>Approximate \(P\{S\le25\}\).</li>
+    <li>Approximate \(P\{S=30\}\).</li>
+    <li>State the condition that justifies your approximation and check it.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(np=30\), \(np(1-p)=25\), \(\sigma=5\). With continuity correction, \(P\{S\le25\}=P\{S&lt;25.5\}\approx\Phi\!\left(\tfrac{25.5-30}5\right)=\Phi(-0.9)=1-0.8159=0.1841\).</p>
+    <p>(b) \(P\{29.5&lt;S&lt;30.5\}\approx\Phi(0.1)-\Phi(-0.1)=2(0.5398)-1=0.0796\).</p>
+    <p>(c) The normal approximation to the binomial is good when \(np(1-p)\ge10\); here it is 25.</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no chapter labels. The Chapter 5 topics the slides mark self-study are not tested here.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>
