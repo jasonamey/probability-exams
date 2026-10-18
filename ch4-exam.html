@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 4 Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 4 Exam: Discrete Random Variables</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough.</li>
+  </ul>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>The number of paint defects \(X\) on a car door panel has PMF \(p(0)=0.5\), \(p(1)=0.3\), \(p(2)=0.15\), \(p(3)=0.05\). Repairing a panel with \(X\) defects costs \(C=50X+10X^2\) dollars.</p>
+  <ol>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find the expected repair cost \(E[C]\).</li>
+    <li>Find the standard deviation of \(C\).</li>
+    <li>Find the probability that the repair cost exceeds its expected value.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X]=0.3+0.30+0.15=0.75\). \(E[X^2]=0.3+4(0.15)+9(0.05)=1.35\), so \(\mathrm{Var}(X)=1.35-0.5625=0.7875\).</p>
+    <p>(b) By linearity, \(E[C]=50E[X]+10E[X^2]=37.5+13.5=\$51\).</p>
+    <p>(c) \(C\) takes the values 0, 60, 140, 240. \(E[C^2]=0.3(3600)+0.15(19{,}600)+0.05(57{,}600)=1080+2940+2880=6900\). \(\mathrm{Var}(C)=6900-51^2=4299\), so \(\mathrm{SD}(C)\approx\$65.57\).</p>
+    <p>(d) \(C&gt;51\iff X\ge2\): probability \(0.15+0.05=0.2\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Each cast of a fishing line catches a fish with probability 0.2, independently of other casts.</p>
+  <ol>
+    <li>Find the probability that the first fish is caught on the 4th cast.</li>
+    <li>Find the probability that more than 10 casts are needed to catch the first fish.</li>
+    <li>Find the expected number of casts needed to catch 3 fish, and the probability that the 3rd fish is caught on exactly the 10th cast.</li>
+    <li>Given that the first 5 casts catch nothing, find the probability that a fish is caught within the next 3 casts.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \((0.8)^3(0.2)=0.1024\).</p>
+    <p>(b) The first 10 casts all fail: \((0.8)^{10}\approx0.1074\).</p>
+    <p>(c) The number of casts \(Y\) to get 3 successes has mean \(3/0.2=15\). \(P\{Y=10\}=\binom92(0.2)^3(0.8)^7=36(0.008)(0.2097)\approx0.0604\): exactly 2 fish in the first 9 casts, then a fish on the 10th.</p>
+    <p>(d) Memoryless: \(1-(0.8)^3=0.488\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A standard 52-card deck is shuffled and the cards are turned over one at a time.</p>
+  <ol>
+    <li>Find the expected number of aces among the first 10 cards.</li>
+    <li>Find the expected number of places where an ace is immediately followed by a king.</li>
+    <li>Find the expected number of places where two consecutive cards have the same suit.</li>
+    <li>Find the expected number of cards turned over before the first ace appears.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Write each count as a sum of indicators and use \(E[I_A]=P(A)\).</p>
+    <p>(a) Each of the first 10 positions holds an ace with probability \(\frac4{52}\): \(10\cdot\frac{4}{52}=\frac{10}{13}\approx0.7692\).</p>
+    <p>(b) For each of the 51 adjacent position pairs \((i,i+1)\), \(P(\text{ace then king})=\frac4{52}\cdot\frac4{51}\). Expected count \(51\cdot\frac{16}{52\cdot51}=\frac4{13}\approx0.3077\).</p>
+    <p>(c) For each of the 51 adjacent pairs, the second card matches the first one's suit with probability \(\frac{12}{51}\): \(51\cdot\frac{12}{51}=12\).</p>
+    <p>(d) Let \(I_j=1\) if non-ace \(j\) (\(j=1,\dots,48\)) comes before all 4 aces. Among that card and the 4 aces, each is equally likely to come first, so \(E[I_j]=\frac15\). Expected count \(48/5=9.6\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A bank processes 5000 card transactions per hour. Each transaction, independently, is flagged as possible fraud with probability 0.0008.</p>
+  <ol>
+    <li>Find the exact probability that no transaction is flagged in a given hour, and compare it with a suitable approximation. Justify the approximation.</li>
+    <li>Using the approximation, find the probability that at least 6 transactions are flagged in an hour.</li>
+    <li>Over a 7-hour shift (hours independent), find the probability that at least one hour has no flagged transactions.</li>
+    <li>Each flagged transaction costs $25 to investigate, and the fraud team costs a fixed $50 per hour. Find the mean and standard deviation of the team's hourly cost.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) The count \(X\sim\mathrm{Bin}(5000,0.0008)\). Exact: \((0.9992)^{5000}\approx0.01829\). Since \(n\) is large, \(p\) is small and \(np=4\) is moderate, \(X\approx\mathrm{Po}(4)\): \(e^{-4}\approx0.01832\).</p>
+    <p>(b) \(1-e^{-4}\left(1+4+\frac{4^2}{2!}+\frac{4^3}{3!}+\frac{4^4}{4!}+\frac{4^5}{5!}\right)=1-e^{-4}(42.8667)\approx1-0.7851=0.2149\).</p>
+    <p>(c) \(1-(1-e^{-4})^7=1-(0.98168)^7\approx0.1214\).</p>
+    <p>(d) Cost \(=50+25X\). \(E=50+25(4)=\$150\); \(\mathrm{SD}=25\sqrt{\mathrm{Var}(X)}=25\sqrt4=\$50\) (using the Poisson variance \(\lambda=4\)).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Five tickets numbered 1 to 5 are in a hat. Two are drawn at random without replacement, and \(X\) is the larger of the two numbers.</p>
+  <ol>
+    <li>Find the PMF of \(X\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find \(F(3.5)\), where \(F\) is the CDF of \(X\), and find \(P\{X&gt;2\mid X&lt;5\}\).</li>
+    <li>Find \(E[1/X]\). Is it equal to \(1/E[X]\)?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) There are 10 equally likely pairs; \(X=k\) when the other ticket is one of \(1,\dots,k-1\): \(P\{X=k\}=\frac{k-1}{10}\), \(k=2,3,4,5\), i.e. \(0.1, 0.2, 0.3, 0.4\).</p>
+    <p>(b) \(E[X]=\frac{2(1)+3(2)+4(3)+5(4)}{10}=4\). \(E[X^2]=\frac{4+18+48+100}{10}=17\), so \(\mathrm{Var}(X)=17-16=1\).</p>
+    <p>(c) \(F(3.5)=P\{X\le3\}=0.1+0.2=0.3\). \(P\{X&gt;2\mid X&lt;5\}=\dfrac{P\{X=3,4\}}{P\{X\le4\}}=\dfrac{0.5}{0.6}=\dfrac56\).</p>
+    <p>(d) LOTUS: \(E[1/X]=\frac{1}{10}\left(\frac12+\frac23+\frac34+\frac45\right)=\frac{163}{600}\approx0.2717\), which is not \(1/E[X]=0.25\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A machine is well calibrated with probability 0.9, in which case each item it makes is defective with probability 0.01, or miscalibrated with probability 0.1, in which case each item is defective with probability 0.1. Given the calibration, items are defective independently. Items are inspected in order of production, and \(X\) is the number inspected up to and including the first defective item.</p>
+  <ol>
+    <li>Find \(P\{X=5\}\) under each calibration state.</li>
+    <li>Given that \(X=5\), find the probability that the machine is miscalibrated.</li>
+    <li>Find \(E[X]\).</li>
+    <li>Find \(P\{X&gt;20\}\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Given the state, \(X\) is geometric. Well calibrated: \((0.99)^4(0.01)\approx0.009606\). Miscalibrated: \((0.9)^4(0.1)=0.06561\).</p>
+    <p>(b) Bayes: \(\dfrac{0.1(0.06561)}{0.1(0.06561)+0.9(0.009606)}=\dfrac{0.006561}{0.015206}\approx0.4315\).</p>
+    <p>(c) Conditioning on the state: \(E[X]=0.9\cdot\frac1{0.01}+0.1\cdot\frac1{0.1}=90+1=91\).</p>
+    <p>(d) \(P\{X&gt;20\}=0.9(0.99)^{20}+0.1(0.9)^{20}\approx0.9(0.8179)+0.1(0.1216)\approx0.7483\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A wind farm has 12 turbines. On any given day each turbine is working with probability 0.9, independently of the others and of other days. The farm meets demand on a day when at least 10 turbines are working.</p>
+  <ol>
+    <li>Find the probability that the farm meets demand on a given day.</li>
+    <li>Find the mean and standard deviation of the number of turbines that are down on a given day.</li>
+    <li>Find the most likely number of working turbines and its probability.</li>
+    <li>Find the probability that the farm meets demand on all 7 days of a week, and the expected number of days in the week on which it meets demand.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>The number working \(X\sim\mathrm{Bin}(12,0.9)\).</p>
+    <p>(a) \(P\{X\ge10\}=\binom{12}{10}(0.9)^{10}(0.1)^2+\binom{12}{11}(0.9)^{11}(0.1)+(0.9)^{12}\approx0.2301+0.3766+0.2824=0.8891\).</p>
+    <p>(b) Down \(=12-X\sim\mathrm{Bin}(12,0.1)\): mean \(1.2\), SD \(\sqrt{12(0.1)(0.9)}=\sqrt{1.08}\approx1.0392\).</p>
+    <p>(c) The PMF peaks at the largest integer \(\le(n+1)p=11.7\), so 11, with probability \(\approx0.3766\).</p>
+    <p>(d) \((0.8891)^7\approx0.4393\). The number of good days is \(\mathrm{Bin}(7,0.8891)\), mean \(7(0.8891)\approx6.2239\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A random variable \(X\) has CDF $$F(x)=\begin{cases}0,&amp;x&lt;0\\0.1,&amp;0\le x&lt;1\\0.4,&amp;1\le x&lt;2\\0.7,&amp;2\le x&lt;4\\1,&amp;x\ge4.\end{cases}$$</p>
+  <ol>
+    <li>Find the PMF of \(X\).</li>
+    <li>Find \(P\{X&lt;2\}\), \(P\{1&lt;X\le4\}\) and \(P\{X\ge2\mid X\ge1\}\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find \(E[\min(X,2)]\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) The jumps of \(F\): \(p(0)=0.1\), \(p(1)=0.3\), \(p(2)=0.3\), \(p(4)=0.3\).</p>
+    <p>(b) \(P\{X&lt;2\}=F(2^-)=0.4\). \(P\{1&lt;X\le4\}=F(4)-F(1)=1-0.4=0.6\). \(P\{X\ge2\mid X\ge1\}=0.6/0.9=2/3\).</p>
+    <p>(c) \(E[X]=0.3+0.6+1.2=2.1\). \(E[X^2]=0.3+1.2+4.8=6.3\), so \(\mathrm{Var}(X)=6.3-4.41=1.89\).</p>
+    <p>(d) \(\min(X,2)\) is 0, 1, 2, 2 for \(X=0,1,2,4\): \(E=0.3(1)+0.6(2)=1.5\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A 13-card hand is dealt from a well-shuffled standard deck. Let \(X\) be the number of spades in the hand.</p>
+  <ol>
+    <li>Find \(P\{X=0\}\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find \(P\{X\ge5\}\).</li>
+    <li>If instead 13 cards were drawn with replacement (reshuffling each time), what would \(\mathrm{Var}(X)\) be? Explain why the answer in (b) is smaller.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(X\) is hypergeometric with \(N=52\), \(m=13\) spades, \(n=13\) cards drawn: \(P\{X=k\}=\binom{13}k\binom{39}{13-k}\big/\binom{52}{13}\).</p>
+    <p>(a) \(\binom{39}{13}\big/\binom{52}{13}\approx0.0128\).</p>
+    <p>(b) \(E[X]=13\cdot\frac{13}{52}=3.25\). \(\mathrm{Var}(X)=13\cdot\frac14\cdot\frac34\cdot\frac{52-13}{52-1}=2.4375\cdot\frac{39}{51}\approx1.8640\).</p>
+    <p>(c) \(1-\sum_{k=0}^4P\{X=k\}\approx1-(0.0128+0.0801+0.2059+0.2863+0.2386)=0.1763\).</p>
+    <p>(d) With replacement \(X\sim\mathrm{Bin}(13,\frac14)\), variance \(13(\frac14)(\frac34)=2.4375\). Without replacement each spade dealt makes further spades less likely, which keeps the count closer to its mean (the factor \(\frac{39}{51}\)).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Typos in a long manuscript occur at random at an average rate of 0.4 per page, with typos on different pages independent.</p>
+  <ol>
+    <li>Find the probability that a given page has no typos.</li>
+    <li>Find the probability that a 5-page chapter has at least 3 typos.</li>
+    <li>Find the probability that exactly 2 of the 5 pages of the chapter are typo-free.</li>
+    <li>Given that the chapter has exactly 3 typos, find the probability that all of them are on the first page.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>The number of typos on a page is \(\mathrm{Po}(0.4)\); on 5 pages it is \(\mathrm{Po}(2)\).</p>
+    <p>(a) \(e^{-0.4}\approx0.6703\).</p>
+    <p>(b) \(1-e^{-2}\left(1+2+\frac{2^2}{2}\right)=1-5e^{-2}\approx0.3233\).</p>
+    <p>(c) The number of typo-free pages is \(\mathrm{Bin}(5,0.6703)\): \(\binom52(0.6703)^2(0.3297)^3\approx0.1610\).</p>
+    <p>(d) \(\dfrac{P\{N_1=3\}P\{N_{2..5}=0\}}{P\{N=3\}}=\dfrac{e^{-0.4}\frac{0.4^3}{3!}\cdot e^{-1.6}}{e^{-2}\frac{2^3}{3!}}=\left(\frac{0.4}{2}\right)^3=0.008\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Each of \(n\) patients in a trial independently responds to a treatment with the same probability \(p\). The number who respond, \(X\), has mean 6 and variance 2.4.</p>
+  <ol>
+    <li>Find \(n\) and \(p\).</li>
+    <li>Find \(P\{X=6\}\) and the most likely value of \(X\).</li>
+    <li>Find \(P\{X\ge8\}\).</li>
+    <li>Find \(E[X^2]\) and \(E[2^X]\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(np=6\) and \(np(1-p)=2.4\) give \(1-p=0.4\), so \(p=0.6\) and \(n=10\).</p>
+    <p>(b) \(\binom{10}6(0.6)^6(0.4)^4\approx0.2508\). The mode is the largest integer \(\le(n+1)p=6.6\), so 6.</p>
+    <p>(c) \(\binom{10}8(0.6)^8(0.4)^2+\binom{10}9(0.6)^9(0.4)+(0.6)^{10}\approx0.1209+0.0403+0.0060=0.1673\).</p>
+    <p>(d) \(E[X^2]=\mathrm{Var}(X)+(E[X])^2=2.4+36=38.4\). LOTUS and the binomial theorem: \(E[2^X]=\sum_k\binom{10}k(2\cdot0.6)^k(0.4)^{10-k}=(1.2+0.4)^{10}=1.6^{10}\approx109.95\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A carnival game costs nothing to play. Two fair dice are rolled. If they show doubles you win $\(w\); if the sum is 7 you win $5; otherwise you lose $2.</p>
+  <ol>
+    <li>Find the value of \(w\) that makes the game fair.</li>
+    <li>With that \(w\), find the variance and standard deviation of your winnings on one play.</li>
+    <li>You play 10 times. Find the probability that you roll doubles at least 3 times.</li>
+    <li>Find the expected number of plays until you first roll doubles, and the probability that it takes more than 6 plays.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(P(\text{doubles})=\frac6{36}=\frac16\), \(P(\text{sum }7)=\frac16\), otherwise \(\frac23\); the first two are disjoint.</p>
+    <p>(a) \(E[W]=\frac w6+\frac56-2\cdot\frac23=0\Rightarrow w=3\).</p>
+    <p>(b) \(E[W^2]=\frac{9}{6}+\frac{25}6+4\cdot\frac23=\frac{50}6=\frac{25}3\). Since \(E[W]=0\), \(\mathrm{Var}(W)=\frac{25}3\approx8.3333\) and \(\mathrm{SD}\approx2.8868\).</p>
+    <p>(c) Doubles count \(\sim\mathrm{Bin}(10,\frac16)\): \(1-\left(\frac56\right)^{10}-10\cdot\frac16\left(\frac56\right)^9-45\left(\frac16\right)^2\left(\frac56\right)^8\approx1-0.1615-0.3230-0.2907=0.2248\).</p>
+    <p>(d) Geometric with \(p=\frac16\): mean 6 plays; \(P\{\text{more than }6\}=\left(\frac56\right)^6\approx0.3349\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 4 slides and HW 4–5; no setup repeats an earlier exam.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

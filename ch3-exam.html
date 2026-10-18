@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 3 Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 3 Exam: Conditional Probability and Independence</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough.</li>
+  </ul>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>When a certain car will not start, a mechanic knows the cause is exactly one of: a dead battery (probability 0.60), a faulty starter (0.25) or a failed fuel pump (0.15). The headlights are dim with probability 0.9, 0.2 and 0.1 under these three causes, and a clicking sound is heard with probability 0.5, 0.8 and 0.1. Given the cause, dim lights and clicking occur independently.</p>
+  <ol>
+    <li>Find the probability that the headlights are dim.</li>
+    <li>Given that the headlights are dim, find the probability that the battery is dead.</li>
+    <li>Given that the headlights are not dim but there is clicking, find the probability that the starter is faulty.</li>
+    <li>Given that the headlights are dim, find the probability that there is clicking.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Write \(B, S, F\) for the causes, \(L\) for dim lights and \(C\) for clicking.</p>
+    <p>(a) Law of total probability: \(P(L)=0.6(0.9)+0.25(0.2)+0.15(0.1)=0.54+0.05+0.015=0.605\).</p>
+    <p>(b) \(P(B\mid L)=0.54/0.605\approx0.8926\).</p>
+    <p>(c) Using conditional independence, \(P(L^cC\mid\cdot)=P(L^c\mid\cdot)P(C\mid\cdot)\). Weights: \(B\): \(0.6(0.1)(0.5)=0.03\); \(S\): \(0.25(0.8)(0.8)=0.16\); \(F\): \(0.15(0.9)(0.1)=0.0135\). Sum \(0.2035\). So \(P(S\mid L^cC)=0.16/0.2035\approx0.7862\).</p>
+    <p>(d) \(P(C\mid L)=\sum P(C\mid \text{cause})P(\text{cause}\mid L)=\dfrac{0.54(0.5)+0.05(0.8)+0.015(0.1)}{0.605}=\dfrac{0.3115}{0.605}\approx0.5149\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A batch of 10 phones contains 3 defective ones. Phones are tested one at a time in random order.</p>
+  <ol>
+    <li>Find the probability that the first two phones tested are both defective.</li>
+    <li>Given that at least one of the first two is defective, find the probability that both are.</li>
+    <li>Given that the first phone tested is defective, find the probability that the second is too.</li>
+    <li>Testing continues until all 3 defective phones have been found. Find the probability that this happens exactly on the 5th test.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Multiplication rule: \(\dfrac3{10}\cdot\dfrac29=\dfrac1{15}\).</p>
+    <p>(b) \(P(\text{at least one})=1-\dfrac7{10}\cdot\dfrac69=\dfrac8{15}\). Since \(\{\text{both}\}\subset\{\text{at least one}\}\), the answer is \(\dfrac{1/15}{8/15}=\dfrac18\).</p>
+    <p>(c) After a defective is removed, 2 of the remaining 9 are defective: \(2/9\).</p>
+    <p>(d) The positions of the 3 defectives form a random 3-subset of \(\{1,\dots,10\}\). We need the largest to be 5, so the other two are among positions 1–4: \(\binom42/\binom{10}3=6/120=1/20\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Ann and Bea take turns shooting free throws, Ann first, until someone makes one; that person wins. Ann makes each shot with probability 0.4 and Bea with probability 0.5, independently of all other shots.</p>
+  <ol>
+    <li>Find the probability that Ann wins.</li>
+    <li>Find the probability that the game ends on the fourth shot.</li>
+    <li>Given that both of the first two shots are missed, find the probability that Ann wins.</li>
+    <li>If Bea shoots first instead, find the probability that Ann wins.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Ann wins on her \((k+1)\)th shot if the first \(k\) rounds are all misses: \(P=\sum_{k\ge0}(0.6\cdot0.5)^k(0.4)=\dfrac{0.4}{1-0.3}=\dfrac47\approx0.5714\).</p>
+    <p>(b) Miss, miss, miss, then Bea makes it: \(0.6(0.5)(0.6)(0.5)=0.09\).</p>
+    <p>(c) After two misses the game starts over with Ann shooting, and future shots are independent of the past: \(4/7\).</p>
+    <p>(d) Bea must miss first (0.5), then the game is the original one: \(0.5\cdot\frac47=\frac27\approx0.2857\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A family has four children. Assume each child is equally likely to be a boy or a girl, independently of the others.</p>
+  <ol>
+    <li>Find the probability of exactly two girls.</li>
+    <li>Given that there are at least three girls, find the probability that all four are girls.</li>
+    <li>Given that the eldest child is a girl, find the probability that there are at least two girls.</li>
+    <li>Is the event \(E\) = {eldest is a girl} independent of the event {exactly two girls}? Is \(E\) independent of {at least three girls}? Justify.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>The 16 sequences are equally likely.</p>
+    <p>(a) \(\binom42/16=6/16=3/8\).</p>
+    <p>(b) At least three girls: \(\binom43+\binom44=5\) outcomes. Answer \(1/5\).</p>
+    <p>(c) Need at least one girl among the other three: \(1-(1/2)^3=7/8\).</p>
+    <p>(d) \(P(E)=\frac12\), \(P(\text{exactly two})=\frac38\), and \(P(E\cap\{\text{exactly two}\})=P(\text{eldest G, exactly one G among other 3})=\frac{3}{16}=\frac12\cdot\frac38\): independent. But \(P(\text{at least three})=\frac5{16}\) and \(P(E\cap\{\text{at least three}\})=\frac{3+1}{16}=\frac14\ne\frac12\cdot\frac5{16}=\frac5{32}\): dependent.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>An online store ships through three carriers: 50% of its packages go by carrier 1, 30% by carrier 2 and 20% by carrier 3. Packages arrive late with probability 0.04, 0.06 and 0.10 respectively.</p>
+  <ol>
+    <li>Find the probability that a randomly chosen package arrives late.</li>
+    <li>Given that a package arrives late, find the probability that it went by carrier 3.</li>
+    <li>An order of two packages is sent together by one carrier, chosen with the same probabilities. Given the carrier, the two packages are late independently. Find the probability that both are late.</li>
+    <li>For such a two-package order, find the probability that the second package is late given that the first one is. Compare with (a) and explain the difference.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(0.5(0.04)+0.3(0.06)+0.2(0.10)=0.02+0.018+0.02=0.058\).</p>
+    <p>(b) \(0.02/0.058\approx0.3448\).</p>
+    <p>(c) \(0.5(0.04)^2+0.3(0.06)^2+0.2(0.10)^2=0.0008+0.00108+0.002=0.00388\).</p>
+    <p>(d) \(0.00388/0.058\approx0.0669\), larger than 0.058: a late first package makes the slower carriers more likely, which raises the chance the second is late. The two lateness events are conditionally independent given the carrier but not independent.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>An integer \(N\) is chosen at random from 1 to 12. Let \(A\) = {\(N\) is even}, \(B\) = {\(N\) is a multiple of 3} and \(C\) = {\(N\le6\)}.</p>
+  <ol>
+    <li>Show that \(A\) and \(B\) are independent.</li>
+    <li>Determine whether \(A\), \(B\), \(C\) are independent (all the conditions in the definition).</li>
+    <li>Find \(P(A\cup B\cup C)\) in two ways: using your answer to (b), and by direct counting.</li>
+    <li>Now suppose \(N\) is chosen from 1 to 10 instead, with \(A,B,C\) defined the same way. Which of the pairs \((A,B)\), \((A,C)\), \((B,C)\) are independent?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(A)=\frac12\), \(P(B)=\frac4{12}=\frac13\), \(P(AB)=P\{6,12\}=\frac2{12}=\frac16=P(A)P(B)\).</p>
+    <p>(b) \(P(C)=\frac12\). \(P(AC)=P\{2,4,6\}=\frac14=P(A)P(C)\); \(P(BC)=P\{3,6\}=\frac16=P(B)P(C)\); \(P(ABC)=P\{6\}=\frac1{12}=\frac12\cdot\frac13\cdot\frac12\). All four conditions hold, so they are independent.</p>
+    <p>(c) Complements of independent events are independent: \(1-P(A^c)P(B^c)P(C^c)=1-\frac12\cdot\frac23\cdot\frac12=\frac56\). Directly, the numbers in none of the events are odd, not multiples of 3, and above 6: \(\{7,11\}\), so \(1-\frac2{12}=\frac56\).</p>
+    <p>(d) \(P(A)=\frac12,\ P(B)=\frac3{10},\ P(C)=\frac35\). \(P(AB)=P\{6\}=\frac1{10}\ne\frac3{20}\): dependent. \(P(AC)=P\{2,4,6\}=\frac3{10}=\frac12\cdot\frac35\): independent. \(P(BC)=P\{3,6\}=\frac15\ne\frac9{50}\): dependent. Only \(A\) and \(C\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Bag 1 holds 4 white and 2 black balls; bag 2 holds 3 white and 5 black balls.</p>
+  <ol>
+    <li>One ball is drawn at random from bag 1 and put into bag 2 without looking at it. Then a ball is drawn at random from bag 2. Find the probability that it is white.</li>
+    <li>In the setting of (a), given that the ball drawn from bag 2 is white, find the probability that the transferred ball was black.</li>
+    <li>Start over. This time two balls are drawn from bag 1 and both are put into bag 2, then one ball is drawn from bag 2. Find the probability that it is white.</li>
+    <li>In the setting of (c), given that the ball drawn from bag 2 is white, find the probability that both transferred balls were white.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Condition on the transferred ball: \(\frac46\cdot\frac49+\frac26\cdot\frac39=\frac{16+6}{54}=\frac{11}{27}\approx0.4074\).</p>
+    <p>(b) Bayes: \(\dfrac{(2/6)(3/9)}{11/27}=\dfrac{6/54}{22/54}=\dfrac3{11}\approx0.2727\).</p>
+    <p>(c) Two whites transferred with probability \(\binom42/\binom62=\frac6{15}\), one of each \(\frac{8}{15}\), two blacks \(\frac1{15}\); bag 2 then has 10 balls with 5, 4 or 3 white. \(P(W)=\frac6{15}\cdot\frac5{10}+\frac8{15}\cdot\frac4{10}+\frac1{15}\cdot\frac3{10}=\frac{30+32+3}{150}=\frac{13}{30}\approx0.4333\).</p>
+    <p>(d) \(\dfrac{30/150}{65/150}=\dfrac6{13}\approx0.4615\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A tennis player faces an opponent who is strong with probability 0.3, average with probability 0.5 and weak with probability 0.2. She wins each set with probability 0.4, 0.6 or 0.9 against these three types, and given the opponent, sets are independent. The match is best of three sets (the first to win two sets wins).</p>
+  <ol>
+    <li>Find the probability that she wins the first set.</li>
+    <li>Find the probability that she wins the match.</li>
+    <li>Given that she wins the match, find the probability that the opponent was strong.</li>
+    <li>Given that she wins the first set, find the probability that she also wins the second set.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(0.3(0.4)+0.5(0.6)+0.2(0.9)=0.6\).</p>
+    <p>(b) Against set-win probability \(p\) she wins the match by WW, WLW or LWW: \(p^2+2p^2(1-p)\). This equals \(0.352\), \(0.648\), \(0.972\) for \(p=0.4,0.6,0.9\). So \(P(\text{win})=0.3(0.352)+0.5(0.648)+0.2(0.972)=0.1056+0.324+0.1944=0.624\).</p>
+    <p>(c) \(0.1056/0.624\approx0.1692\).</p>
+    <p>(d) \(\dfrac{P(W_1W_2)}{P(W_1)}=\dfrac{0.3(0.4)^2+0.5(0.6)^2+0.2(0.9)^2}{0.6}=\dfrac{0.39}{0.6}=0.65\), higher than 0.6 because winning set 1 shifts belief towards a weaker opponent.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Cards are dealt one at a time from a well-shuffled standard 52-card deck.</p>
+  <ol>
+    <li>Find the probability that the first two cards are both hearts.</li>
+    <li>Find the probability that the second card is a heart.</li>
+    <li>Given that the second card is a heart, find the probability that the first card is a heart.</li>
+    <li>Find the probability that the first ace appears as the third card.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\frac{13}{52}\cdot\frac{12}{51}=\frac1{17}\approx0.0588\).</p>
+    <p>(b) Total probability over the first card: \(\frac{13}{52}\cdot\frac{12}{51}+\frac{39}{52}\cdot\frac{13}{51}=\frac{156+507}{2652}=\frac14\). (By symmetry every position is equally likely to hold any card.)</p>
+    <p>(c) \(\dfrac{P(H_1H_2)}{P(H_2)}=\dfrac{1/17}{1/4}=\dfrac4{17}\approx0.2353\).</p>
+    <p>(d) Multiplication rule: \(\frac{48}{52}\cdot\frac{47}{51}\cdot\frac4{50}=\frac{376}{5525}\approx0.0681\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A company screens job applicants in two stages. Of all applicants, 40% are qualified. A qualified applicant passes the résumé screen with probability 0.9 and an unqualified one with probability 0.3. Applicants who pass the screen are interviewed; a qualified applicant passes the interview with probability 0.8 and an unqualified one with probability 0.25. Given an applicant's status, the two stages are independent. Applicants who pass both stages are hired.</p>
+  <ol>
+    <li>Find the probability that a randomly chosen applicant is hired.</li>
+    <li>Given that an applicant is hired, find the probability that the applicant is qualified.</li>
+    <li>Given that an applicant passed the screen but failed the interview, find the probability that the applicant is qualified.</li>
+    <li>The company wants at least 95% of hires to be qualified. Keeping everything else fixed, to what value must the screen's pass rate for unqualified applicants be lowered?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(Q\) = qualified.</p>
+    <p>(a) \(P(\text{hired})=0.4(0.9)(0.8)+0.6(0.3)(0.25)=0.288+0.045=0.333\).</p>
+    <p>(b) \(0.288/0.333\approx0.8649\).</p>
+    <p>(c) \(\dfrac{0.4(0.9)(0.2)}{0.4(0.9)(0.2)+0.6(0.3)(0.75)}=\dfrac{0.072}{0.072+0.135}\approx0.3478\).</p>
+    <p>(d) With pass rate \(x\): \(\dfrac{0.288}{0.288+0.6(0.25)x}\ge0.95\iff0.288(0.05)\ge0.95(0.15)x\iff x\le\dfrac{0.0144}{0.1425}\approx0.1011\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Events \(A\) and \(B\) satisfy \(P(A)=0.4\) and \(P(A\cup B)=0.7\).</p>
+  <ol>
+    <li>Find \(P(B)\) if \(A\) and \(B\) are mutually exclusive.</li>
+    <li>Find \(P(B)\) if \(A\) and \(B\) are independent.</li>
+    <li>Find \(P(B)\) if \(P(A\mid B)=0.5\).</li>
+    <li>In the case of (b), find the probability that exactly one of \(A\), \(B\) occurs, and find \(P(A\mid A\cup B)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(A\cup B)=P(A)+P(B)\Rightarrow P(B)=0.3\).</p>
+    <p>(b) \(0.7=0.4+p-0.4p\Rightarrow0.6p=0.3\Rightarrow p=0.5\).</p>
+    <p>(c) \(P(AB)=0.5p\), so \(0.7=0.4+p-0.5p\Rightarrow p=0.6\).</p>
+    <p>(d) \(P(AB^c)+P(A^cB)=0.4(0.5)+0.6(0.5)=0.5\). Since \(A\subset A\cup B\), \(P(A\mid A\cup B)=0.4/0.7=4/7\approx0.5714\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A learner driver may take the road test at most three times. The probability of passing on the first attempt is 0.6; after one failure, the probability of passing the second attempt is 0.7; after two failures, the probability of passing the third is 0.8.</p>
+  <ol>
+    <li>Find the probability that the learner eventually passes.</li>
+    <li>Given that the learner passes, find the probability that it was on the second attempt.</li>
+    <li>Two learners in this situation act independently. Find the probability that at least one of them fails the first attempt.</li>
+    <li>Given that a learner passed but needed more than one attempt, find the probability that it took three attempts.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Fails all three with probability \(0.4(0.3)(0.2)=0.024\), so passes with \(0.976\).</p>
+    <p>(b) \(P(\text{pass on 2nd})=0.4(0.7)=0.28\), so \(0.28/0.976\approx0.2869\).</p>
+    <p>(c) \(1-0.6^2=0.64\).</p>
+    <p>(d) \(P(\text{pass on 3rd})=0.4(0.3)(0.8)=0.096\). Answer \(\dfrac{0.096}{0.28+0.096}=\dfrac{0.096}{0.376}\approx0.2553\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 3 slides and HW 3; no setup repeats an earlier exam.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

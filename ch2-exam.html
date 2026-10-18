@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 2 Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 2 Exam: Axioms of Probability</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough.</li>
+  </ul>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Three fair dice are rolled.</p>
+  <ol>
+    <li>Find the probability that all three show different numbers.</li>
+    <li>Find the probability that the sum is 10.</li>
+    <li>Find the probability that the largest number showing is 4.</li>
+    <li>Find the probability that the first die is less than the second, which is less than the third.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>The \(6^3=216\) ordered outcomes are equally likely.</p>
+    <p>(a) \(6\cdot5\cdot4=120\) outcomes, so \(120/216=5/9\).</p>
+    <p>(b) Count ordered triples with sum 10. Unordered patterns: \(\{6,3,1\},\{6,2,2\},\{5,4,1\},\{5,3,2\},\{4,4,2\},\{4,3,3\}\) give \(6+3+6+6+3+3=27\) ordered outcomes, so \(27/216=1/8\).</p>
+    <p>(c) \(P\{\max\le4\}-P\{\max\le3\}=\dfrac{4^3-3^3}{216}=\dfrac{37}{216}\).</p>
+    <p>(d) Each set of 3 distinct values can be listed increasingly in one way: \(\binom63/216=20/216=5/54\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>In a survey of households, 55% subscribe to streaming service N, 30% to service H and 25% to service D. Also 15% subscribe to both N and H, 12% to both N and D, and 8% to both H and D. Altogether 79% subscribe to at least one of the three.</p>
+  <ol>
+    <li>Find the probability that a randomly chosen household subscribes to all three.</li>
+    <li>Find the probability that it subscribes to exactly one of the three.</li>
+    <li>Find the probability that it subscribes to exactly two of the three.</li>
+    <li>Find the probability that it subscribes to N or H but not to D.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Inclusion–exclusion: \(0.79=0.55+0.30+0.25-0.15-0.12-0.08+P(NHD)\), so \(P(NHD)=0.79-0.75=0.04\).</p>
+    <p>(b) \(P(\text{exactly one})=\sum P(E_i)-2\sum P(E_iE_j)+3P(NHD)=1.10-0.70+0.12=0.52\).</p>
+    <p>(c) \(P(\text{exactly two})=\sum P(E_iE_j)-3P(NHD)=0.35-0.12=0.23\). (Check: \(0.21+0.52+0.23+0.04=1\).)</p>
+    <p>(d) \(P\big((N\cup H)D^c\big)=P(N\cup H)-P\big((N\cup H)D\big)\). Here \(P(N\cup H)=0.55+0.30-0.15=0.70\) and \(P(ND\cup HD)=0.12+0.08-0.04=0.16\). Answer \(0.70-0.16=0.54\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Eight students, 4 chemistry majors and 4 biology majors, are paired at random into 4 lab pairs, with every pairing equally likely. Sam and Tia are two of the students; Sam is a chemistry major and Tia a biology major.</p>
+  <ol>
+    <li>How many pairings are possible?</li>
+    <li>Find the probability that every pair contains one chemistry and one biology major.</li>
+    <li>Find the probability that Sam and Tia are lab partners.</li>
+    <li>Find the probability that the chemistry majors are all paired with each other (so the biology majors are too).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{8!}{(2!)^4\,4!}=105\).</p>
+    <p>(b) Line up the chemistry majors; the biology majors can be matched to them in \(4!=24\) ways: \(24/105=8/35\).</p>
+    <p>(c) Sam's partner is equally likely to be any of the other 7 students: \(1/7\). (Or: pairings of the other 6 number \(15\), and \(15/105=1/7\).)</p>
+    <p>(d) Pair the 4 chemistry majors (3 ways) and the 4 biology majors (3 ways): \(9/105=3/35\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>In a lottery, 6 numbers are drawn at random without replacement from 1 to 45. A player picks 6 numbers in advance.</p>
+  <ol>
+    <li>Find the probability that the player matches all 6.</li>
+    <li>Find the probability that the player matches exactly 4.</li>
+    <li>Find the probability that the player matches at least one.</li>
+    <li>Find the probability that the smallest number drawn is 10.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>There are \(\binom{45}6=8{,}145{,}060\) equally likely draws.</p>
+    <p>(a) \(1/8{,}145{,}060\approx1.23\times10^{-7}\).</p>
+    <p>(b) Choose 4 of the player's 6 and 2 of the other 39: \(\dfrac{\binom64\binom{39}2}{\binom{45}6}=\dfrac{15\cdot741}{8{,}145{,}060}=\dfrac{11{,}115}{8{,}145{,}060}\approx0.0014\).</p>
+    <p>(c) Complement: all 6 drawn from the 39 numbers the player did not pick. \(1-\dfrac{\binom{39}6}{\binom{45}6}=1-\dfrac{3{,}262{,}623}{8{,}145{,}060}\approx1-0.4006=0.5994\).</p>
+    <p>(d) 10 is drawn and the other 5 come from 11–45: \(\dfrac{\binom{35}5}{\binom{45}6}=\dfrac{324{,}632}{8{,}145{,}060}\approx0.0399\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>At a company, 60% of employees use the gym and 70% use the cafeteria. Let \(A\) be the event that a randomly chosen employee uses the gym and \(B\) the event that the employee uses the cafeteria.</p>
+  <ol>
+    <li>Using only the axioms and their simple consequences, find the smallest and largest possible values of \(P(AB)\).</li>
+    <li>Find the smallest and largest possible values of \(P(A\cup B)\).</li>
+    <li>Suppose in addition that 10% of employees use neither. Find \(P(AB)\).</li>
+    <li>Under the assumption in (c), find the probability that an employee uses exactly one of the two, and the probability that an employee uses the gym but not the cafeteria.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(AB)\le\min\{P(A),P(B)\}=0.6\), attained when \(A\subset B\). Also \(P(AB)=P(A)+P(B)-P(A\cup B)\ge1.3-1=0.3\), attained when \(A\cup B=S\). So \(0.3\le P(AB)\le0.6\).</p>
+    <p>(b) \(P(A\cup B)\ge\max\{P(A),P(B)\}=0.7\) and \(P(A\cup B)\le1\); both are attainable (the cases in (a)). So \(0.7\le P(A\cup B)\le1\).</p>
+    <p>(c) \(P(A\cup B)=1-P(A^cB^c)=0.9\), so \(P(AB)=0.6+0.7-0.9=0.4\).</p>
+    <p>(d) Exactly one: \(P(A\cup B)-P(AB)=0.9-0.4=0.5\). Gym but not cafeteria: \(P(AB^c)=P(A)-P(AB)=0.6-0.4=0.2\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A fair coin is tossed 10 times.</p>
+  <ol>
+    <li>Find the probability of exactly 4 heads.</li>
+    <li>Find the probability of at least 2 heads.</li>
+    <li>Find the probability that no two heads occur on consecutive tosses.</li>
+    <li>Find the probability that the first head appears on the fourth toss or later.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>All \(2^{10}=1024\) sequences are equally likely.</p>
+    <p>(a) \(\binom{10}4/1024=210/1024=105/512\approx0.2051\).</p>
+    <p>(b) Complement of 0 or 1 head: \(1-\dfrac{1+10}{1024}=\dfrac{1013}{1024}\approx0.9893\).</p>
+    <p>(c) With \(k\) heads and \(10-k\) tails, place the tails first; the heads must go into distinct gaps among the \(11-k\) gaps, in \(\binom{11-k}{k}\) ways. Summing over \(k=0,\dots,5\): \(1+10+36+56+35+6=144\). Probability \(144/1024=9/64\approx0.1406\).</p>
+    <p>(d) The first three tosses are all tails: \(2^7/2^{10}=1/8\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A box of 20 chocolates contains 8 dark, 7 milk and 5 white chocolates. You take 5 at random.</p>
+  <ol>
+    <li>Find the probability that exactly 2 are dark.</li>
+    <li>Find the probability that at least one is white.</li>
+    <li>Find the probability that all three kinds are among the 5 you take.</li>
+    <li>You eat your 5 chocolates one at a time in random order. Before looking at any of them, find the probability that the first two you eat are both dark.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>All \(\binom{20}5=15{,}504\) selections are equally likely.</p>
+    <p>(a) \(\dfrac{\binom82\binom{12}3}{\binom{20}5}=\dfrac{28\cdot220}{15{,}504}=\dfrac{6160}{15{,}504}\approx0.3973\).</p>
+    <p>(b) \(1-\dfrac{\binom{15}5}{\binom{20}5}=1-\dfrac{3003}{15{,}504}\approx0.8063\).</p>
+    <p>(c) Let \(D,M,W\) be the events that no dark, no milk, no white is chosen. \(P(D\cup M\cup W)\) by inclusion–exclusion counts \(\binom{12}5+\binom{13}5+\binom{15}5-\binom55-\binom75-\binom85=792+1287+3003-1-21-56=5004\) selections (the triple intersection is empty). So the answer is \(1-5004/15{,}504=10{,}500/15{,}504\approx0.6772\).</p>
+    <p>(d) The first two eaten are a random ordered pair from the 20 chocolates: \(\dfrac{8}{20}\cdot\dfrac{7}{19}=\dfrac{14}{95}\approx0.1474\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A secretary types five letters to five different people and addresses five envelopes, then puts the letters into the envelopes completely at random, one letter per envelope.</p>
+  <ol>
+    <li>Find the probability that every letter is in its correct envelope.</li>
+    <li>Find the probability that at least one letter is in its correct envelope.</li>
+    <li>Find the probability that exactly 3 letters are in their correct envelopes.</li>
+    <li>Find the probability that exactly one letter is in its correct envelope.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>All \(5!=120\) assignments are equally likely. Let \(E_i\) be the event that letter \(i\) is correct; any \(r\) specified letters are all correct with probability \((5-r)!/5!\).</p>
+    <p>(a) \(1/120\).</p>
+    <p>(b) Inclusion–exclusion: \(\sum_{r=1}^5(-1)^{r+1}\binom5r\frac{(5-r)!}{5!}=1-\frac12+\frac16-\frac1{24}+\frac1{120}=\frac{76}{120}=\frac{19}{30}\approx0.6333\).</p>
+    <p>(c) Choose the 3 correct letters, \(\binom53=10\); the other 2 must be swapped (1 way): \(10/120=1/12\).</p>
+    <p>(d) Choose the correct letter (5 ways); the other 4 must all be wrong. By (b) applied to 4 letters, the number of all-wrong arrangements of 4 is \(4!\big(1-1+\frac12-\frac16+\frac1{24}\big)=9\). So \(5\cdot9/120=3/8\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Six friends each pick a day of the week to go to the gym, independently and uniformly at random.</p>
+  <ol>
+    <li>Find the probability that all six pick different days.</li>
+    <li>Find the probability that nobody picks Saturday or Sunday.</li>
+    <li>Find the probability that at least one person picks a weekend day.</li>
+    <li>Find the probability that exactly two different days of the week are picked.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>There are \(7^6=117{,}649\) equally likely outcomes.</p>
+    <p>(a) \(\dfrac{7\cdot6\cdot5\cdot4\cdot3\cdot2}{7^6}=\dfrac{5040}{117{,}649}\approx0.0428\).</p>
+    <p>(b) \((5/7)^6=15{,}625/117{,}649\approx0.1328\).</p>
+    <p>(c) Complement of (b): \(1-0.1328=0.8672\).</p>
+    <p>(d) Choose the two days, \(\binom72=21\); each person picks one of them, but not all the same one: \(2^6-2=62\). So \(21\cdot62/7^6=1302/117{,}649\approx0.0111\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>An integer is chosen at random from 1 to 600.</p>
+  <ol>
+    <li>Find the probability that it is a perfect square or a perfect cube.</li>
+    <li>Find the probability that it is divisible by 4 or by 6.</li>
+    <li>Find the probability that it is divisible by exactly one of 4 and 6.</li>
+    <li>Find the probability that it is an even perfect square.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Squares: \(1^2,\dots,24^2\) (\(24^2=576\)), so 24. Cubes: \(1^3,\dots,8^3\) (\(8^3=512\)), so 8. Both means a sixth power: \(1, 64\), so 2. Count \(24+8-2=30\); probability \(30/600=1/20\).</p>
+    <p>(b) Multiples of 4: 150. Of 6: 100. Of both, i.e. of 12: 50. \((150+100-50)/600=200/600=1/3\).</p>
+    <p>(c) \(P(A\cup B)-P(AB)=(200-50)/600=1/4\).</p>
+    <p>(d) \((2k)^2\le600\iff k\le12\): 12 numbers, probability \(12/600=1/50\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Ten different books, among them the three volumes of a trilogy, are put on a shelf in random order.</p>
+  <ol>
+    <li>Find the probability that the three volumes are next to each other.</li>
+    <li>Find the probability that the volumes appear in the order 1, 2, 3 from left to right (not necessarily next to each other).</li>
+    <li>Find the probability that the volumes are next to each other and in the order 1, 2, 3.</li>
+    <li>Find the probability that no two of the three volumes are next to each other.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Treat the trilogy as a block: \(\dfrac{8!\,3!}{10!}=\dfrac{6}{90}=\dfrac1{15}\).</p>
+    <p>(b) All \(3!\) relative orders are equally likely: \(1/6\).</p>
+    <p>(c) \(\dfrac{8!}{10!}=\dfrac1{90}\). (Equivalently \(\frac1{15}\cdot\frac16\).)</p>
+    <p>(d) The set of 3 positions occupied by the trilogy is equally likely to be any of \(\binom{10}3=120\) sets. Sets with no two adjacent: place 7 other books, choose 3 of the 8 gaps, \(\binom83=56\). Probability \(56/120=7/15\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A 5-card hand is dealt from a well-shuffled standard deck.</p>
+  <ol>
+    <li>Find the probability that the hand contains at least one ace.</li>
+    <li>Find the probability that it contains at least one ace or at least one king.</li>
+    <li>Find the probability that it contains at least one ace and at least one king.</li>
+    <li>Find the probability that all four suits appear in the hand.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>There are \(\binom{52}5=2{,}598{,}960\) equally likely hands. Let \(A\) = at least one ace, \(K\) = at least one king.</p>
+    <p>(a) \(P(A)=1-\dfrac{\binom{48}5}{\binom{52}5}=1-\dfrac{1{,}712{,}304}{2{,}598{,}960}\approx0.3412\).</p>
+    <p>(b) \(P(A\cup K)=1-P(\text{no aces and no kings})=1-\dfrac{\binom{44}5}{\binom{52}5}=1-\dfrac{1{,}086{,}008}{2{,}598{,}960}\approx0.5821\).</p>
+    <p>(c) \(P(AK)=P(A)+P(K)-P(A\cup K)=2(0.34116)-0.58214\approx0.1002\).</p>
+    <p>(d) One suit appears twice and the others once: choose that suit (4), its 2 cards \(\binom{13}2\), and one card of each other suit \(13^3\): \(\dfrac{4\cdot78\cdot2197}{2{,}598{,}960}=\dfrac{685{,}464}{2{,}598{,}960}\approx0.2637\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 2 slides and HW 2; no setup repeats an earlier exam.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

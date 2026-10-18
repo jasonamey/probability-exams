@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 1 Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 1 Exam: Combinatorial Analysis</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Give each count as an exact integer, and explain briefly what you are counting.</li>
+    <li>A calculator is enough.</li>
+  </ul>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A website requires a 6-character password. Each character is one of the 26 lowercase letters or one of the 10 digits.</p>
+  <ol>
+    <li>How many passwords are possible?</li>
+    <li>How many passwords have no repeated character?</li>
+    <li>How many passwords contain at least one digit?</li>
+    <li>How many passwords contain exactly 2 digits and no repeated character?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Each of the 6 places has 36 choices: \(36^6=2{,}176{,}782{,}336\).</p>
+    <p>(b) \(36\cdot35\cdot34\cdot33\cdot32\cdot31=1{,}402{,}410{,}240\).</p>
+    <p>(c) Complement: subtract the all-letter passwords. \(36^6-26^6=2{,}176{,}782{,}336-308{,}915{,}776=1{,}867{,}866{,}560\).</p>
+    <p>(d) Choose which 2 places hold digits, \(\binom62=15\); fill them with distinct digits in order, \(10\cdot9\); fill the other 4 with distinct letters in order, \(26\cdot25\cdot24\cdot23\). Total \(15\cdot90\cdot358{,}800=484{,}380{,}000\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Consider the letters of the word COMMITTEE (9 letters, with M, T and E each appearing twice).</p>
+  <ol>
+    <li>How many distinguishable arrangements of the letters are there?</li>
+    <li>How many of them begin and end with E?</li>
+    <li>How many of them have the two M's next to each other?</li>
+    <li>How many of them have the vowels (O, I, E, E) appearing in the left-to-right order E, E, I, O, not necessarily next to each other?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\dfrac{9!}{2!\,2!\,2!}=45{,}360\).</p>
+    <p>(b) The ends are fixed as E; arrange C, O, M, M, I, T, T in the middle: \(\dfrac{7!}{2!\,2!}=1260\).</p>
+    <p>(c) Glue MM into one block. Arrange 8 units (C, O, MM, I, T, T, E, E): \(\dfrac{8!}{2!\,2!}=10{,}080\).</p>
+    <p>(d) Choose the 4 positions for the vowels, \(\binom94=126\); the order of the vowels in them is forced. Arrange C, M, M, T, T in the remaining 5 positions: \(\dfrac{5!}{2!\,2!}=30\). Total \(126\cdot30=3780\). (Check: the vowels can appear in \(4!/2!=12\) orders equally often, and \(45{,}360/12=3780\).)</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Eight teams enter a regional league.</p>
+  <ol>
+    <li>In the regular season every team plays every other team exactly once. How many games are played?</li>
+    <li>For the opening day, the 8 teams are split into 4 games (pairs of opponents). How many different opening-day schedules are possible?</li>
+    <li>Gold, silver and bronze medals go to three different teams. In how many ways can the medals be awarded?</li>
+    <li>At the end of the season the top 4 teams (as a set, unordered) qualify for the playoffs. In how many ways can the qualifying set include team A but not team B?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Each game is an unordered pair of teams: \(\binom82=28\).</p>
+    <p>(b) Divide 8 teams into 4 unlabelled groups of 2: \(\dfrac{8!}{(2!)^4\,4!}=\dfrac{40{,}320}{16\cdot24}=105\).</p>
+    <p>(c) Ordered selection of 3 from 8: \(8\cdot7\cdot6=336\).</p>
+    <p>(d) A is in and B is out, so choose the other 3 qualifiers from the remaining 6 teams: \(\binom63=20\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Six cards are dealt from a well-shuffled standard 52-card deck. Count the number of 6-card hands (order does not matter) of each type.</p>
+  <ol>
+    <li>All 6-card hands.</li>
+    <li>Hands with exactly 3 hearts.</li>
+    <li>Hands with exactly 2 cards in each of three suits (so the fourth suit is missing).</li>
+    <li>Hands consisting of three pairs: three different ranks, two cards of each.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\binom{52}6=20{,}358{,}520\).</p>
+    <p>(b) \(\binom{13}3\binom{39}3=286\cdot9139=2{,}613{,}754\).</p>
+    <p>(c) Choose the 3 suits present, \(\binom43=4\), then 2 cards from each: \(4\binom{13}2^3=4\cdot78^3=1{,}898{,}208\).</p>
+    <p>(d) Choose the 3 ranks, \(\binom{13}3=286\), then 2 of the 4 suits for each rank: \(286\cdot\binom42^3=286\cdot216=61{,}776\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A sandwich shop offers 3 kinds of bread, 5 meats, 6 vegetables and 4 sauces. A sandwich is made of one bread, either 1 or 2 different meats, any collection of vegetables (possibly none), and at most one sauce.</p>
+  <ol>
+    <li>How many different sandwiches are possible?</li>
+    <li>How many of them have exactly 3 vegetables?</li>
+    <li>The shop adds a vegetarian option: a sandwich may now have 0, 1 or 2 different meats (everything else unchanged). How many sandwiches are possible now?</li>
+    <li>Under the original rules, how many sandwiches have at least one vegetable and exactly one sauce?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Bread 3; meats \(\binom51+\binom52=15\); vegetables: each is in or out, \(2^6=64\); sauce: none or one of 4, so 5. Total \(3\cdot15\cdot64\cdot5=14{,}400\).</p>
+    <p>(b) Replace 64 by \(\binom63=20\): \(3\cdot15\cdot20\cdot5=4500\).</p>
+    <p>(c) Meats \(1+5+10=16\): \(3\cdot16\cdot64\cdot5=15{,}360\).</p>
+    <p>(d) Vegetables \(2^6-1=63\), sauce 4: \(3\cdot15\cdot63\cdot4=11{,}340\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Twelve volunteers, including Ana and Ben, are to be assigned to three sites. The food bank needs 5 people, the shelter needs 4, and the park clean-up needs 3.</p>
+  <ol>
+    <li>How many assignments are possible?</li>
+    <li>In how many assignments are Ana and Ben at the same site?</li>
+    <li>On another day the 12 volunteers are simply split into three teams of 4 with no site attached (the teams are not labelled). How many splits are possible?</li>
+    <li>On a third day they are split into 6 unlabelled pairs. How many ways is that possible?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Multinomial coefficient: \(\dbinom{12}{5,4,3}=\dfrac{12!}{5!\,4!\,3!}=27{,}720\).</p>
+    <p>(b) Split by site. Both at the food bank: assign the other 10 as \((3,4,3)\), \(\frac{10!}{3!4!3!}=4200\). Both at the shelter: \((5,2,3)\), \(\frac{10!}{5!2!3!}=2520\). Both at the park: \((5,4,1)\), \(\frac{10!}{5!4!1!}=1260\). Total \(7980\).</p>
+    <p>(c) Labelled split \(\frac{12!}{4!\,4!\,4!}=34{,}650\), then divide by the \(3!\) orderings of identical-size teams: \(34{,}650/6=5775\).</p>
+    <p>(d) \(\dfrac{12!}{(2!)^6\,6!}=\dfrac{479{,}001{,}600}{64\cdot720}=10{,}395\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Consider the four-digit numbers 1000 through 9999.</p>
+  <ol>
+    <li>How many have four different digits?</li>
+    <li>How many are even and have four different digits?</li>
+    <li>How many have digits that strictly increase from left to right (for example 1359)?</li>
+    <li>How many contain at least one digit 7?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) First digit 1–9 (9 ways), then 9, 8, 7 choices: \(9\cdot9\cdot8\cdot7=4536\).</p>
+    <p>(b) Fill the last digit first. Last digit 0: \(9\cdot8\cdot7=504\). Last digit 2, 4, 6 or 8: the first digit cannot be 0 or the last digit (8 ways), then 8 and 7: \(4\cdot8\cdot8\cdot7=1792\). Total \(2296\).</p>
+    <p>(c) 0 cannot appear (it would have to be the first digit). Any 4 distinct digits from 1–9 can be arranged increasingly in exactly one way: \(\binom94=126\).</p>
+    <p>(d) Complement: numbers with no 7 have first digit from 8 choices and the rest from 9 each: \(8\cdot9^3=5832\). So \(9000-5832=3168\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Answer the following without expanding anything by hand.</p>
+  <ol>
+    <li>Find the coefficient of \(x^3y^5\) in \((2x-y)^8\).</li>
+    <li>Find the coefficient of \(a^2b^3c\) in \((a+b+2c)^6\).</li>
+    <li>Evaluate \(\displaystyle\sum_{k=0}^{10}\binom{10}{k}2^k\).</li>
+    <li>A club has 10 seniors and 8 juniors. Write the number of 4-person committees as a sum over the number of seniors on the committee, and use it to evaluate \(\displaystyle\sum_{k=0}^{4}\binom{10}{k}\binom{8}{4-k}\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) The term is \(\binom83(2x)^3(-y)^5\), so the coefficient is \(56\cdot8\cdot(-1)=-448\).</p>
+    <p>(b) Multinomial theorem: \(\dbinom{6}{2,3,1}a^2b^3(2c)^1\), coefficient \(\dfrac{6!}{2!\,3!\,1!}\cdot2=60\cdot2=120\).</p>
+    <p>(c) Binomial theorem with \(x=2,\ y=1\): \((2+1)^{10}=3^{10}=59{,}049\).</p>
+    <p>(d) A committee with \(k\) seniors is formed in \(\binom{10}k\binom8{4-k}\) ways; summing over \(k=0,\dots,4\) counts every 4-person committee from 18 people once. So the sum equals \(\binom{18}4=3060\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A courier must visit six stops, labelled A through F, once each, in some order.</p>
+  <ol>
+    <li>How many routes (orders of visiting the stops) are possible?</li>
+    <li>In how many routes is A visited before B (not necessarily immediately)?</li>
+    <li>In how many routes are A, B and C visited in that relative order?</li>
+    <li>In how many routes are A and B not visited consecutively?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(6!=720\).</p>
+    <p>(b) Swapping A and B pairs each route with A before B with one with B before A, so half: \(360\).</p>
+    <p>(c) The \(3!=6\) relative orders of A, B, C are equally common: \(720/6=120\).</p>
+    <p>(d) Routes with A and B adjacent: glue them into a block (2 internal orders) and arrange 5 units: \(2\cdot5!=240\). So \(720-240=480\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A DNA strand of length 10 is a sequence of 10 letters, each A, C, G or T.</p>
+  <ol>
+    <li>How many strands are possible?</li>
+    <li>How many strands contain exactly 3 A's, 3 C's, 2 G's and 2 T's?</li>
+    <li>How many strands contain exactly 4 A's?</li>
+    <li>How many strands read the same forwards and backwards?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(4^{10}=1{,}048{,}576\).</p>
+    <p>(b) Permutations with repetition: \(\dfrac{10!}{3!\,3!\,2!\,2!}=25{,}200\).</p>
+    <p>(c) Choose the positions of the A's, \(\binom{10}4=210\); each other position is C, G or T: \(210\cdot3^6=153{,}090\).</p>
+    <p>(d) The first 5 letters determine the last 5: \(4^5=1024\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Seven different toys are given to three children, Alice, Bob and Cal. Every toy goes to some child.</p>
+  <ol>
+    <li>In how many ways can the toys be distributed?</li>
+    <li>In how many ways can Alice get 3 toys, Bob 2 and Cal 2?</li>
+    <li>In how many ways can every child get at least one toy?</li>
+    <li>In how many ways does Cal get exactly 2 toys?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Each toy has 3 possible recipients: \(3^7=2187\).</p>
+    <p>(b) \(\dbinom{7}{3,2,2}=\dfrac{7!}{3!\,2!\,2!}=210\).</p>
+    <p>(c) List the possible shapes of the split and how many ways to assign the sizes to children. \((5,1,1)\): \(\frac{7!}{5!1!1!}=42\), times 3 = 126. \((4,2,1)\): \(\frac{7!}{4!2!1!}=105\), times 6 = 630. \((3,3,1)\): \(\frac{7!}{3!3!1!}=140\), times 3 = 420. \((3,2,2)\): 210, times 3 = 630. Total \(1806\). (Equivalently \(3^7-3\cdot2^7+3=1806\).)</p>
+    <p>(d) Choose Cal's 2 toys, \(\binom72=21\); each of the other 5 goes to Alice or Bob: \(21\cdot2^5=672\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Nine different books are placed in a row on a shelf: 4 novels, 3 biographies and 2 dictionaries.</p>
+  <ol>
+    <li>How many arrangements are possible?</li>
+    <li>How many arrangements keep the books of each type together?</li>
+    <li>How many arrangements have a dictionary at each end?</li>
+    <li>How many arrangements have no two biographies next to each other?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(9!=362{,}880\).</p>
+    <p>(b) Order the three blocks (\(3!\)) and the books inside each block: \(3!\cdot4!\cdot3!\cdot2!=6\cdot24\cdot6\cdot2=1728\).</p>
+    <p>(c) The two dictionaries at the ends in \(2\) orders, the other 7 books in between in \(7!\) ways: \(2\cdot5040=10{,}080\).</p>
+    <p>(d) Arrange the 6 non-biographies (\(6!=720\)), creating 7 gaps (including both ends). Place the 3 distinct biographies in 3 different gaps in order: \(7\cdot6\cdot5=210\). Total \(720\cdot210=151{,}200\).</p>
+  </details>
+</div></div>
+
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 1 slides and HW 1; no setup repeats an earlier exam.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>
