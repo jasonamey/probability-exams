@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midterm Practice C</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Midterm Practice C</h1>
+  <p>6 problems, 100 points, in the format of last year's sample midterm, pitched a little harder. Mixed order, no topic labels.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Time limit: 90 minutes. The real midterm is 75 minutes and somewhat easier, so treat 90 as a ceiling.</li>
+    <li>Closed book. A calculator and one letter-size formula sheet of your own (front and back) are allowed, as in the real exam.</li>
+    <li>Show all necessary work and justify your answers. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>Some standard normal values are below; you will not need all of them.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.50</td><td>1.00</td><td>1.53</td><td>1.645</td><td>1.74</td><td>1.96</td><td>2.05</td></tr>
+    <tr><th>Φ(z)</th><td>0.6915</td><td>0.8413</td><td>0.9370</td><td>0.9500</td><td>0.9591</td><td>0.9750</td><td>0.9798</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">17 points</span>
+  <p>A salesperson makes phone calls one after another. Each call, independently, results in a sale with probability 0.2.</p>
+  <ol>
+    <li>Find the probability that the first sale comes on the 4th call, and the expected number of calls up to and including the first sale.</li>
+    <li>Find the probability that the third sale comes on the 10th call, and the expected number of calls needed to make three sales.</li>
+    <li>The first 5 calls of the morning produce no sale. Find the probability that the first sale takes more than 8 calls in total.</li>
+    <li>On a given day the salesperson makes exactly 30 calls, earning $50 commission per sale and paying $3 per call. Find the expected value and standard deviation of the day's profit, and the probability that the profit is positive.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) The call of the first sale is geometric with \(p=0.2\): \(P=0.8^3(0.2)=0.1024\); the mean is \(1/p=5\) calls.</p>
+    <p>(b) The call of the third sale is negative binomial with \(r=3\): \(P=\binom92(0.2)^3(0.8)^7=36(0.008)(0.2097)=0.0604\). The mean is \(r/p=15\) calls.</p>
+    <p>(c) By the memoryless property of the geometric distribution, \(P(T&gt;8\mid T&gt;5)=P(T&gt;3)=0.8^3=0.512\), where \(T\) is the call of the first sale.</p>
+    <p>(d) With \(X\sim\mathrm{Bin}(30,0.2)\) sales, the profit is \(50X-90\). \(E=50(6)-90=\$210\); \(\mathrm{SD}=50\sqrt{30(0.2)(0.8)}=50(2.1909)=\$109.54\). The profit is positive when \(50X&gt;90\), i.e. \(X\ge2\): \(1-0.8^{30}-30(0.2)(0.8)^{29}=1-0.0012-0.0093=0.9895\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">17 points</span>
+  <p>A drawer holds 6 pairs of socks, each pair a different colour. Four socks are pulled out at random.</p>
+  <ol>
+    <li>Find the probability that no two of the four socks form a pair.</li>
+    <li>Find the probability of exactly one complete pair, and of two complete pairs.</li>
+    <li>Let \(A_i\) be the event that both socks of pair \(i\) are drawn. Find \(P(A_i)\) and \(P(A_iA_j)\), and use inclusion–exclusion to find the probability of at least one complete pair. Check your answer against (a).</li>
+    <li>Find the expected number of complete pairs drawn, using indicators. Check it against (b).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>There are \(\binom{12}4=495\) equally likely sets of four socks.</p>
+    <p>(a) Choose 4 of the 6 colours and one sock of each: \(\binom64 2^4=240\). Probability \(\tfrac{240}{495}=\tfrac{16}{33}\).</p>
+    <p>(b) Exactly one pair: choose the pair (6), then 2 of the other 5 colours with one sock of each, \(\binom52 2^2=40\), for 240 sets, so \(\tfrac{16}{33}\). Two pairs: \(\binom62=15\) sets, so \(\tfrac1{33}\). The three cases sum to \(240+240+15=495\).</p>
+    <p>(c) \(P(A_i)=\binom{10}2/495=\tfrac{45}{495}=\tfrac1{11}\); \(P(A_iA_j)=\tfrac1{495}\); triple intersections are impossible with only four socks. \(P(\cup A_i)=6\cdot\tfrac{45}{495}-15\cdot\tfrac1{495}=\tfrac{255}{495}=\tfrac{17}{33}=1-\tfrac{16}{33}\). ✓</p>
+    <p>(d) The number of pairs is \(\sum_{i=1}^6 1_{A_i}\), with expectation \(6\cdot\tfrac1{11}=\tfrac6{11}\). From (b): \(1\cdot\tfrac{16}{33}+2\cdot\tfrac1{33}=\tfrac{18}{33}=\tfrac6{11}\). ✓</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">16 points</span>
+  <p>A seed company sells packets of 150 seeds. Each seed germinates with probability 0.8, independently of the others. Let \(X\) be the number of seeds in a packet that germinate.</p>
+  <ol>
+    <li>Approximate the probability that at least 128 seeds in a packet germinate. Justify the approximation.</li>
+    <li>The company wants to print "at least \(k\) seeds will germinate" on the packet and be right for at least 95% of packets. Find the largest such \(k\).</li>
+    <li>Approximate the probability that fewer than 112 seeds germinate. A gardener buys 3 packets. Find the probability that at least one of them has fewer than 112 seeds germinate.</li>
+    <li>Packets are shipped in boxes of 20. Find the expected number of packets in a box with at least 128 germinating seeds, and the probability that a box has none.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(X\sim\mathrm{Bin}(150,0.8)\), with \(E[X]=120\) and \(\mathrm{SD}=\sqrt{24}=4.899\).</p>
+    <p>(a) \(np(1-p)=24\ge10\), so use the normal approximation with continuity correction: \(P(X\ge127.5)\approx1-\Phi\!\left(\tfrac{7.5}{4.899}\right)=1-\Phi(1.53)=1-0.9370=0.0630\).</p>
+    <p>(b) We need \(P(X\ge k)=P(X\ge k-0.5)\ge0.95\), i.e. \(\dfrac{k-0.5-120}{4.899}\le-1.645\), so \(k\le120.5-8.059=112.44\). The largest is \(k=112\).</p>
+    <p>(c) \(P(X\le111)\approx\Phi\!\left(\tfrac{111.5-120}{4.899}\right)=\Phi(-1.74)=1-0.9591=0.0409\). The packets are independent: \(1-0.9591^3=1-0.8823=0.1177\).</p>
+    <p>(d) The number of such packets is \(\mathrm{Bin}(20,0.0630)\): expected \(20(0.0630)=1.26\); \(P(\text{none})=0.9370^{20}=0.2721\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">16 points</span>
+  <p>An urn starts with 3 red and 2 blue balls. A ball is drawn at random, then put back together with 2 more balls of the same colour. This is repeated. Let \(R_i\) be the event that draw \(i\) is red.</p>
+  <ol>
+    <li>Find \(P(R_2)\).</li>
+    <li>Find \(P(R_1\mid R_2)\).</li>
+    <li>Are \(R_1\) and \(R_2\) independent? Find the probability that the first two draws are the same colour.</li>
+    <li>Find \(P(R_1R_2R_3)\) and \(P(R_3)\). What do you notice about \(P(R_1)\), \(P(R_2)\), \(P(R_3)\)?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(R_2)=P(R_2\mid R_1)P(R_1)+P(R_2\mid R_1^c)P(R_1^c)=\tfrac57\cdot\tfrac35+\tfrac37\cdot\tfrac25=\tfrac{15+6}{35}=\tfrac35\).</p>
+    <p>(b) \(P(R_1\mid R_2)=\dfrac{P(R_1R_2)}{P(R_2)}=\dfrac{(3/5)(5/7)}{3/5}=\tfrac57\).</p>
+    <p>(c) \(P(R_1R_2)=\tfrac37\ne\tfrac35\cdot\tfrac35=\tfrac9{25}\), so they are not independent: a red draw adds red balls. \(P(\text{same})=\tfrac35\cdot\tfrac57+\tfrac25\cdot\tfrac47=\tfrac{15+8}{35}=\tfrac{23}{35}\).</p>
+    <p>(d) \(P(R_1R_2R_3)=\tfrac35\cdot\tfrac57\cdot\tfrac79=\tfrac13\). For \(P(R_3)\), condition on the first two draws: RR gives \(\tfrac37\cdot\tfrac79=\tfrac13\); RB gives \(\tfrac35\cdot\tfrac27\cdot\tfrac59=\tfrac2{21}\); BR gives \(\tfrac25\cdot\tfrac37\cdot\tfrac59=\tfrac2{21}\); BB gives \(\tfrac25\cdot\tfrac47\cdot\tfrac39=\tfrac8{105}\). The total is \(\tfrac{35+10+10+8}{105}=\tfrac35\). All three marginal probabilities equal \(\tfrac35\), even though the draws are dependent.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">16 points</span>
+  <p>For some constant \(c\), a random variable \(X\) has density \(f(x)=cx^2(3-x)\) for \(0&lt;x&lt;3\) and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find \(E[X]\) and the standard deviation of \(X\).</li>
+    <li>Find \(P(X&lt;1)\) and \(P(X&gt;2)\).</li>
+    <li>Let \(Y=\min(X,2)\). Is \(Y\) discrete, continuous, or neither? Find \(E[Y]\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_0^3(3x^2-x^3)dx=27-\tfrac{81}4=\tfrac{27}4\), so \(c=\tfrac4{27}\).</p>
+    <p>(b) \(E[X]=\tfrac4{27}\int_0^3(3x^3-x^4)dx=\tfrac4{27}\left(\tfrac{243}4-\tfrac{243}5\right)=\tfrac95\). \(E[X^2]=\tfrac4{27}\left(\tfrac{729}5-\tfrac{729}6\right)=\tfrac{18}5\). \(\mathrm{Var}(X)=\tfrac{18}5-\tfrac{81}{25}=\tfrac9{25}\), so \(\mathrm{SD}=\tfrac35\).</p>
+    <p>(c) \(F(x)=\tfrac4{27}\left(x^3-\tfrac{x^4}4\right)\). \(P(X&lt;1)=\tfrac4{27}\cdot\tfrac34=\tfrac19\). \(F(2)=\tfrac4{27}(8-4)=\tfrac{16}{27}\), so \(P(X&gt;2)=\tfrac{11}{27}\).</p>
+    <p>(d) Neither: \(Y\) has a point mass \(P(Y=2)=P(X\ge2)=\tfrac{11}{27}\) and a density on \((0,2)\). $$E[Y]=\int_0^2x f(x)\,dx+2P(X&gt;2)=\tfrac4{27}\left(12-\tfrac{32}5\right)+\tfrac{22}{27}=\tfrac{22.4+22}{27}=\tfrac{74}{45}=1.6444.$$</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">18 points</span>
+  <p>A random variable \(X\) has distribution function
+$$F(x)=\begin{cases}0, & x&lt;0\\ \tfrac{x^2}4, & 0\le x&lt;1\\ \tfrac12, & 1\le x&lt;2\\ \tfrac12+\tfrac{x-2}4, & 2\le x&lt;3\\ 1, & x\ge3.\end{cases}$$</p>
+  <ol>
+    <li>Find every value \(a\) with \(P(X=a)&gt;0\), together with these probabilities. Describe the rest of the distribution.</li>
+    <li>Find \(P(X&lt;1)\) and \(P(1\le X\le2.5)\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find \(P(X&gt;2\mid X\ge1)\). Find every median of \(X\), i.e. every \(m\) with \(P(X\le m)\ge\tfrac12\) and \(P(X\ge m)\ge\tfrac12\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Jumps: at 1, \(\tfrac12-\tfrac14=\tfrac14\); at 3, \(1-\tfrac34=\tfrac14\). \(F\) is continuous everywhere else. The remaining mass has density \(\tfrac x2\) on \((0,1)\) (mass \(\tfrac14\)) and \(\tfrac14\) on \((2,3)\) (mass \(\tfrac14\)), and none on \((1,2)\).</p>
+    <p>(b) \(P(X&lt;1)=F(1^-)=\tfrac14\). \(P(1\le X\le2.5)=F(2.5)-F(1^-)=\tfrac58-\tfrac14=\tfrac38\).</p>
+    <p>(c) \(E[X]=1\cdot\tfrac14+3\cdot\tfrac14+\int_0^1\tfrac{x^2}2dx+\int_2^3\tfrac x4dx=1+\tfrac16+\tfrac58=\tfrac{43}{24}=1.7917\). \(E[X^2]=\tfrac14+\tfrac94+\int_0^1\tfrac{x^3}2dx+\int_2^3\tfrac{x^2}4dx=\tfrac52+\tfrac18+\tfrac{19}{12}=\tfrac{101}{24}\). \(\mathrm{Var}(X)=\tfrac{101}{24}-\left(\tfrac{43}{24}\right)^2=\tfrac{2424-1849}{576}=\tfrac{575}{576}=0.9983\).</p>
+    <p>(d) \(P(X&gt;2\mid X\ge1)=\dfrac{1-F(2)}{1-F(1^-)}=\dfrac{1/2}{3/4}=\tfrac23\). For \(1\le m\le2\), \(P(X\le m)=\tfrac12\) and \(P(X\ge m)\ge P(X\ge2)=\tfrac12\), so every \(m\in[1,2]\) is a median. Outside that interval one of the two conditions fails, so the medians are exactly \([1,2]\).</p>
+  </details>
+</div></div>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

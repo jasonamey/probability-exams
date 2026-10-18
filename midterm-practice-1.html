@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midterm Practice A</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Midterm Practice A</h1>
+  <p>6 problems, 100 points, in the format of last year's sample midterm, pitched a little harder. Mixed order, no topic labels.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Time limit: 90 minutes. The real midterm is 75 minutes and somewhat easier, so treat 90 as a ceiling.</li>
+    <li>Closed book. A calculator and one letter-size formula sheet of your own (front and back) are allowed, as in the real exam.</li>
+    <li>Show all necessary work and justify your answers. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+  </ul>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">17 points</span>
+  <p>Of the visitors to a website, 10% are automated bots and 90% are humans. Each visitor is shown a sequence of ads. A bot clicks any given ad with probability 0.6 and a human with probability 0.05; given the type of visitor, clicks on different ads are independent.</p>
+  <ol>
+    <li>Find the probability that a randomly chosen visitor clicks the first ad.</li>
+    <li>Find the probability that a visitor clicks both the first and the second ad. Are the events "clicks the first ad" and "clicks the second ad" independent? Explain why or why not.</li>
+    <li>A visitor is shown 4 ads and clicks exactly 2 of them. Find the probability that the visitor is a bot.</li>
+    <li>The visitor in (c) is then shown a fifth ad. Find the probability that they click it.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(B\) be the event that the visitor is a bot and \(C_i\) the event that they click ad \(i\). Then \(P(B)=0.1\), \(P(C_i\mid B)=0.6\), \(P(C_i\mid B^c)=0.05\), and the \(C_i\) are conditionally independent given \(B\) and given \(B^c\).</p>
+    <p>(a) \(P(C_1)=0.6(0.1)+0.05(0.9)=0.06+0.045=0.105\).</p>
+    <p>(b) \(P(C_1C_2)=0.6^2(0.1)+0.05^2(0.9)=0.036+0.00225=0.03825\). Since \(P(C_1)P(C_2)=0.105^2=0.011025\ne0.03825\), they are not independent. A click on the first ad makes it more likely the visitor is a bot, which raises the chance of the second click: \(P(C_2\mid C_1)=0.03825/0.105=0.3643\) versus \(P(C_2)=0.105\). Conditional independence does not give independence.</p>
+    <p>(c) Given the type, the number of clicks out of 4 is binomial. \(P(2\text{ clicks}\mid B)=\binom42(0.6)^2(0.4)^2=0.3456\) and \(P(2\text{ clicks}\mid B^c)=\binom42(0.05)^2(0.95)^2=0.0135375\). By Bayes, $$P(B\mid 2\text{ clicks})=\frac{0.3456(0.1)}{0.3456(0.1)+0.0135375(0.9)}=\frac{0.03456}{0.0467438}=0.7394.$$</p>
+    <p>(d) Condition on the type using the updated probabilities from (c): \(0.7394(0.6)+0.2606(0.05)=0.4566\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">16 points</span>
+  <p>A random variable \(X\) has distribution function
+$$F(x)=\begin{cases}0, & x&lt;0\\ 0.2+0.3x, & 0\le x&lt;1\\ 0.6, & 1\le x&lt;3\\ 1-0.4e^{-(x-3)}, & x\ge 3.\end{cases}$$</p>
+  <ol>
+    <li>Is \(X\) discrete, continuous, or neither? Justify.</li>
+    <li>Find \(P(X=0)\), \(P(X=1)\) and \(P(X=3)\).</li>
+    <li>Find \(P(0&lt;X\le1)\) and \(P(\tfrac12\le X&lt;4)\).</li>
+    <li>Find \(E[X]\) and \(P(X&gt;4\mid X&gt;1)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Neither. \(F\) jumps at \(x=0\) and \(x=1\), so \(X\) is not continuous, and \(F\) increases continuously on \((0,1)\) and on \((3,\infty)\), so it is not a step function and \(X\) is not discrete.</p>
+    <p>(b) Use \(P(X=a)=F(a)-F(a^-)\). \(P(X=0)=0.2-0=0.2\); \(P(X=1)=0.6-(0.2+0.3)=0.1\); \(P(X=3)=(1-0.4)-0.6=0\).</p>
+    <p>(c) \(P(0&lt;X\le1)=F(1)-F(0)=0.6-0.2=0.4\). \(P(\tfrac12\le X&lt;4)=F(4^-)-F(\tfrac12^-)=(1-0.4e^{-1})-0.35=0.65-0.1472=0.5028\).</p>
+    <p>(d) The distribution has point masses 0.2 at 0 and 0.1 at 1, density \(0.3\) on \((0,1)\), and density \(0.4e^{-(x-3)}\) on \((3,\infty)\). Then $$E[X]=0(0.2)+1(0.1)+\int_0^1 0.3x\,dx+\int_3^\infty 0.4x e^{-(x-3)}\,dx=0.1+0.15+0.4(4)=1.85,$$ using \(\int_3^\infty xe^{-(x-3)}dx=\int_0^\infty(u+3)e^{-u}du=1+3=4\). Finally \(P(X&gt;4\mid X&gt;1)=\dfrac{1-F(4)}{1-F(1)}=\dfrac{0.4e^{-1}}{0.4}=e^{-1}=0.3679\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">18 points</span>
+  <p>Eight cards are dealt from a well-shuffled standard 52-card deck (13 cards in each of 4 suits). For \(i=1,2,3,4\), let \(A_i\) be the event that the hand contains no card of suit \(i\).</p>
+  <ol>
+    <li>Find \(P(A_i)\).</li>
+    <li>Find \(P(A_iA_j)\) for \(i\ne j\) and \(P(A_iA_jA_k)\) for distinct \(i,j,k\). What is \(P(A_1A_2A_3A_4)\)?</li>
+    <li>Find the probability that the hand is missing at least one suit.</li>
+    <li>Find the probability that the hand is missing exactly one suit. Given that the hand is missing at least one suit, what is the probability that it is missing exactly one?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>All \(\binom{52}{8}=752{,}538{,}150\) hands are equally likely.</p>
+    <p>(a) \(P(A_i)=\binom{39}{8}\big/\binom{52}{8}=61{,}523{,}748/752{,}538{,}150=0.0818\).</p>
+    <p>(b) \(P(A_iA_j)=\binom{26}{8}\big/\binom{52}{8}=1{,}562{,}275/752{,}538{,}150=0.0021\). \(P(A_iA_jA_k)=\binom{13}{8}\big/\binom{52}{8}=1287/752{,}538{,}150\approx1.7\times10^{-6}\). \(P(A_1A_2A_3A_4)=0\): a hand of 8 cards must contain some suit.</p>
+    <p>(c) By inclusion–exclusion, $$P\Big(\bigcup A_i\Big)=\frac{4\binom{39}{8}-6\binom{26}{8}+4\binom{13}{8}}{\binom{52}{8}}=\frac{236{,}726{,}490}{752{,}538{,}150}=0.3146.$$</p>
+    <p>(d) Choose the missing suit (4 ways), then count 8-card hands from the other 39 cards that contain all three remaining suits, again by inclusion–exclusion: \(\binom{39}{8}-3\binom{26}{8}+3\binom{13}{8}\). So $$P(\text{exactly one missing})=\frac{4\left[\binom{39}{8}-3\binom{26}{8}+3\binom{13}{8}\right]}{\binom{52}{8}}=\frac{227{,}363{,}136}{752{,}538{,}150}=0.3021.$$ The conditional probability is \(0.3021/0.3146=0.9604\): almost every hand that misses a suit misses only one.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">16 points</span>
+  <p>For some constant \(c\), a random variable \(X\) has density \(f(x)=cx^2(1-x)\) for \(0&lt;x&lt;1\) and \(f(x)=0\) otherwise.</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find the probability that \(X\) lies within one standard deviation of its mean.</li>
+    <li>Find \(E[1/X]\). Is it equal to \(1/E[X]\)?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_0^1(x^2-x^3)dx=\tfrac13-\tfrac14=\tfrac1{12}\), so \(c=12\).</p>
+    <p>(b) \(E[X]=12\int_0^1(x^3-x^4)dx=12\left(\tfrac14-\tfrac15\right)=\tfrac35\). \(E[X^2]=12\left(\tfrac15-\tfrac16\right)=\tfrac25\). \(\mathrm{Var}(X)=\tfrac25-\tfrac9{25}=\tfrac1{25}\), so \(\sigma=\tfrac15\).</p>
+    <p>(c) For \(0\le x\le1\), \(F(x)=12\left(\tfrac{x^3}3-\tfrac{x^4}4\right)=4x^3-3x^4\). \(P(0.4&lt;X&lt;0.8)=F(0.8)-F(0.4)=(2.048-1.2288)-(0.256-0.0768)=0.8192-0.1792=0.64\).</p>
+    <p>(d) \(E[1/X]=\int_0^1\tfrac1x\cdot12x^2(1-x)dx=12\left(\tfrac12-\tfrac13\right)=2\), while \(1/E[X]=\tfrac53\). They are not equal: \(E[g(X)]\ne g(E[X])\) in general.</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">17 points</span>
+  <p>A committee of 5 is chosen at random from a group of 8 women and 7 men. Let \(X\) be the number of women on the committee.</p>
+  <ol>
+    <li>Find \(P(X=k)\) for \(k=0,\dots,5\) (a formula is fine) and compute \(P(X\ge3)\).</li>
+    <li>Find \(E[X]\) by writing \(X\) as a sum of indicator variables. Then find \(\mathrm{Var}(X)\).</li>
+    <li>Given that the committee contains at least one man, find the probability that it contains exactly four women.</li>
+    <li>The committee then chooses a chair and a vice-chair at random from its 5 members. Find the probability that both are women.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(X=k)=\binom8k\binom7{5-k}\big/\binom{15}5\), with \(\binom{15}5=3003\). \(P(X\ge3)=\dfrac{\binom83\binom72+\binom84\binom71+\binom85}{3003}=\dfrac{1176+490+56}{3003}=\dfrac{1722}{3003}=\dfrac{82}{143}=0.5734\).</p>
+    <p>(b) Let \(I_i\) indicate that woman \(i\) is chosen, so \(X=\sum_{i=1}^8 I_i\) and \(P(I_i=1)=\binom{14}4/\binom{15}5=\tfrac13\). Then \(E[X]=8/3\). For \(i\ne j\), \(P(I_iI_j=1)=\binom{13}3/\binom{15}5=\tfrac{2}{21}\), so \(E[X^2]=E[X]+2\binom82\tfrac{2}{21}=\tfrac83+\tfrac{16}3=8\) and \(\mathrm{Var}(X)=8-\tfrac{64}9=\tfrac89\).</p>
+    <p>(c) \(P(X=4\mid X\le4)=\dfrac{P(X=4)}{1-P(X=5)}=\dfrac{490/3003}{1-56/3003}=\dfrac{490}{2947}=\dfrac{70}{421}=0.1663\).</p>
+    <p>(d) By symmetry the chair is equally likely to be any of the 15 people, and the vice-chair any of the other 14, so the probability is \(\tfrac8{15}\cdot\tfrac7{14}=\tfrac4{15}\). Conditioning on \(X\) gives the same answer: \(\sum_k P(X=k)\tfrac{k(k-1)}{20}=\tfrac{E[X^2]-E[X]}{20}=\tfrac{8-8/3}{20}=\tfrac4{15}\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">16 points</span>
+  <p>A vaccine is given to 2000 people. Each person, independently, has a severe reaction with probability 0.001. Let \(X\) be the number of severe reactions.</p>
+  <ol>
+    <li>Find the exact probability of no severe reactions, and of at most two.</li>
+    <li>Find the expected number of severe reactions and the standard deviation.</li>
+    <li>Repeat (a) using an appropriate approximation, and explain why it is reasonable here.</li>
+    <li>The same vaccine is given to 2000 people at each of five clinics. Find the probability that at least one clinic records four or more severe reactions.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(X\sim\mathrm{Bin}(2000,0.001)\).</p>
+    <p>(a) \(P(X=0)=0.999^{2000}=0.1352\). \(P(X\le2)=0.999^{2000}+2000(0.001)(0.999)^{1999}+\binom{2000}2(0.001)^2(0.999)^{1998}=0.1352+0.2707+0.2708=0.6767\).</p>
+    <p>(b) \(E[X]=np=2\); \(\mathrm{SD}=\sqrt{np(1-p)}=\sqrt{1.998}=1.4135\).</p>
+    <p>(c) \(n\) is large and \(p\) is small with \(np=2\) moderate, so \(X\approx\mathrm{Po}(2)\). \(P(X=0)\approx e^{-2}=0.1353\) and \(P(X\le2)\approx e^{-2}(1+2+2)=5e^{-2}=0.6767\), matching the exact answers to 4 decimals.</p>
+    <p>(d) For one clinic, \(P(X\ge4)\approx1-e^{-2}\left(1+2+2+\tfrac43\right)=1-\tfrac{19}3e^{-2}=0.1429\). The clinics are independent, so the number of clinics with four or more is \(\mathrm{Bin}(5,0.1429)\) and \(P(\text{at least one})=1-(0.8571)^5=0.5374\).</p>
+  </details>
+</div></div>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>
