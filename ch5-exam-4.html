@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5 Exam D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 5 Exam D: Continuous Random Variables</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels. None of the setups repeat the earlier Chapter 5 exams or HW 6.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough. Some standard normal values are below; you will not need all of them.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.07</td><td>0.50</td><td>1.00</td><td>1.20</td><td>1.28</td><td>1.40</td><td>1.50</td><td>1.60</td><td>1.645</td><td>1.93</td><td>1.96</td><td>2.33</td></tr>
+    <tr><th>Φ(z)</th><td>0.5279</td><td>0.6915</td><td>0.8413</td><td>0.8849</td><td>0.8997</td><td>0.9192</td><td>0.9332</td><td>0.9452</td><td>0.9500</td><td>0.9732</td><td>0.9750</td><td>0.9901</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A driver parks at a meter and pays for exactly 60 minutes. How long the driver actually stays, \(X\) minutes, is equally likely to be anywhere between 0 and 90 minutes. A parking officer writes a $30 ticket only if the car is still there more than 10 minutes after the paid time runs out.</p>
+  <ol>
+    <li>Find the probability that the driver overstays the paid time at all.</li>
+    <li>Find the expected number of paid minutes that go unused.</li>
+    <li>Given that the driver overstays, find the probability that the overstay is more than 15 minutes.</li>
+    <li>Find the expected ticket cost.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(X\sim\text{Unif}(0,90)\), so \(f(x)=\tfrac1{90}\) on \((0,90)\).</p>
+    <p>(a) \(P\{X&gt;60\}=\tfrac{30}{90}=\tfrac13\).</p>
+    <p>(b) Unused minutes are \(g(X)=\max(60-X,0)\). \(E[g(X)]=\int_0^{60}(60-x)\tfrac1{90}\,dx=\tfrac{1800}{90}=20\) minutes.</p>
+    <p>(c) \(P\{X&gt;75\mid X&gt;60\}=\dfrac{15/90}{30/90}=\tfrac12\).</p>
+    <p>(d) A ticket is written when \(X&gt;70\): \(E[\text{cost}]=30\cdot P\{X&gt;70\}=30\cdot\tfrac{20}{90}=\tfrac{20}{3}\approx\) $6.67.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Finishing times in a running club's marathon are normally distributed with mean 240 minutes and standard deviation 25 minutes.</p>
+  <ol>
+    <li>Find the probability that a randomly chosen runner finishes in under 3.5 hours.</li>
+    <li>The club gives a badge to its slowest 10% of finishers for &ldquo;endurance&rdquo;. Above what time does a runner earn the badge?</li>
+    <li>Given that a runner finished in under 3.5 hours, find the probability that they finished in under 200 minutes.</li>
+    <li>Four runners are chosen independently. Find the probability that at least one of them finishes in under 3.5 hours.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) 3.5 hours is 210 minutes. \(z=\tfrac{210-240}{25}=-1.2\), so \(P=1-\Phi(1.2)=1-0.8849=0.1151\).</p>
+    <p>(b) Need \(P\{X&gt;t\}=0.10\): \(t=240+1.28(25)=272\) minutes (4 h 32 min).</p>
+    <p>(c) \(P\{X&lt;200\}=1-\Phi(1.6)=0.0548\). Since \(\{X&lt;200\}\subset\{X&lt;210\}\), the answer is \(\tfrac{0.0548}{0.1151}\approx0.4761\).</p>
+    <p>(d) \(1-(0.8849)^4\approx0.3868\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A rectangle has perimeter 8. One side, \(X\), is chosen uniformly at random between 1 and 3, so the other side is \(4-X\). Let \(A=X(4-X)\) be the area.</p>
+  <ol>
+    <li>Find \(E[A]\).</li>
+    <li>Find \(P\{A&gt;3.75\}\).</li>
+    <li>Find the CDF of \(A\). (First work out which values \(A\) can take.)</li>
+    <li>Find the density of \(A\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(E[X^2]=\mathrm{Var}(X)+E[X]^2=\tfrac{4}{12}+4=\tfrac{13}{3}\), so \(E[A]=4E[X]-E[X^2]=8-\tfrac{13}3=\tfrac{11}{3}\).</p>
+    <p>(b) Write \(A=4-(X-2)^2\). Then \(A&gt;3.75\iff |X-2|&lt;0.5\iff 1.5&lt;X&lt;2.5\), probability \(\tfrac{1}{2}\).</p>
+    <p>(c) \(A\) ranges over \([3,4]\). For \(3\le a\le4\): \(P\{A\le a\}=P\{|X-2|\ge\sqrt{4-a}\}\). Since \(X-2\sim\text{Unif}(-1,1)\), \(P\{|X-2|&lt;s\}=s\) for \(0\le s\le1\). So \(F_A(a)=1-\sqrt{4-a}\) on \([3,4]\), 0 below 3 and 1 above 4. (The map is not one-to-one, so the CDF method is easier than the transformation theorem.)</p>
+    <p>(d) \(f_A(a)=\dfrac{1}{2\sqrt{4-a}}\) for \(3&lt;a&lt;4\), and 0 otherwise.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A detector near a weak radioactive source clicks at random moments, at an average rate of 4 clicks per minute, with counts in non-overlapping time intervals independent.</p>
+  <ol>
+    <li>Find the probability that the gap between two consecutive clicks is longer than 30 seconds.</li>
+    <li>The detector has been silent for a full minute. Find the probability that it stays silent for at least another 30 seconds.</li>
+    <li>Find the probability of exactly 3 clicks in a one-minute interval.</li>
+    <li>After switching on, the detector's display records until the first click or until 45 seconds have passed, whichever comes first. Find the expected recording time in minutes.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>The number of clicks in \(t\) minutes is Poisson with mean \(4t\), so the waiting time \(T\) to the next click is \(\text{Exp}(4)\) (minutes).</p>
+    <p>(a) \(P\{T&gt;0.5\}=e^{-2}\approx0.1353\).</p>
+    <p>(b) By the memoryless property, \(P\{T&gt;1.5\mid T&gt;1\}=P\{T&gt;0.5\}=e^{-2}\approx0.1353\).</p>
+    <p>(c) \(e^{-4}\tfrac{4^3}{3!}\approx0.1954\).</p>
+    <p>(d) \(E[\min(T,0.75)]=\int_0^{0.75}P\{T&gt;t\}\,dt=\int_0^{0.75}e^{-4t}dt=\tfrac{1-e^{-3}}{4}\approx0.2376\) minutes. (Or by LOTUS: \(\int_0^{0.75}t\cdot4e^{-4t}dt+0.75\,e^{-3}\), which gives the same value.)</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A lawn sprinkler throws drops of water. The distance \(X\) (in metres) from the sprinkler head to where a drop lands has density \(f(x)=c\,x(3-x)\) for \(0&lt;x&lt;3\), and 0 otherwise.</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>Find the probability that a drop lands within 1 metre of the head.</li>
+    <li>Five drops land independently. Find the probability that at least two of them land within 1 metre of the head.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_0^3 x(3-x)\,dx=\tfrac{27}{2}-9=\tfrac92\), so \(c=\tfrac29\).</p>
+    <p>(b) \(E[X]=\tfrac29\int_0^3x^2(3-x)dx=\tfrac29\cdot\tfrac{27}{4}=\tfrac32\). \(E[X^2]=\tfrac29\int_0^3x^3(3-x)dx=\tfrac29\cdot\tfrac{243}{20}=\tfrac{27}{10}\). \(\mathrm{Var}(X)=\tfrac{27}{10}-\tfrac94=\tfrac{9}{20}=0.45\).</p>
+    <p>(c) \(\tfrac29\int_0^1(3x-x^2)dx=\tfrac29\left(\tfrac32-\tfrac13\right)=\tfrac{7}{27}\approx0.2593\).</p>
+    <p>(d) The count is \(\text{Bin}(5,\tfrac7{27})\): \(1-\left(\tfrac{20}{27}\right)^5-5\cdot\tfrac7{27}\left(\tfrac{20}{27}\right)^4\approx0.3867\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A lamp stands 1 metre from a long straight wall. It is spun and stops pointing at an angle \(\Theta\), measured from the perpendicular to the wall, that is uniformly distributed on \((-\pi/2,\pi/2)\). Let \(X=\tan\Theta\) be the signed position (in metres) of the lit spot along the wall, measured from the point of the wall nearest the lamp.</p>
+  <ol>
+    <li>Find the CDF of \(X\).</li>
+    <li>Find the density of \(X\).</li>
+    <li>Find \(P\{|X|&gt;1\}\) and \(P\{X&gt;\sqrt3\}\).</li>
+    <li>Show that \(E[|X|]\) is infinite.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\tan\) is increasing on \((-\pi/2,\pi/2)\), so \(F_X(x)=P\{\Theta\le\arctan x\}=\dfrac{\arctan x+\pi/2}{\pi}=\tfrac12+\tfrac1\pi\arctan x\) for all real \(x\).</p>
+    <p>(b) \(f_X(x)=\dfrac{1}{\pi(1+x^2)}\), \(-\infty&lt;x&lt;\infty\).</p>
+    <p>(c) \(|X|&gt;1\iff|\Theta|&gt;\pi/4\), probability \(\tfrac{\pi/2}{\pi}=\tfrac12\). \(P\{X&gt;\sqrt3\}=P\{\Theta&gt;\pi/3\}=\tfrac{\pi/6}{\pi}=\tfrac16\).</p>
+    <p>(d) \(E[|X|]=2\int_0^\infty\dfrac{x}{\pi(1+x^2)}dx=\tfrac1\pi\big[\ln(1+x^2)\big]_0^\infty=\infty\). So \(X\) has no finite mean even though its density is symmetric about 0.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A basketball player makes each free throw with probability 0.75, independently. Over a season she attempts 300 free throws. Use a normal approximation with continuity correction throughout, after checking that one is reasonable.</p>
+  <ol>
+    <li>Check the condition for the normal approximation, and give the mean and standard deviation of the number of makes.</li>
+    <li>Approximate the probability that she makes at least 240.</li>
+    <li>Approximate the probability that she makes exactly 225.</li>
+    <li>Approximate the probability that she makes between 215 and 235, inclusive.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(X\sim\text{Bin}(300,0.75)\). \(np(1-p)=56.25\ge10\). Mean \(225\), SD \(\sqrt{56.25}=7.5\).</p>
+    <p>(b) \(P\{X\ge240\}\approx P\{Z\ge\tfrac{239.5-225}{7.5}\}=P\{Z\ge1.93\}=1-0.9732=0.0268\). (Exact: 0.0246.)</p>
+    <p>(c) \(P\{224.5\le X\le225.5\}\approx P\{|Z|\le0.07\}=2(0.5279)-1=0.0558\). (Exact: 0.0531.)</p>
+    <p>(d) \(P\{214.5\le X\le235.5\}\approx P\{|Z|\le1.4\}=2(0.9192)-1=0.8384\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>On a given day in a dry town, there is no rain with probability 0.6. If it does rain, the amount of rain \(X\) (in mm) is exponentially distributed with mean 5 mm.</p>
+  <ol>
+    <li>Write down the CDF of \(X\), the day's rainfall (which is 0 on a dry day).</li>
+    <li>Find the probability that more than 10 mm falls.</li>
+    <li>Find \(E[X]\) and \(\mathrm{Var}(X)\).</li>
+    <li>The rain gauge only reads amounts above 2 mm, so a reading of &ldquo;at most 2 mm&rdquo; could be a dry day or a light rain. Given such a reading, find the probability that it rained.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(F(x)=0\) for \(x&lt;0\); \(F(x)=0.6+0.4(1-e^{-x/5})=1-0.4e^{-x/5}\) for \(x\ge0\). There is a jump of 0.6 at 0.</p>
+    <p>(b) \(P\{X&gt;10\}=0.4e^{-2}\approx0.0541\).</p>
+    <p>(c) Condition on rain: \(E[X]=0.4\cdot5=2\); \(E[X^2]=0.4\cdot(2\cdot5^2)=20\); \(\mathrm{Var}(X)=20-4=16\).</p>
+    <p>(d) \(P\{\text{rain}\mid X\le2\}=\dfrac{0.4(1-e^{-0.4})}{0.6+0.4(1-e^{-0.4})}=\dfrac{0.13187}{0.73187}\approx0.1802\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A pump's lifetime \(T\) (in years) has hazard rate \(\lambda(t)=\dfrac{3t^2}{1000}\) for \(t&gt;0\).</p>
+  <ol>
+    <li>Find the probability that a new pump lasts at least 5 years.</li>
+    <li>Find the probability that a pump that is 5 years old lasts to age 10.</li>
+    <li>Find the median lifetime.</li>
+    <li>Find the density of \(T\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Survival function: \(\bar F(t)=\exp\left(-\int_0^t\tfrac{3s^2}{1000}ds\right)=e^{-t^3/1000}\).</p>
+    <p>(a) \(e^{-125/1000}=e^{-0.125}\approx0.8825\).</p>
+    <p>(b) \(\dfrac{\bar F(10)}{\bar F(5)}=e^{-(1000-125)/1000}=e^{-0.875}\approx0.4169\). Compare with (a): an older pump is more likely to fail, as the rising hazard says.</p>
+    <p>(c) \(e^{-m^3/1000}=\tfrac12\Rightarrow m=(1000\ln2)^{1/3}\approx8.85\) years.</p>
+    <p>(d) \(f(t)=\lambda(t)\bar F(t)=\dfrac{3t^2}{1000}e^{-t^3/1000}\), \(t&gt;0\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Five students independently arrive for a 9:00 class at times uniformly distributed between 8:52 and 9:04.</p>
+  <ol>
+    <li>Find the probability that a given student is late.</li>
+    <li>Find the probability that exactly two of the five are late.</li>
+    <li>Find the probability that the last of the five arrives before 9:02.</li>
+    <li>For one student, lateness is the number of minutes after 9:00 they arrive, or 0 if on time. Find the expected lateness.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(U\) be minutes after 8:52, \(U\sim\text{Unif}(0,12)\).</p>
+    <p>(a) Late means \(U&gt;8\): \(\tfrac4{12}=\tfrac13\).</p>
+    <p>(b) \(\binom52\left(\tfrac13\right)^2\left(\tfrac23\right)^3=\tfrac{80}{243}\approx0.3292\).</p>
+    <p>(c) All five must arrive before 9:02 (\(U&lt;10\)): \(\left(\tfrac{10}{12}\right)^5\approx0.4019\).</p>
+    <p>(d) \(E[\max(U-8,0)]=\int_8^{12}(u-8)\tfrac1{12}du=\tfrac{8}{12}=\tfrac23\) minute.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A driver covers a 10-mile stretch of highway at a constant speed \(V\) (mph) that is uniformly distributed between 50 and 70. Let \(T=600/V\) be the time in minutes.</p>
+  <ol>
+    <li>Find the CDF of \(T\).</li>
+    <li>Find the density of \(T\).</li>
+    <li>Find \(E[T]\), and compare it with the time at the average speed.</li>
+    <li>Find the probability that the trip takes more than 11 minutes.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(T\) ranges from \(600/70=\tfrac{60}{7}\approx8.571\) to \(600/50=12\).</p>
+    <p>(a) For \(\tfrac{60}7\le t\le12\): \(P\{T\le t\}=P\{V\ge600/t\}=\dfrac{70-600/t}{20}\); 0 below and 1 above.</p>
+    <p>(b) \(f_T(t)=\dfrac{30}{t^2}\) for \(\tfrac{60}7&lt;t&lt;12\). (Same result from Theorem 5.7.1: \(f_V(v)=\tfrac1{20}\), \(v=600/t\), \(|dv/dt|=600/t^2\).)</p>
+    <p>(c) \(E[T]=\int_{50}^{70}\tfrac{600}{v}\cdot\tfrac1{20}dv=30\ln\tfrac75\approx10.0942\) minutes. At the mean speed 60 mph the trip takes 10 minutes, so \(E[600/V]\ne600/E[V]\).</p>
+    <p>(d) \(P\{V&lt;600/11\}=\dfrac{600/11-50}{20}=\tfrac{5}{22}\approx0.2273\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>The size \(X\) (in MB) of a file stored on a server satisfies \(P\{X&gt;x\}=x^{-3/2}\) for \(x\ge1\).</p>
+  <ol>
+    <li>Find the density of \(X\).</li>
+    <li>Find \(E[X]\).</li>
+    <li>Find the probability that a file larger than 2 MB is larger than 8 MB.</li>
+    <li>Find the median file size, and show that \(\mathrm{Var}(X)\) is infinite.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(f(x)=\tfrac{d}{dx}\left(1-x^{-3/2}\right)=\tfrac32x^{-5/2}\), \(x\ge1\).</p>
+    <p>(b) \(E[X]=\int_1^\infty\tfrac32x^{-3/2}dx=\tfrac32\cdot2=3\) MB.</p>
+    <p>(c) \(\dfrac{P\{X&gt;8\}}{P\{X&gt;2\}}=\left(\tfrac28\right)^{3/2}=\tfrac18\).</p>
+    <p>(d) \(m^{-3/2}=\tfrac12\Rightarrow m=2^{2/3}\approx1.5874\) MB. \(E[X^2]=\int_1^\infty\tfrac32x^{-1/2}dx=\infty\), so the variance is infinite.</p>
+  </details>
+</div></div>
+<footer>
+  Problems are in mixed order with no topic labels. Built from the Chapter 5 slides and HW 6; no setup repeats the earlier Chapter 5 exams.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hazard Rate Practice Exam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Hazard Rates and Survival Functions: Practice Exam</h1>
+  <p>10 problems, 100 points. Every problem uses hazard rates or survival functions; they run roughly from easier to harder. Solutions show every step.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>A calculator is enough.</li>
+  </ul>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>A gadget is certain to fail within 10 years, and its lifetime \(X\) (in years) is uniformly distributed on \((0,10)\).</p>
+  <ol>
+    <li>Find the survival function \(\bar F(t)\) for \(0\le t\le10\).</li>
+    <li>Find the hazard rate \(\lambda(t)\), and evaluate it at \(t=5\) and \(t=9\).</li>
+    <li>Explain in one sentence why \(\lambda(t)\to\infty\) as \(t\to10\).</li>
+    <li>Find the probability that a 6-year-old gadget fails within the next year in two ways: directly from the uniform distribution, and from \(e^{-\int\lambda}\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\bar F(t)=1-\tfrac{t}{10}=\tfrac{10-t}{10}\).</p>
+    <p>(b) \(\lambda(t)=\dfrac{f(t)}{\bar F(t)}=\dfrac{1/10}{(10-t)/10}=\dfrac1{10-t}\). \(\lambda(5)=0.2\), \(\lambda(9)=1\) per year.</p>
+    <p>(c) A gadget still working near age 10 must fail in the little time left, so the failure intensity for survivors grows without bound.</p>
+    <p>(d) Directly: \(P\{X\le7\mid X&gt;6\}=\dfrac{1/10}{4/10}=\tfrac14\). With the hazard: \(\int_6^7\tfrac{ds}{10-s}=\ln\tfrac43\), so \(1-e^{-\ln(4/3)}=1-\tfrac34=\tfrac14\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>The time \(T\) (in years) until a newly opened restaurant closes has CDF \(F(t)=\dfrac{t^2}{1+t^2}\) for \(t\ge0\).</p>
+  <ol>
+    <li>Find the survival function and the density of \(T\).</li>
+    <li>Find the hazard rate \(\lambda(t)\).</li>
+    <li>At what age is the hazard rate highest, and what is its value there? Describe how the hazard behaves for young and for old restaurants.</li>
+    <li>For a restaurant that has been open exactly 1 year, approximate the probability that it closes in the next 0.1 year using \(\lambda(1)\), then compute it exactly.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\bar F(t)=\dfrac1{1+t^2}\), \(f(t)=F'(t)=\dfrac{2t}{(1+t^2)^2}\).</p>
+    <p>(b) \(\lambda(t)=\dfrac{f(t)}{\bar F(t)}=\dfrac{2t}{1+t^2}\).</p>
+    <p>(c) \(\lambda'(t)=\dfrac{2(1-t^2)}{(1+t^2)^2}\), zero at \(t=1\), where \(\lambda(1)=1\) per year. The hazard starts at 0, rises over the first year, then falls toward 0: restaurants that make it past the risky early period become steadily safer.</p>
+    <p>(d) Approximation: \(\lambda(1)\cdot0.1=0.1\). Exact: \(1-\dfrac{\bar F(1.1)}{\bar F(1)}=1-\dfrac{2}{2.21}\approx0.0950\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>Drivers who text behind the wheel have, at every point in time, three times the hazard rate of having their first accident as drivers who do not. A non-texting driver has probability 0.8 of going 5 years without an accident.</p>
+  <ol>
+    <li>Find the probability that a texting driver goes 5 years without an accident.</li>
+    <li>If the texting hazard were \(k\) times the non-texting hazard instead, what \(k\) would make a texting driver's 5-year accident-free probability exactly one half?</li>
+    <li>An insurer's pool is 20% texters. Find the probability that a randomly chosen driver from the pool goes 5 years without an accident.</li>
+    <li>A driver from the pool has been accident-free for 5 years. Find the probability that the driver texts.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(\Lambda=\int_0^5\lambda_n(t)\,dt\). Then \(e^{-\Lambda}=0.8\), and the texter's survival is \(e^{-3\Lambda}=(e^{-\Lambda})^3\).</p>
+    <p>(a) \(0.8^3=0.512\). Tripling the hazard cubes the survival probability; it does not divide it by 3.</p>
+    <p>(b) \(0.8^k=0.5\Rightarrow k=\dfrac{\ln0.5}{\ln0.8}\approx3.1063\).</p>
+    <p>(c) \(0.2(0.512)+0.8(0.8)=0.7424\).</p>
+    <p>(d) \(\dfrac{0.2(0.512)}{0.7424}=\dfrac{0.1024}{0.7424}\approx0.1379\), down from the prior 0.2.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>A type of electronic unit has a &ldquo;bathtub&rdquo; hazard rate (in failures per year):
+$$\lambda(t)=\begin{cases}0.3-0.1t, &amp; 0\le t&lt;2\\ 0.1, &amp; 2\le t&lt;8\\ 0.1+0.05(t-8), &amp; t\ge8.\end{cases}$$</p>
+  <ol>
+    <li>Find the probability that a new unit survives its first 2 years.</li>
+    <li>Given that a unit survives its first 2 years, find the probability that it is still working at age 8.</li>
+    <li>Find the probability that a unit working at age 8 fails before age 10.</li>
+    <li>Find the density of the lifetime at \(t=1\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Use \(P\{\text{alive at }b\mid\text{alive at }a\}=e^{-\int_a^b\lambda(t)dt}\).</p>
+    <p>(a) \(\int_0^2(0.3-0.1t)dt=0.6-0.2=0.4\), so \(e^{-0.4}\approx0.6703\).</p>
+    <p>(b) \(\int_2^8 0.1\,dt=0.6\), so \(e^{-0.6}\approx0.5488\).</p>
+    <p>(c) \(\int_8^{10}\big(0.1+0.05(t-8)\big)dt=0.2+0.1=0.3\), so \(1-e^{-0.3}\approx0.2592\).</p>
+    <p>(d) \(\int_0^1(0.3-0.1t)dt=0.25\), so \(f(1)=\lambda(1)\bar F(1)=0.2\,e^{-0.25}\approx0.1558\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>A repair job has two stages, and the total time \(T\) (in hours) to complete it has density \(f(t)=t\,e^{-t}\) for \(t&gt;0\).</p>
+  <ol>
+    <li>Find the survival function \(\bar F(t)\).</li>
+    <li>Find the hazard rate \(\lambda(t)\).</li>
+    <li>Given that a job is not finished after 2 hours, find the probability that it is finished within the next hour.</li>
+    <li>What does \(\lambda(t)\) approach as \(t\to\infty\)? Compare with an exponential repair time with mean 1 hour.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Integrating by parts, \(\bar F(t)=\int_t^\infty se^{-s}ds=\big[-se^{-s}-e^{-s}\big]_t^\infty=(1+t)e^{-t}\).</p>
+    <p>(b) \(\lambda(t)=\dfrac{te^{-t}}{(1+t)e^{-t}}=\dfrac{t}{1+t}\). It starts at 0 and increases.</p>
+    <p>(c) \(1-\dfrac{\bar F(3)}{\bar F(2)}=1-\dfrac{4e^{-3}}{3e^{-2}}=1-\tfrac43e^{-1}\approx0.5095\).</p>
+    <p>(d) \(\lambda(t)\to1\). A long-running job behaves like an exponential job with rate 1 (mean 1 hour); early on the hazard is lower because both stages must finish first.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>Machine A has constant hazard rate 0.1 per year. Machine B has hazard rate \(0.02t\) per year at age \(t\).</p>
+  <ol>
+    <li>Find each machine's probability of surviving 5 years.</li>
+    <li>At what age are the two hazard rates equal? Which machine has the higher hazard after that age?</li>
+    <li>At what age are the two survival probabilities equal?</li>
+    <li>For a 10-year-old machine of each type, find the probability that it survives 2 more years. Explain why the answers differ even though both have the same chance of reaching age 10.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Survival: \(\bar F_A(t)=e^{-0.1t}\), \(\bar F_B(t)=e^{-0.01t^2}\).</p>
+    <p>(a) A: \(e^{-0.5}\approx0.6065\). B: \(e^{-0.25}\approx0.7788\).</p>
+    <p>(b) \(0.02t=0.1\Rightarrow t=5\). After age 5, B has the higher hazard.</p>
+    <p>(c) \(0.1t=0.01t^2\Rightarrow t=10\). The hazards cross at 5 but the survival curves only cross at 10, because survival depends on the accumulated hazard \(\int_0^t\lambda\), not the current value.</p>
+    <p>(d) A: \(e^{-0.1(2)}=e^{-0.2}\approx0.8187\) (memoryless). B: \(e^{-0.01(144-100)}=e^{-0.44}\approx0.6440\). B wears out: at age 10 its hazard is 0.2 and climbing, twice A's.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>For people aged 40 and over, an actuary models the hazard rate of death at age \(t\) (in years) as \(\lambda(t)=0.001\,e^{0.09(t-40)}\).</p>
+  <ol>
+    <li>Find the probability that a 40-year-old reaches age 70.</li>
+    <li>Approximate the probability that a 60-year-old dies within the next month.</li>
+    <li>How many years does it take for the hazard rate to double?</li>
+    <li>At what age does a 40-year-old have a 50% chance of still being alive?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>\(\int_{40}^{x}\lambda(t)dt=\dfrac{0.001}{0.09}\left(e^{0.09(x-40)}-1\right)=\dfrac{e^{0.09(x-40)}-1}{90}\).</p>
+    <p>(a) \(\dfrac{e^{2.7}-1}{90}\approx0.1542\), so \(e^{-0.1542}\approx0.8571\).</p>
+    <p>(b) \(\lambda(60)=0.001e^{1.8}\approx0.006050\) per year, so \(\approx\lambda(60)\cdot\tfrac1{12}\approx0.000504\). (Exact: 0.000506.)</p>
+    <p>(c) \(e^{0.09d}=2\Rightarrow d=\tfrac{\ln2}{0.09}\approx7.70\) years.</p>
+    <p>(d) \(\dfrac{e^{0.09u}-1}{90}=\ln2\Rightarrow u=\dfrac{\ln(1+90\ln2)}{0.09}\approx46.1\), so about age 86.1.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>A delivery drone fails if either its motor or its flight controller fails, and the two fail independently. The motor's hazard rate is \(t^2/1000\) and the controller's is a constant 0.02, both per hour of flight time \(t\).</p>
+  <ol>
+    <li>Show that the drone's hazard rate is the sum of the two component hazard rates.</li>
+    <li>Find the probability that the drone flies 10 hours without failure.</li>
+    <li>Given that the drone has flown 10 hours without failure, find the probability that it reaches 15 hours.</li>
+    <li>At what flight time do the motor and the controller contribute equally to the drone's hazard? Which dominates for a new drone?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) The drone's lifetime is \(\min(M,C)\), so \(\bar F(t)=P\{M&gt;t\}P\{C&gt;t\}=e^{-\int_0^t\lambda_M}e^{-\int_0^t\lambda_C}=e^{-\int_0^t(\lambda_M+\lambda_C)}\). Hence \(\lambda(t)=\tfrac{t^2}{1000}+0.02\), and \(\bar F(t)=e^{-0.02t-t^3/3000}\).</p>
+    <p>(b) \(e^{-0.2-1/3}=e^{-0.5333}\approx0.5866\).</p>
+    <p>(c) \(\exp\left(-0.02(5)-\tfrac{15^3-10^3}{3000}\right)=e^{-0.1-0.7917}\approx0.4100\).</p>
+    <p>(d) \(\tfrac{t^2}{1000}=0.02\Rightarrow t=\sqrt{20}\approx4.47\) hours. Before that the controller dominates; for a new drone the motor's hazard is near 0.</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>Subscribers to a streaming service are of two kinds: 40% are &ldquo;samplers&rdquo;, who cancel at a constant hazard rate of 0.5 per month, and 60% are &ldquo;loyal&rdquo;, who cancel at a constant hazard rate of 0.1 per month. A new subscriber's type is not known.</p>
+  <ol>
+    <li>Find the probability that a new subscriber is still subscribed after 6 months.</li>
+    <li>Find the hazard rate of cancellation for a new subscriber at \(t=0\) and at \(t=6\) months.</li>
+    <li>Given that a subscriber is still subscribed after 6 months, find the probability that they are a sampler.</li>
+    <li>Explain why the overall hazard decreases with time even though each type has a constant hazard.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\bar F(t)=0.4e^{-0.5t}+0.6e^{-0.1t}\), so \(\bar F(6)=0.4e^{-3}+0.6e^{-0.6}\approx0.3492\).</p>
+    <p>(b) \(f(t)=0.2e^{-0.5t}+0.06e^{-0.1t}\). \(\lambda(0)=\tfrac{0.26}{1}=0.26\). \(\lambda(6)=\dfrac{0.2e^{-3}+0.06e^{-0.6}}{0.3492}\approx0.1228\).</p>
+    <p>(c) \(\dfrac{0.4e^{-3}}{0.3492}\approx0.0570\).</p>
+    <p>(d) \(\lambda(t)=0.5\,P\{\text{sampler}\mid T&gt;t\}+0.1\,P\{\text{loyal}\mid T&gt;t\}\). As time passes the samplers cancel and the survivors are mostly loyal, so the mix shifts toward the lower rate. Check at \(t=6\): \(0.5(0.0570)+0.1(0.9430)\approx0.1228\).</p>
+  </details>
+</div></div>
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">10 points</span>
+  <p>A component's hazard rate has the form \(\lambda(t)=c\,t^{k}\) (years), with unknown \(c&gt;0\) and \(k&gt;-1\). Test data show that 90% of components survive 1 year and 40% survive 3 years.</p>
+  <ol>
+    <li>Write the survival function in terms of \(c\) and \(k\).</li>
+    <li>Find \(k\) and \(c\).</li>
+    <li>Is the hazard increasing or decreasing? What does that say about these components?</li>
+    <li>Find the probability that a 3-year-old component survives to age 4.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\bar F(t)=\exp\left(-\dfrac{c}{k+1}t^{k+1}\right)\).</p>
+    <p>(b) Let \(a=k+1\) and \(b=c/a\). Then \(b=-\ln0.9\approx0.10536\) and \(b\,3^{a}=-\ln0.4\approx0.91629\). Dividing, \(3^{a}=8.6967\), so \(a=\dfrac{\ln8.6967}{\ln3}\approx1.9688\), giving \(k\approx0.9688\) and \(c=ab\approx0.2074\).</p>
+    <p>(c) \(k&gt;0\), so the hazard increases (almost linearly): the components wear out with age.</p>
+    <p>(d) \(\exp\left(-0.10536\left(4^{1.9688}-3^{1.9688}\right)\right)\approx0.4975\).</p>
+  </details>
+</div></div>
+<footer>
+  Built from the hazard-rate slides of Chapter 5; no setup repeats the earlier Chapter 5 exams.
+</footer>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>

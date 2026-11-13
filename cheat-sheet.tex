@@ -1,0 +1,248 @@
+% STA 9715 Applied Probability -- formula sheet (Ch 1-5, Prof. Wu's notes)
+% Compile with pdflatex (e.g. on Overleaf). Two landscape pages + one distribution page.
+\documentclass[9pt]{extarticle}
+\usepackage[landscape,margin=0.35in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\setlength{\columnsep}{12pt}
+\setlength{\columnseprule}{0.3pt}
+\setlist{nosep,leftmargin=1.1em}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\setlength{\abovedisplayshortskip}{1pt}
+\setlength{\belowdisplayshortskip}{1pt}
+
+\newcommand{\sect}[1]{\par\vspace{3pt}{\color{NavyBlue}\large\bfseries #1}\par\vspace{1pt}\hrule\vspace{2pt}}
+\newcommand{\sub}[1]{\par\vspace{2pt}{\bfseries\color{BrickRed} #1}\par}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Po}{\operatorname{Po}}
+\newcommand{\Bin}{\operatorname{Bin}}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries STA 9715 Applied Probability --- Formula Sheet (Ch.\ 1--5)}
+\end{center}
+\vspace{-4pt}
+
+\begin{multicols}{3}
+
+% =====================================================================
+\sect{1. Counting}
+
+\textbf{Ordered selection} of $r$ from $n$: $\dfrac{n!}{(n-r)!}$. \quad
+\textbf{Unordered:} $\dbinom{n}{r}=\dfrac{n!}{r!(n-r)!}$.
+
+\textbf{Circular} arrangements of $n$: $(n-1)!$.
+
+\textbf{Identities:} $\binom{n}{r}=\binom{n}{n-r}$,\;
+$\binom{n}{r}=\binom{n-1}{r-1}+\binom{n-1}{r}$,\;
+$\sum_{r=0}^n\binom{n}{r}=2^n$,\;
+Vandermonde $\binom{m+n}{r}=\sum_k\binom{m}{k}\binom{n}{r-k}$.
+
+\textbf{Binomial theorem:} $(x+y)^n=\sum_{k=0}^n\binom{n}{k}x^ky^{n-k}$.
+
+\textbf{Multinomial:} split $n$ into labelled groups of sizes $n_1,\dots,n_r$:
+$\binom{n}{n_1,\dots,n_r}=\dfrac{n!}{n_1!\cdots n_r!}$; \;
+$(x_1+\dots+x_r)^n=\sum\binom{n}{n_1,\dots,n_r}x_1^{n_1}\cdots x_r^{n_r}$.
+\emph{Unlabelled} equal groups: divide by (number of groups)!.
+
+\textbf{Balls in urns:} $n$ identical balls into $r$ distinct urns:
+$\binom{n+r-1}{r-1}$ ways; every urn nonempty: $\binom{n-1}{r-1}$.
+
+% =====================================================================
+\sect{2. Axioms \& equally likely outcomes}
+$0\le P(E)\le1$, $P(S)=1$, $P(\bigcup E_i)=\sum P(E_i)$ for disjoint $E_i$.
+
+$P(E^c)=1-P(E)$; \; $E\subset F\Rightarrow P(E)\le P(F)$.
+
+\textbf{De Morgan:} $(\bigcup E_i)^c=\bigcap E_i^c$, $(\bigcap E_i)^c=\bigcup E_i^c$.
+
+\textbf{Bounds:} $\max(0,P(A)+P(B)-1)\le P(AB)\le\min(P(A),P(B))$.
+
+\textbf{Inclusion--exclusion:}
+$P(A\cup B)=P(A)+P(B)-P(AB)$; \;
+$P(A\cup B\cup C)=\sum P(A)-\sum P(AB)+P(ABC)$; \;
+$P\big(\bigcup_{i=1}^n E_i\big)=\sum_{r=1}^n(-1)^{r+1}\!\!\sum_{i_1<\dots<i_r}\!\!P(E_{i_1}\cdots E_{i_r})$.
+
+
+% =====================================================================
+\sect{3. Conditioning, Bayes, independence}
+$P(E\mid F)=\dfrac{P(EF)}{P(F)}$.
+
+\textbf{Multiplication:} $P(E_1\cdots E_n)=P(E_1)P(E_2|E_1)\cdots P(E_n|E_1\cdots E_{n-1})$.
+
+\textbf{Total probability:} $P(E)=\sum_i P(E\mid F_i)P(F_i)$ ($F_i$ a partition).
+
+\textbf{Bayes:} $P(F_j\mid E)=\dfrac{P(E\mid F_j)P(F_j)}{\sum_iP(E\mid F_i)P(F_i)}$.
+
+\textbf{Odds form:} $\dfrac{P(H\mid E)}{P(H^c\mid E)}=\dfrac{P(H)}{P(H^c)}\cdot\dfrac{P(E\mid H)}{P(E\mid H^c)}$.
+
+\textbf{Independence:} $P(EF)=P(E)P(F)$. Then $E,F^c$; $E^c,F^c$ also independent.
+Three events: all pairs \emph{and} $P(EFG)=P(E)P(F)P(G)$.
+
+\textbf{Conditional independence given $F$:} $P(E_1E_2\mid F)=P(E_1\mid F)P(E_2\mid F)$
+(does \emph{not} imply unconditional independence).
+
+\textbf{$P(\cdot\mid F)$ is a probability:} all rules (complement, I--E, Bayes) hold conditionally.
+
+\textbf{Gambler-type recursions:} condition on the first step.
+
+% =====================================================================
+\sect{4. Discrete random variables}
+
+
+\textbf{Shortcut:} $\E[X^2]=\E[X(X-1)]+\E[X]$ (good for binomial, Poisson, geometric).
+
+\textbf{Tail sum} ($X\in\{0,1,2,\dots\}$): $\E[X]=\sum_{k\ge1}P(X\ge k)=\sum_{k\ge0}P(X>k)$.
+
+\textbf{Sums \& indicators:}  If $X=\sum I_i$:
+$\E X=\sum P(A_i)$,\;
+$\E[X^2]=\sum P(A_i)+2\sum_{i<j}P(A_iA_j)$.\;
+Independent $X_i$: $\Var(\sum X_i)=\sum\Var X_i$.
+
+\textbf{Binomial $\leftrightarrow$ Poisson:} $\Bin(n,p)\approx\Po(np)$ for $n$ large, $p$ small.
+
+\textbf{Poisson paradigm:} many weakly dependent rare events, count $\approx\Po(\sum p_i)$.
+
+\textbf{Neg.\ bin.\ link:} $P(\text{NegBin}(r,p)\le n)=P(\Bin(n,p)\ge r)$.
+
+\textbf{Poisson process} (rate $\lambda$): $N(t)\sim\Po(\lambda t)$; disjoint intervals independent;
+time to 1st event $\sim\text{Exp}(\lambda)$; time to $n$th event $\sim\text{Gamma}(n,\lambda)$:
+$P(T_n>t)=P(N(t)\le n-1)$.\;
+\textbf{Thinning:} each event kept w.p.\ $p$ $\Rightarrow$ rate $\lambda p$.
+
+\textbf{Poisson ratio:} $\dfrac{P(X=k+1)}{P(X=k)}=\dfrac{\lambda}{k+1}$; \;
+binomial: $\dfrac{p(k+1)}{p(k)}=\dfrac{(n-k)p}{(k+1)(1-p)}$.\;
+Mode of $\Bin$: $\lfloor (n+1)p\rfloor$; of $\Po$: $\lfloor\lambda\rfloor$.
+
+% =====================================================================
+\sect{5. Continuous random variables}
+
+\sub{Normal}
+$Z=\dfrac{X-\mu}{\sigma}\sim N(0,1)$; \; $\Phi(-z)=1-\Phi(z)$;\;
+$P(|Z|\le z)=2\Phi(z)-1$.\;
+$aX+b\sim N(a\mu+b,a^2\sigma^2)$.\;
+$x_p=\mu+\sigma z_p$.
+
+Key: $z_{.90}=1.282$, $z_{.95}=1.645$, $z_{.975}=1.96$, $z_{.99}=2.326$, $z_{.995}=2.576$.
+
+\textbf{DeMoivre--Laplace:} $S_n\sim\Bin(n,p)$, $np(1-p)\ge10$:
+$S_n\approx N(np,\,np(1-p))$. \textbf{Continuity correction:}
+$P(S_n\le k)\approx\Phi\!\Big(\frac{k+0.5-np}{\sqrt{np(1-p)}}\Big)$,
+$P(S_n\ge k)$: use $k-0.5$; \; $P(S_n=k)$: $k\pm0.5$; \; $P(S_n<k)=P(S_n\le k-1)$.
+
+% =====================================================================
+\sect{Integration methods (from the notes)}
+\textbf{Basic antiderivatives:}
+$\int x^k dx=\frac{x^{k+1}}{k+1}$ ($k\ne-1$); \;
+$\int\frac1x dx=\ln|x|$; \;
+$\int a^x dx=\frac{a^x}{\ln a}$; \;
+$\int e^{cx}dx=\frac{e^{cx}}{c}$.
+
+\textbf{Expand polynomials} before integrating: $\int_0^1 x(1-x)^5dx$ — expand, or
+substitute $u=1-x$: $\int_0^1(1-u)u^5du=\tfrac16-\tfrac17=\tfrac1{42}$.
+
+\textbf{$u$-substitution:} $\int_a^b f(\phi(x))\phi'(x)\,dx=\int_{\phi(a)}^{\phi(b)}f(u)\,du$
+— change the limits. E.g.\ $\int_0^{10}\frac{du}{2u+3}=\tfrac12\ln\frac{23}{3}$;\;
+$\int_{-\infty}^{\infty}\frac{x}{\sqrt{2\pi}}e^{-x^2/2}dx=0$ (odd; or $u=x^2/2$).
+
+
+\textbf{Tabular parts} for $\int x^ne^{cx}$: differentiate $x^n$ down to 0, integrate $e^{cx}$, alternate signs.
+
+\textbf{Gaussian integral:} $\int_{-\infty}^{\infty}e^{-x^2/2}dx=\sqrt{2\pi}$; \;
+$\int_{-\infty}^{\infty}e^{-(x-\mu)^2/(2\sigma^2)}dx=\sigma\sqrt{2\pi}$.
+
+
+\textbf{Recognise a density:} if the integrand is $c\times$(a known PDF), the integral is $c$
+(e.g.\ $\int_0^\infty x^2e^{-2x}dx$: Gamma$(3,2)$ kernel $=2!/2^3$).
+
+\textbf{Probabilities in a disc / square:} $P=\text{area}(A)/\text{area}(S)$.
+
+% =====================================================================
+\sect{Series shortcuts}
+\sub{Geometric}
+$\sum_{k=0}^{n-1}r^k=\dfrac{1-r^n}{1-r}$; \quad
+$\sum_{k=0}^\infty r^k=\dfrac1{1-r}$, \; $\sum_{k=m}^\infty r^k=\dfrac{r^m}{1-r}$ \;($|r|<1$).
+
+
+\sub{Finite sums}
+$\sum_{k=1}^nk=\frac{n(n+1)}2$, \;
+$\sum_{k=1}^nk^2=\frac{n(n+1)(2n+1)}6$, \;
+$\sum_{k=1}^nk^3=\Big(\frac{n(n+1)}2\Big)^2$.
+
+
+\end{multicols}
+
+% =====================================================================
+\newpage
+\begin{center}
+{\Large\bfseries Distributions}
+\end{center}
+\vspace{-4pt}
+\renewcommand{\arraystretch}{1.55}
+\setlength{\tabcolsep}{4pt}
+
+\sub{Discrete}
+\begin{center}
+\begin{tabular}{@{}>{\raggedright}p{2.55in}>{\raggedright}p{2.35in}>{\raggedright}p{1.85in}>{$}c<{$}>{$}c<{$}@{}}
+\toprule
+\textbf{Distribution / story} & \textbf{PMF} $p(k)$ & \textbf{CDF} $F(k)$ & \E[X] & \Var(X)\\
+\midrule
+\textbf{Bernoulli}$(p)$
+ & $p^k(1-p)^{1-k}$, $k\in\{0,1\}$
+ & $0$; $1-p$ ($0\le k<1$); $1$
+ & p & p(1-p)\\
+\textbf{Binomial}$(n,p)$
+ & $\binom nk p^k(1-p)^{n-k}$, $k=0..n$
+ & $\sum_{i=0}^{\lfloor k\rfloor}\binom ni p^i(1-p)^{n-i}$
+ & np & np(1-p)\\
+\textbf{Poisson}$(\lambda)$
+ & $e^{-\lambda}\dfrac{\lambda^k}{k!}$, $k=0,1,\dots$
+ & $\sum_{i=0}^{\lfloor k\rfloor}e^{-\lambda}\frac{\lambda^i}{i!}$
+ & \lambda & \lambda\\
+\textbf{Geometric}$(p)$
+ & $(1-p)^{k-1}p$, $k=1,2,\dots$
+ & $1-(1-p)^k$;\; $P(X>k)=(1-p)^k$
+ & \dfrac1p & \dfrac{1-p}{p^2}\\
+\textbf{Negative binomial}$(r,p)$
+ & $\binom{k-1}{r-1}p^r(1-p)^{k-r}$, $k=r,r{+}1,\dots$
+ & $P(\Bin(k,p)\ge r)$
+ & \dfrac rp & \dfrac{r(1-p)}{p^2}\\
+\textbf{Hypergeometric}$(n,N,m)$
+ & $\dfrac{\binom mk\binom{N-m}{n-k}}{\binom Nn}$
+ & sum of PMF
+ & \dfrac{nm}{N} & n\dfrac mN\Big(1-\dfrac mN\Big)\dfrac{N-n}{N-1}\\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\sub{Continuous}
+\begin{center}
+\begin{tabular}{@{}>{\raggedright}p{1.55in}>{\raggedright}p{2.35in}>{\raggedright}p{2.6in}>{$}c<{$}>{$}c<{$}@{}}
+\toprule
+\textbf{Distribution} & \textbf{PDF} $f(x)$ & \textbf{CDF} $F(x)$ & \E[X] & \Var(X)\\
+\midrule
+\textbf{Uniform}$(a,b)$
+ & $\dfrac1{b-a}$, $a<x<b$
+ & $\dfrac{x-a}{b-a}$, $a\le x\le b$
+ & \dfrac{a+b}2 & \dfrac{(b-a)^2}{12}\\
+\textbf{Normal}$(\mu,\sigma^2)$
+ & $\dfrac1{\sqrt{2\pi}\,\sigma}e^{-(x-\mu)^2/(2\sigma^2)}$
+ & $\Phi\!\left(\dfrac{x-\mu}{\sigma}\right)$ (table)
+ & \mu & \sigma^2\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

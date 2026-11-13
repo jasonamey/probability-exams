@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam-Night Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+.move { border: 1px solid var(--rule); background: var(--surface); padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; }
+.move h3 { margin: 0; font-size: 1.1rem; color: var(--accent); }
+.move p, .move ul, .move ol { margin: 0; }
+.move ul { padding-left: 1.2rem; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
+.ex { font-style: italic; }
+.steps { padding-left: 1.4rem; margin: 0; }
+.steps li { margin-top: 4px; }
+.decoder td { white-space: normal; vertical-align: top; }
+.decoder td:first-child { width: 55%; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Exam-Night Review: Strategies and Tricks</h1>
+  <p>Chapters 1–5 as a set of moves. Each move says what in the problem should trigger it, what to do, and gives a tiny example with the answer folded underneath.</p>
+</header>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+</div>
+
+<h2>0. How to attack any problem <span>read this first</span></h2>
+
+<section class="sheet">
+  <ol class="steps">
+    <li><b>Name the random thing.</b> Write "Let \(X\) = …" in words. Half the battle is deciding whether you are counting outcomes, conditioning on information, or describing a random variable.</li>
+    <li><b>Find the cue words</b> (table below). They tell you which tool applies.</li>
+    <li><b>Look for the easier side.</b> "At least one", "some", "not all" usually mean you should work with the complement. "Expected number of …" means indicators.</li>
+    <li><b>Write the formula with symbols first,</b> then plug in numbers. That way you get partial credit even if the arithmetic goes wrong.</li>
+    <li><b>Sanity check:</b> probabilities lie in [0, 1], variances are ≥ 0, a PMF sums to 1, and the answer should have about the size you expected.</li>
+  </ol>
+</section>
+
+<h2>The decoder <span>cue → tool</span></h2>
+<div class="tablewrap">
+<table class="decoder">
+  <tr><th>If the problem says…</th><th>Reach for…</th></tr>
+  <tr><td>"how many ways", "equally likely", random hand/committee/arrangement</td><td>Counting: \(P = |E|/|S|\)</td></tr>
+  <tr><td>"at least one", "none", "not all"</td><td>Complement: \(1 - P(\text{none})\)</td></tr>
+  <tr><td>"A or B or C" with overlaps, "divisible by 2, 3 or 5", "missing a suit", "no match"</td><td>Inclusion–exclusion</td></tr>
+  <tr><td>"given that", "if we know"</td><td>Conditional probability \(P(AB)/P(B)\)</td></tr>
+  <tr><td>Two stages; you're told \(P(\text{data}\mid\text{cause})\) but asked \(P(\text{cause}\mid\text{data})\)</td><td>Total probability + Bayes (draw a tree)</td></tr>
+  <tr><td>"independently", repeated tests "independent given the condition"</td><td>Multiply; conditional independence</td></tr>
+  <tr><td>Fixed \(n\) independent trials, count successes</td><td>Binomial\((n,p)\)</td></tr>
+  <tr><td>Rare events, large \(n\), small \(p\); "on average λ per hour/page/mile"</td><td>Poisson\((\lambda)\), or \(\lambda t\) for a window of length \(t\)</td></tr>
+  <tr><td>"until the first success"</td><td>Geometric\((p)\)</td></tr>
+  <tr><td>"until the \(r\)-th success"</td><td>Negative binomial\((r,p)\)</td></tr>
+  <tr><td>Draw \(n\) <em>without replacement</em> from a finite population of two types</td><td>Hypergeometric</td></tr>
+  <tr><td>"expected number of …" (pairs, matches, distinct values, empty boxes)</td><td>Sum of indicators</td></tr>
+  <tr><td>A CDF with jumps</td><td>Jump size = \(P(X = a)\)</td></tr>
+  <tr><td>"density \(f(x) = c\cdots\)"</td><td>\(\int f = 1\) gives \(c\); then integrate for probabilities and moments</td></tr>
+  <tr><td>"uniformly at random on an interval"</td><td>Uniform: probability = length ratio</td></tr>
+  <tr><td>Heights, errors, measurements; sums of many trials</td><td>Normal: standardise, \(\Phi\) table</td></tr>
+  <tr><td>Binomial with big \(n\) and \(np(1-p) \ge 10\)</td><td>Normal approximation with continuity correction</td></tr>
+  <tr><td>Lifetime, waiting time, "memoryless", "time until the next Poisson event"</td><td>Exponential\((\lambda)\)</td></tr>
+  <tr><td>"failure rate \(\lambda(t)\)"</td><td>Hazard: \(S(t) = e^{-\int_0^t \lambda}\)</td></tr>
+  <tr><td>"find the density/distribution of \(Y = g(X)\)"</td><td>CDF method (or Thm 5.7.1 if \(g\) is monotone)</td></tr>
+</table>
+</div>
+
+<!-- ===================== CHAPTER 1 ===================== -->
+<h2>1. Counting <span>Ch 1</span></h2>
+
+<div class="move">
+  <h3>Multiplication principle</h3>
+  <p><span class="tag">Cue</span> A choice made in stages, where each stage has a fixed number of options.</p>
+  <p><span class="tag">Move</span> Multiply the number of options at each stage. Start with the most restricted stage first (for example "must be even", so fix the last digit first).</p>
+  $$n_1 \times n_2 \times \cdots \times n_k$$
+  <p class="ex">Tiny example: how many 3-digit numbers with distinct digits are even?</p>
+  <details><summary>Solution</summary>
+    <p>Fix the last digit. If it is 0: the first digit has 9 options, the middle 8, giving 72. If it is 2, 4, 6 or 8 (4 ways): the first digit can't be 0 or the last digit, so 8 options, and the middle has 8, giving 4·8·8 = 256. Total <b>328</b>. Trick: split into cases when one restriction affects another.</p>
+  </details>
+</div>
+
+<div class="move">
+  <h3>Order matters or not? Permutations vs. combinations</h3>
+  <p><span class="tag">Cue</span> Ask yourself: "If I swap two of the chosen items, is it a different outcome?" If titles, positions or ranks are involved, order matters. A committee, hand or set: order doesn't matter.</p>
+  $$P(n,k) = \frac{n!}{(n-k)!}\qquad \binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+  <p class="ex">Tiny example: from 10 people choose (i) a president, VP and secretary; (ii) a 3-person committee.</p>
+  <details><summary>Solution</summary><p>(i) \(10\cdot 9\cdot 8 = 720\). (ii) \(\binom{10}{3} = 120 = 720/3!\). Choosing a committee and <em>then</em> giving out titles: \(\binom{10}{3}\cdot 3! = 720\), the same thing.</p></details>
+</div>
+
+<div class="move">
+  <h3>Arrangements with repeated letters (multinomial)</h3>
+  <p><span class="tag">Cue</span> Arrange objects where some are identical, or split \(n\) people into <em>labelled</em> groups of fixed sizes.</p>
+  $$\binom{n}{n_1, n_2, \ldots, n_r} = \frac{n!}{n_1!\,n_2!\cdots n_r!}$$
+  <p class="ex">Tiny example: (i) arrangements of LETTER; (ii) 9 people into rooms A, B, C of sizes 4, 3, 2.</p>
+  <details><summary>Solution</summary><p>(i) 6 letters with E twice and T twice: \(6!/(2!\,2!) = 180\). (ii) \(9!/(4!\,3!\,2!) = 1260\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Unlabelled groups: divide by the group-swaps</h3>
+  <p><span class="tag">Cue</span> "Split into teams/pairs" with no names for the teams. Groups of the <em>same size</em> can be swapped without changing the outcome.</p>
+  <p><span class="tag">Move</span> Count as if the groups were labelled, then divide by \(k!\) for each set of \(k\) equal-size groups.</p>
+  <p class="ex">Tiny example: split 6 people into 3 pairs.</p>
+  <details><summary>Solution</summary><p>Labelled: \(6!/(2!2!2!) = 90\). The 3 pairs are interchangeable, so divide by \(3!\): <b>15</b>. (Check: \(5\cdot3\cdot1 = 15\), since person 1 picks a partner in 5 ways, the next unpaired person in 3 ways, and so on.)</p></details>
+</div>
+
+<div class="move">
+  <h3>Glue them together / complement for "not together"</h3>
+  <p><span class="tag">Cue</span> "A and B must sit together", or "these books must be adjacent".</p>
+  <p><span class="tag">Move</span> Treat the group as one block, arrange the blocks, then multiply by the arrangements inside the block. "Not together" = total − together.</p>
+  <p class="ex">Tiny example: 5 people in a row; A and B together? Not together?</p>
+  <details><summary>Solution</summary><p>Together: 4 blocks give \(4!\), times \(2!\) inside the block, so 48. Not together: \(120 - 48 = 72\). (Round table with \(n\) people: \((n-1)!\), because rotations are the same.)</p></details>
+</div>
+
+<div class="move">
+  <h3>Identical items into distinct boxes (stars and bars)</h3>
+  <p><span class="tag">Cue</span> Identical objects (balls, dollars, toys of one kind) distributed to distinct recipients; or the number of non-negative integer solutions of \(x_1+\cdots+x_r = n\).</p>
+  $$\#\{x_i \ge 0\} = \binom{n+r-1}{r-1}\qquad \#\{x_i \ge 1\} = \binom{n-1}{r-1}$$
+  <p class="ex">Tiny example: 7 identical toys to 3 children; same if every child gets at least one.</p>
+  <details><summary>Solution</summary><p>\(\binom{9}{2} = 36\); \(\binom{6}{2} = 15\). Trick for "at least \(m\) each": hand out the minimums first, then use the \(\ge 0\) formula on what's left.</p></details>
+</div>
+
+<div class="move">
+  <h3>"At least one" by complement</h3>
+  <p><span class="tag">Cue</span> "Contains at least one 7", "at least one ace".</p>
+  <p class="ex">Tiny example: 4-digit PINs (0000–9999) with at least one 7.</p>
+  <details><summary>Solution</summary><p>\(10^4 - 9^4 = 3439\). <b>Trap:</b> "choose the 7, then anything" overcounts PINs with two 7s.</p></details>
+</div>
+
+<div class="move">
+  <h3>Binomial theorem and Vandermonde</h3>
+  <p><span class="tag">Cue</span> "Prove an identity" or "expand"; a committee chosen from two groups.</p>
+  $$(x+y)^n = \sum_{k=0}^n \binom{n}{k}x^k y^{n-k}\qquad \binom{m+n}{r} = \sum_k \binom{m}{k}\binom{n}{r-k}$$
+  <p>Story proof: count the same set in two ways. For example, choose \(r\) people from \(m\) women and \(n\) men, split by \(k\) = number of women. Setting \(x=y=1\) gives \(\sum_k\binom nk = 2^n\), the number of subsets.</p>
+</div>
+
+<!-- ===================== CHAPTER 2 ===================== -->
+<h2>2. Axioms and equally likely outcomes <span>Ch 2</span></h2>
+
+<div class="move">
+  <h3>The basic rules</h3>
+  $$P(A^c) = 1 - P(A)\qquad P(A\cup B) = P(A)+P(B)-P(AB)\qquad A\subset B \Rightarrow P(A)\le P(B)$$
+  <p><span class="tag">Bounds trick</span> \(\max(0,\,P(A)+P(B)-1) \le P(AB) \le \min(P(A),P(B))\). The union bound is the same thing turned around.</p>
+  <p class="ex">Tiny example: \(P(A)=0.6\), \(P(B)=0.7\). What range can \(P(AB)\) take?</p>
+  <details><summary>Solution</summary><p>\([0.3,\ 0.6]\). The low end is when the events overlap as little as possible; the high end is \(A \subset B\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Inclusion–exclusion</h3>
+  <p><span class="tag">Cue</span> A union of overlapping events, "divisible by 2, 3 or 5", "some suit is missing", "nobody gets their own hat".</p>
+  $$P(A\cup B\cup C) = \sum P(A_i) - \sum P(A_iA_j) + P(ABC)$$
+  <p><span class="tag">Move</span> Pick the "bad" events \(A_i\) so that intersections are <em>easy</em> to count; often by symmetry they all have the same probability, which gives \(\sum_k (-1)^{k+1}\binom{n}{k} P(A_1\cdots A_k)\).</p>
+  <p class="ex">Tiny example 1: integers 1–100 divisible by 2, 3 or 5.</p>
+  <details><summary>Solution</summary><p>\(50+33+20 - (16+10+6) + 3 = 74\). Use \(\lfloor 100/6\rfloor = 16\), \(\lfloor 100/10\rfloor=10\), \(\lfloor 100/15\rfloor=6\), \(\lfloor 100/30\rfloor = 3\).</p></details>
+  <p class="ex">Tiny example 2 (matching): 4 letters randomly placed into 4 envelopes. P(no letter in its own envelope)?</p>
+  <details><summary>Solution</summary><p>\(A_i\) = letter \(i\) matches. \(P(\text{some match}) = \sum_{k=1}^4 (-1)^{k+1}\binom4k\frac{(4-k)!}{4!} = 1 - \tfrac12 + \tfrac16 - \tfrac1{24}\). So \(P(\text{none}) = \sum_{k=0}^4 \frac{(-1)^k}{k!} = \frac{3}{8}\), which tends to \(e^{-1}\approx 0.368\) as \(n\) grows.</p></details>
+  <p class="ex">Tiny example 3: P(a 5-card hand is missing at least one suit)?</p>
+  <details><summary>Solution</summary><p>\(\dfrac{4\binom{39}{5} - 6\binom{26}{5} + 4\binom{13}{5}}{\binom{52}{5}}\). Missing a given suit means all 5 cards come from the other 39.</p></details>
+</div>
+
+<div class="move">
+  <h3>Equally likely: numerator and denominator must match</h3>
+  <p><span class="tag">Move</span> \(P(E) = |E|/|S|\). Decide ordered or unordered once and use the same choice for both. Unordered with \(\binom{\cdot}{\cdot}\) is usually easier for hands and committees.</p>
+  <p class="ex">Tiny example: 2 cards drawn. P(both aces)?</p>
+  <details><summary>Solution</summary><p>Unordered: \(\binom42/\binom{52}2 = 6/1326 = 1/221\). Ordered: \(\frac{4\cdot3}{52\cdot51}\), the same answer.</p></details>
+  <p class="ex">Tiny example: birthday problem with 23 people.</p>
+  <details><summary>Solution</summary><p>\(P(\text{all different}) = \frac{365\cdot364\cdots343}{365^{23}} \approx 0.4927\), so P(a shared birthday) ≈ 0.5073. A complement again.</p></details>
+</div>
+
+<!-- ===================== CHAPTER 3 ===================== -->
+<h2>3. Conditioning, Bayes, independence <span>Ch 3</span></h2>
+
+<div class="move">
+  <h3>Conditional probability and the multiplication rule</h3>
+  $$P(A\mid B) = \frac{P(AB)}{P(B)}\qquad P(A_1A_2\cdots A_n) = P(A_1)P(A_2\mid A_1)P(A_3\mid A_1A_2)\cdots$$
+  <p><span class="tag">Cue</span> Sequential draws without replacement: chain the conditionals instead of counting.</p>
+  <p><span class="tag">Trick</span> Conditioning on \(B\) shrinks the sample space to \(B\). With equally likely outcomes, \(P(A\mid B) = |AB|/|B|\).</p>
+  <p class="ex">Tiny example: two children, at least one is a girl. P(both girls)?</p>
+  <details><summary>Solution</summary><p>Reduced space {GG, GB, BG}, so the answer is <b>1/3</b>, not 1/2. (If you're told the <em>eldest</em> is a girl, it is 1/2.)</p></details>
+</div>
+
+<div class="move">
+  <h3>Law of total probability + Bayes (the tree)</h3>
+  <p><span class="tag">Cue</span> Hidden "type" (diseased or healthy, coin A or coin B, supplier 1 or 2) followed by an observation; asked about the type given the observation.</p>
+  $$P(B_j\mid A) = \frac{P(A\mid B_j)P(B_j)}{\sum_i P(A\mid B_i)P(B_i)}$$
+  <p><span class="tag">Move</span> Draw the tree: prior on the first branch, likelihood on the second. Answer = (the path you want) / (sum of all paths that produce the observation).</p>
+  <p class="ex">Tiny example: 1% have the disease; the test catches 95% of them and false-alarms on 5% of healthy people. P(disease | +)?</p>
+  <details><summary>Solution</summary><p>\(\dfrac{0.01(0.95)}{0.01(0.95)+0.99(0.05)} = \dfrac{0.0095}{0.059} = 0.1610\). A low prior keeps the posterior low.</p></details>
+</div>
+
+<div class="move">
+  <h3>Odds form and conditional independence (repeated evidence)</h3>
+  <p><span class="tag">Cue</span> "Tested twice", "results independent given the true status", "two scans".</p>
+  $$\frac{P(D\mid \text{data})}{P(D^c\mid \text{data})} = \frac{P(D)}{P(D^c)}\times\frac{P(\text{data}\mid D)}{P(\text{data}\mid D^c)}$$
+  <p><span class="tag">Move</span> Given the type, multiply the likelihoods: \(P(++\mid D) = 0.95^2\). <b>Trap:</b> the two results are <em>not</em> unconditionally independent, because they both depend on \(D\). Find \(P(++)\) by total probability, not by \(P(+)^2\).</p>
+  <p class="ex">Tiny example: same test, two independent positives. P(disease)?</p>
+  <details><summary>Solution</summary><p>\(\dfrac{0.01(0.95)^2}{0.01(0.95)^2+0.99(0.05)^2} = \dfrac{0.009025}{0.0115} = 0.7848\). Odds: prior 1/99 times likelihood ratio \(19^2 = 361\) gives \(361/99\), so the probability is \(361/460\).</p></details>
+  <p><span class="tag">Trick</span> To predict the next observation given past data, update first, then use total probability with the <em>posterior</em> weights: \(P(\text{next}+\mid ++) = \sum_i P(+\mid B_i)P(B_i\mid ++)\).</p>
+</div>
+
+<div class="move">
+  <h3>Independence</h3>
+  $$A\perp B \iff P(AB) = P(A)P(B)$$
+  <p><span class="tag">Check</span> Prove it with numbers; never assume it. If \(A \perp B\) then \(A^c \perp B\) and so on. Three events need all pairs <em>and</em> \(P(ABC)=P(A)P(B)P(C)\). Disjoint events with positive probability are <em>never</em> independent.</p>
+  <p><span class="tag">Systems</span> Series (all must work): \(\prod p_i\). Parallel (at least one works): \(1-\prod(1-p_i)\). Mixed: collapse the inner blocks first.</p>
+  <p class="ex">Tiny example: components with reliability 0.9 and 0.8 in parallel, then that block in series with a 0.95 component.</p>
+  <details><summary>Solution</summary><p>Parallel block: \(1 - 0.1(0.2) = 0.98\). System: \(0.98(0.95) = 0.931\).</p></details>
+</div>
+
+<div class="move">
+  <h3>First-step conditioning (games that repeat)</h3>
+  <p><span class="tag">Cue</span> "Alternate until someone wins", "repeat until…".</p>
+  <p><span class="tag">Move</span> Condition on what happens in the first round. If nothing is decided, the game restarts, so you get \(p_A = (\text{win now}) + (\text{nothing happens})\,p_A\).</p>
+  <p class="ex">Tiny example: Ann hits with prob 0.4, then Bea with 0.3, alternating, Ann first. P(Ann wins)?</p>
+  <details><summary>Solution</summary><p>\(p = 0.4 + (0.6)(0.7)p \Rightarrow p = 0.4/0.58 = 20/29 \approx 0.6897\).</p></details>
+</div>
+
+<!-- ===================== CHAPTER 4 ===================== -->
+<h2>4. Discrete random variables <span>Ch 4</span></h2>
+
+<div class="move">
+  <h3>PMF and CDF</h3>
+  <p><span class="tag">Facts</span> \(F(x) = P(X\le x)\) is non-decreasing and right-continuous. \(P(X = a) = F(a) - F(a^-)\), the jump. \(P(a &lt; X \le b) = F(b)-F(a)\). \(P(X &lt; b) = F(b^-)\).</p>
+  <p><span class="tag">Max/min trick</span> \(P(\max \le k) = P(\text{all} \le k)\), and \(P(\min &gt; k) = P(\text{all} &gt; k)\). Then get the PMF by differencing: \(P(M=k) = P(M\le k)-P(M\le k-1)\).</p>
+  <p class="ex">Tiny example: \(M\) = max of two fair dice. PMF?</p>
+  <details><summary>Solution</summary><p>\(P(M\le k) = (k/6)^2\), so \(P(M=k) = \dfrac{k^2-(k-1)^2}{36} = \dfrac{2k-1}{36}\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Expectation, LOTUS, variance</h3>
+  $$E[X]=\sum x\,p(x)\qquad E[g(X)] = \sum g(x)p(x)\qquad \text{Var}(X) = E[X^2]-(E[X])^2$$
+  $$E[aX+b] = aE[X]+b\qquad \text{Var}(aX+b) = a^2\,\text{Var}(X)$$
+  <p><span class="tag">Trap</span> \(E[g(X)] \ne g(E[X])\) in general (for example \(E[1/X]\), \(E[X^2]\)). Use LOTUS. The shift \(b\) drops out of the variance.</p>
+  <p><span class="tag">Cost/profit</span> Write profit as a function of \(X\), then take \(E\). For "how many to stock", compare \(E[\text{profit}]\) at \(s\) and \(s+1\): stock one more while the extra unit's expected gain is positive.</p>
+  <p><span class="tag">Fair game</span> "Fair" means \(E[\text{net winnings}] = 0\). Solve for the unknown payout.</p>
+  <p><span class="tag">Tail sum</span> For \(X\in\{0,1,2,\ldots\}\): \(E[X] = \sum_{k\ge1}P(X\ge k)\).</p>
+  <p class="ex">Tiny example: \(X\) takes values 0, 1, 2 with probabilities 0.5, 0.3, 0.2. Find \(E[X]\), \(\text{Var}(X)\), \(\text{Var}(3-2X)\).</p>
+  <details><summary>Solution</summary><p>\(E[X] = 0.3+0.4 = 0.7\); \(E[X^2] = 0.3 + 0.8 = 1.1\); \(\text{Var} = 1.1-0.49 = 0.61\); \(\text{Var}(3-2X) = 4(0.61) = 2.44\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Binomial\((n,p)\)</h3>
+  <p><span class="tag">Cue</span> Fixed number of independent trials, the same \(p\) each time, counting successes.</p>
+  $$P(X=k) = \binom nk p^k(1-p)^{n-k}\quad E=np\quad \text{Var}=np(1-p)\quad E[s^X] = (1-p+ps)^n$$
+  <p><span class="tag">Tricks</span> "At least 1" = \(1-(1-p)^n\). Given the mean and variance: \(1-p = \text{Var}/E\), then \(n = E/p\). Find the smallest \(n\) with \(P(\ge1)\ge 0.95\): \(n \ge \ln 0.05/\ln(1-p)\).</p>
+  <p class="ex">Tiny example: \(X\sim\text{Bin}(10, 0.3)\), \(P(X=2)\)? A binomial has mean 6 and variance 2.4; find \(n, p\).</p>
+  <details><summary>Solution</summary><p>\(45(0.09)(0.7)^8 = 0.2335\). And \(1-p = 0.4\), so \(p = 0.6\) and \(n = 10\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Poisson\((\lambda)\): approximation, paradigm, process</h3>
+  <p><span class="tag">Cue</span> Many independent rare chances (typos, defects, arrivals); "on average λ per unit"; Bin(\(n,p\)) with \(n\) large and \(p\) small.</p>
+  $$P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!}\qquad E=\text{Var}=\lambda\qquad E[s^X]=e^{\lambda(s-1)}$$
+  <p><span class="tag">Moves</span></p>
+  <ul>
+    <li>Approximation: \(\text{Bin}(n,p)\approx\text{Poi}(np)\).</li>
+    <li>Process: the count in a window of length \(t\) is \(\text{Poi}(\lambda t)\). <b>Rescale λ to the window</b>: 2 per page means 6 on 3 pages. Disjoint windows are independent.</li>
+    <li>Thinning: if each event is independently "type A" with prob \(q\), type-A events form a Poisson process with rate \(\lambda q\).</li>
+    <li>"\(P(X=1) = P(X=2)\)": set the PMFs equal and solve for λ (here λ = 2).</li>
+  </ul>
+  <p class="ex">Tiny example: 2 typos per page on average. P(a page is clean)? P(at most 1 typo in 3 pages)?</p>
+  <details><summary>Solution</summary><p>\(e^{-2} = 0.1353\). Over 3 pages the count is Poi(6): \(e^{-6}(1+6) = 0.0174\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Geometric and negative binomial</h3>
+  <p><span class="tag">Cue</span> "Number of trials until the first (or \(r\)-th) success".</p>
+  $$\text{Geo: } P(X=k) = (1-p)^{k-1}p,\quad E=\tfrac1p,\quad \text{Var}=\tfrac{1-p}{p^2},\quad P(X&gt;k) = (1-p)^k$$
+  $$\text{NegBin: } P(X=k) = \binom{k-1}{r-1}p^r(1-p)^{k-r},\quad E=\tfrac rp,\quad \text{Var}=\tfrac{r(1-p)}{p^2}$$
+  <p><span class="tag">Why \(\binom{k-1}{r-1}\)</span> The \(k\)-th trial must be the \(r\)-th success, so choose where the other \(r-1\) successes fall among the first \(k-1\) trials.</p>
+  <p><span class="tag">Memoryless</span> \(P(X&gt;m+n\mid X&gt;m) = P(X&gt;n)\): past failures don't matter.</p>
+  <p class="ex">Tiny example: \(p = 0.3\). P(first success on trial 4)? With \(p=0.5\), P(3rd success on trial 5)?</p>
+  <details><summary>Solution</summary><p>\(0.7^3(0.3) = 0.1029\). \(\binom42(0.5)^5 = 6/32 = 0.1875\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Hypergeometric</h3>
+  <p><span class="tag">Cue</span> Sample \(n\) <b>without replacement</b> from \(N\) items, \(m\) of which are "special".</p>
+  $$P(X=k)=\frac{\binom mk\binom{N-m}{n-k}}{\binom Nn}\qquad E = n\frac mN\qquad \text{Var} = n\frac mN\Big(1-\frac mN\Big)\frac{N-n}{N-1}$$
+  <p>The mean is the same as the binomial's; the variance is shrunk by the finite-population factor \(\frac{N-n}{N-1}\).</p>
+  <p class="ex">Tiny example: 20 items, 5 defective; sample 5. P(exactly 2 defective)? Expected number defective?</p>
+  <details><summary>Solution</summary><p>\(\binom52\binom{15}3/\binom{20}5 = 0.2935\); \(E = 5(5/20) = 1.25\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Indicators: the biggest trick in the course</h3>
+  <p><span class="tag">Cue</span> "Expected number of …" where computing the full distribution is awful (matches, distinct faces, pairs, empty boxes, aces in the first 10 cards).</p>
+  <p><span class="tag">Move</span> Write \(X = I_1 + \cdots + I_n\) with \(I_j = 1\) if thing \(j\) happens. Then \(E[X] = \sum P(\text{thing } j)\). <b>No independence needed.</b></p>
+  <p class="ex">Tiny example: roll 6 dice. Expected number of distinct faces? Expected number of matches when \(n\) letters are put in \(n\) envelopes?</p>
+  <details><summary>Solution</summary><p>\(I_j\) = face \(j\) appears: \(P = 1-(5/6)^6\), so \(E = 6(1-(5/6)^6) = 3.9906\). Matches: each letter matches with prob \(1/n\), so \(E = n\cdot\frac1n = 1\).</p></details>
+  <p><span class="tag">Coupon collector</span> The time to collect all \(n\) types is a sum of geometrics: \(E = n\left(\frac1n+\frac1{n-1}+\cdots+1\right)\).</p>
+</div>
+
+<!-- ===================== CHAPTER 5 ===================== -->
+<h2>5. Continuous random variables <span>Ch 5</span></h2>
+
+<div class="move">
+  <h3>Density recipe: c, probabilities, mean, variance</h3>
+  $$\int f = 1\qquad P(a&lt;X&lt;b) = \int_a^b f\qquad F'(x) = f(x)\qquad E[g(X)] = \int g(x)f(x)\,dx$$
+  <p><span class="tag">Facts</span> \(P(X = a) = 0\), so \(&lt;\) and \(\le\) don't matter. A density can exceed 1. The median \(m\) solves \(F(m) = 1/2\).</p>
+  <p><span class="tag">Trick</span> For \(X \ge 0\): \(E[X] = \int_0^\infty P(X&gt;x)\,dx\). For gamma-shaped integrals, \(\int_0^\infty x^n e^{-ax}dx = n!/a^{n+1}\).</p>
+  <p class="ex">Tiny example: \(f(x) = cx^2\) on \((0,3)\). Find \(c\), \(E[X]\), \(\text{Var}(X)\).</p>
+  <details><summary>Solution</summary><p>\(c\cdot 9 = 1 \Rightarrow c = 1/9\). \(E[X] = \int_0^3 x^3/9 = 81/36 = 9/4\). \(E[X^2] = \int_0^3 x^4/9 = 27/5\). \(\text{Var} = 27/5 - 81/16 = 27/80\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Mixed distributions (jumps + slopes)</h3>
+  <p><span class="tag">Cue</span> A CDF that jumps at some points and rises smoothly elsewhere ("wait 0 if the light is green", "claim is 0 with prob 0.3").</p>
+  <p><span class="tag">Move</span> Point masses = jump sizes. Continuous part = \(F'(x)\) where it's smooth. Check that everything adds to 1.</p>
+  $$E[X] = \sum_{\text{jumps}} a\cdot P(X=a) + \int x\,F'(x)\,dx$$
+  <p class="ex">Tiny example: \(F(x) = 0\) for \(x&lt;0\); \(0.2+0.4x\) for \(0\le x&lt;1\); \(1\) for \(x\ge1\). Find the point masses and \(E[X]\).</p>
+  <details><summary>Solution</summary><p>Jump at 0 of size 0.2; jump at 1 of size \(1 - 0.6 = 0.4\); density 0.4 on \((0,1)\) (total 0.4, and 0.2 + 0.4 + 0.4 = 1 ✓). \(E = 0 + 1(0.4) + \int_0^1 0.4x\,dx = 0.6\). Check with the tail formula: \(\int_0^1(0.8-0.4x)dx = 0.6\) ✓.</p></details>
+</div>
+
+<div class="move">
+  <h3>Uniform\((a,b)\)</h3>
+  $$f = \frac1{b-a}\qquad P = \frac{\text{length}}{b-a}\qquad E = \frac{a+b}2\qquad \text{Var} = \frac{(b-a)^2}{12}$$
+  <p><span class="tag">Trick</span> Conditioned on landing in a sub-interval, it is still uniform on that sub-interval. A "uniform point in a region" means probability = area ratio.</p>
+</div>
+
+<div class="move">
+  <h3>Normal: standardise everything</h3>
+  $$Z = \frac{X-\mu}{\sigma}\qquad P(X\le x) = \Phi\!\left(\frac{x-\mu}\sigma\right)\qquad \Phi(-z) = 1-\Phi(z)$$
+  <p><span class="tag">Moves</span></p>
+  <ul>
+    <li>Forward: value → \(z\) → table.</li>
+    <li>Reverse (percentile): \(x = \mu + z\sigma\), for example the 95th percentile is \(\mu + 1.645\sigma\).</li>
+    <li>Two percentiles given: two equations \(x_i = \mu + z_i\sigma\); subtract to get \(\sigma\).</li>
+    <li>\(aX+b\) is normal with mean \(a\mu+b\) and SD \(|a|\sigma\).</li>
+    <li>"Within \(k\)" means \(P(|X-\mu|&lt;k) = 2\Phi(k/\sigma)-1\).</li>
+    <li>Normal then binomial: first get \(p = P(\text{one item is out of spec})\), then count items with Bin(\(n, p\)).</li>
+  </ul>
+  <p class="ex">Tiny example: IQ ~ N(100, 15²). P(IQ &gt; 130)? The 90th percentile? (\(\Phi(2) = 0.9772\), \(\Phi(1.28) = 0.8997\).)</p>
+  <details><summary>Solution</summary><p>\(z = 2\), so \(1 - 0.9772 = 0.0228\). 90th percentile ≈ \(100 + 1.28(15) = 119.2\).</p></details>
+</div>
+
+<div class="move">
+  <h3>DeMoivre–Laplace: normal approximation to the binomial</h3>
+  <p><span class="tag">Cue</span> Binomial with large \(n\); the check is \(np(1-p)\ge 10\). (If \(p\) is tiny, use Poisson instead.)</p>
+  <p><span class="tag">Move</span> Use \(\mu = np\), \(\sigma = \sqrt{np(1-p)}\), and the <b>continuity correction</b>: widen to include the whole bar of each integer you want.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Binomial</th><th>Normal</th></tr>
+    <tr><td>\(P(X = k)\)</td><td>\(P(k-0.5 &lt; Y &lt; k+0.5)\)</td></tr>
+    <tr><td>\(P(X \le k)\)</td><td>\(P(Y &lt; k+0.5)\)</td></tr>
+    <tr><td>\(P(X &lt; k)\)</td><td>\(P(Y &lt; k-0.5)\)</td></tr>
+    <tr><td>\(P(X \ge k)\)</td><td>\(P(Y &gt; k-0.5)\)</td></tr>
+    <tr><td>\(P(X &gt; k)\)</td><td>\(P(Y &gt; k+0.5)\)</td></tr>
+  </table></div>
+  <p class="ex">Tiny example: 100 fair coin flips. P(at least 60 heads)? (\(\Phi(1.9) = 0.9713\).)</p>
+  <details><summary>Solution</summary><p>\(\mu = 50\), \(\sigma = 5\), \(np(1-p) = 25 \ge 10\) ✓. \(P(Y&gt;59.5) = 1-\Phi(1.9) = 0.0287\) (exact: 0.0284).</p></details>
+  <p><span class="tag">Required \(n\)</span> "How many must we sell so that P(at least 100) ≥ 0.95": set \(\frac{99.5 - np}{\sqrt{np(1-p)}} = -1.645\) and solve the quadratic in \(\sqrt n\), or test candidate values of \(n\).</p>
+</div>
+
+<div class="move">
+  <h3>Exponential\((\lambda)\)</h3>
+  $$f = \lambda e^{-\lambda x}\quad P(X&gt;t) = e^{-\lambda t}\quad E = \frac1\lambda\quad \text{Var} = \frac1{\lambda^2}$$
+  <p><span class="tag">Moves</span></p>
+  <ul>
+    <li><b>Read the parameter carefully:</b> "mean 10 hours" means \(\lambda = 1/10\).</li>
+    <li>Memoryless: \(P(X&gt;s+t\mid X&gt;s) = P(X&gt;t)\). A used part is as good as new.</li>
+    <li>Poisson link: in a Poisson process with rate λ, the time to the next event is Exp(λ), and \(P(T&gt;t) = P(\text{0 events in } [0,t]) = e^{-\lambda t}\).</li>
+    <li>Min of independent exponentials is Exp(\(\lambda_1+\cdots+\lambda_n\)) (series system). Max: \(P(\max\le t) = \prod(1-e^{-\lambda_it})\) (parallel system).</li>
+    <li>Deductible \(d\): \(E[(X-d)^+] = P(X&gt;d)\cdot\frac1\lambda = e^{-\lambda d}/\lambda\), because of memorylessness.</li>
+    <li>Rounding up: \(\lceil X\rceil\) is geometric with \(p = 1-e^{-\lambda}\).</li>
+  </ul>
+  <p class="ex">Tiny example: bulbs last Exp with mean 10 h. A bulb has lasted 5 h. P(it lasts past 15 h)?</p>
+  <details><summary>Solution</summary><p>Memoryless: \(P(X&gt;10) = e^{-1} = 0.3679\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Hazard (failure) rate</h3>
+  $$\lambda(t) = \frac{f(t)}{1-F(t)}\qquad 1-F(t) = \exp\!\Big(-\int_0^t\lambda(s)\,ds\Big)\qquad f = \lambda(t)\,(1-F(t))$$
+  <p>A constant hazard means exponential. An increasing hazard means it wears out. Piecewise hazards: add up the integrals piece by piece.</p>
+  <p class="ex">Tiny example: \(\lambda(t) = 0.1t\). P(survive past 2)?</p>
+  <details><summary>Solution</summary><p>\(\int_0^2 0.1s\,ds = 0.2\), so \(e^{-0.2} = 0.8187\).</p></details>
+</div>
+
+<div class="move">
+  <h3>Distribution of \(Y = g(X)\)</h3>
+  <p><span class="tag">CDF method (always works)</span></p>
+  <ol class="steps">
+    <li>Write \(F_Y(y) = P(g(X)\le y)\).</li>
+    <li>Solve the inequality for \(X\). Flip it if \(g\) is decreasing; get two pieces if \(g\) isn't one-to-one (for example \(X^2\) or \(|X|\)).</li>
+    <li>Express the result with \(F_X\), then differentiate to get \(f_Y\). <b>State the range of \(y\).</b></li>
+  </ol>
+  <p><span class="tag">Thm 5.7.1 (monotone \(g\))</span></p>
+  $$f_Y(y) = f_X\big(g^{-1}(y)\big)\,\Big|\tfrac{d}{dy}g^{-1}(y)\Big|$$
+  <p class="ex">Tiny example 1: \(U\sim\text{Unif}(0,1)\), \(Y = -2\ln U\).</p>
+  <details><summary>Solution</summary><p>\(P(Y\le y) = P(\ln U \ge -y/2) = P(U\ge e^{-y/2}) = 1 - e^{-y/2}\) for \(y&gt;0\): Exp with \(\lambda = 1/2\).</p></details>
+  <p class="ex">Tiny example 2: \(X\sim\text{Unif}(-1,1)\), \(Y = X^2\).</p>
+  <details><summary>Solution</summary><p>\(P(Y\le y) = P(-\sqrt y\le X\le\sqrt y) = \sqrt y\) for \(0&lt;y&lt;1\), so \(f_Y = \frac{1}{2\sqrt y}\).</p></details>
+  <p><span class="tag">Shortcut</span> If they only ask for \(E[Y]\), skip all this: \(E[g(X)] = \int g(x)f(x)\,dx\).</p>
+</div>
+
+<!-- ===================== FORMULA SHEET ===================== -->
+<h2>One-page distribution table <span>for your formula sheet</span></h2>
+<div class="tablewrap">
+<table>
+  <tr><th>Distribution</th><th>PMF / PDF</th><th>Mean</th><th>Variance</th></tr>
+  <tr><td>Bernoulli\((p)\)</td><td>\(p^x(1-p)^{1-x}\)</td><td>\(p\)</td><td>\(p(1-p)\)</td></tr>
+  <tr><td>Binomial\((n,p)\)</td><td>\(\binom nk p^k(1-p)^{n-k}\)</td><td>\(np\)</td><td>\(np(1-p)\)</td></tr>
+  <tr><td>Poisson\((\lambda)\)</td><td>\(e^{-\lambda}\lambda^k/k!\)</td><td>\(\lambda\)</td><td>\(\lambda\)</td></tr>
+  <tr><td>Geometric\((p)\)</td><td>\((1-p)^{k-1}p\), \(k\ge1\)</td><td>\(1/p\)</td><td>\((1-p)/p^2\)</td></tr>
+  <tr><td>Neg. binomial\((r,p)\)</td><td>\(\binom{k-1}{r-1}p^r(1-p)^{k-r}\)</td><td>\(r/p\)</td><td>\(r(1-p)/p^2\)</td></tr>
+  <tr><td>Hypergeometric</td><td>\(\binom mk\binom{N-m}{n-k}/\binom Nn\)</td><td>\(nm/N\)</td><td>\(n\frac mN(1-\frac mN)\frac{N-n}{N-1}\)</td></tr>
+  <tr><td>Uniform\((a,b)\)</td><td>\(1/(b-a)\)</td><td>\((a+b)/2\)</td><td>\((b-a)^2/12\)</td></tr>
+  <tr><td>Normal\((\mu,\sigma^2)\)</td><td>\(\frac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu)^2/2\sigma^2}\)</td><td>\(\mu\)</td><td>\(\sigma^2\)</td></tr>
+  <tr><td>Exponential\((\lambda)\)</td><td>\(\lambda e^{-\lambda x}\)</td><td>\(1/\lambda\)</td><td>\(1/\lambda^2\)</td></tr>
+</table>
+</div>
+
+<h2>Traps that cost points <span>last look</span></h2>
+<section class="sheet">
+  <ul>
+    <li>Mixing ordered and unordered counts in the same fraction.</li>
+    <li>"At least one" counted directly ("pick one, then anything") gives a double count. Use the complement.</li>
+    <li>Writing \(P(A\mid B)\) when the question asks for \(P(B\mid A)\). Say aloud what is <em>given</em>.</li>
+    <li>Assuming repeated tests are unconditionally independent. They are independent only <em>given</em> the hidden state.</li>
+    <li>Forgetting to rescale the Poisson rate to the window, or confusing a rate with a mean for the exponential (λ = 1/mean).</li>
+    <li>Geometric conventions: this course counts trials (\(k\ge1\)), so \(P(X&gt;k) = (1-p)^k\).</li>
+    <li>Normal approximation without the continuity correction, or applying it in the wrong direction.</li>
+    <li>\(\text{Var}(aX+b) = a^2\text{Var}(X)\), not \(a\,\text{Var}\); and the \(b\) disappears.</li>
+    <li>A mixed CDF: forgetting the point masses when computing \(E[X]\).</li>
+    <li>\(Y = g(X)\): forgetting the support of \(Y\), or the absolute value of the derivative, or the second branch when \(g\) isn't one-to-one.</li>
+    <li>\(E[g(X)] \ne g(E[X])\).</li>
+  </ul>
+</section>
+
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>
