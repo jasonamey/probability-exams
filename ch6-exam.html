@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 6 Exam A</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: one reading column, exam-paper style; points in the margin line, solutions folded under each problem. */
+:root {
+  --bg: #fbfbf8;
+  --surface: #f1f2ec;
+  --fg: #1c211f;
+  --muted: #5d6763;
+  --rule: #d5d9d1;
+  --accent: #1f5f8b;
+  --answer: #e9f0f4;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+    --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161a19; --surface: #1f2523; --fg: #e6e9e4; --muted: #9aa5a0;
+  --rule: #333b38; --accent: #7fbbe3; --answer: #1d2a33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-inline: 20px; padding-block: 40px 80px;
+}
+main { max-width: 44rem; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header p { color: var(--muted); margin: 6px 0 0; }
+.course { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 2rem; line-height: 1.2; margin: 4px 0 0; text-wrap: balance; }
+h2 {
+  font-size: 1.25rem; margin: 20px 0 0; padding-bottom: 6px;
+  border-bottom: 2px solid var(--fg); text-wrap: balance;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+h2 span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); background: transparent;
+  border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { background: var(--answer); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet { background: var(--surface); border: 1px solid var(--rule); padding: 14px 18px; font-size: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sheet p, .sheet ul { margin: 0; }
+.sheet ul { padding-left: 1.2rem; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.problem { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 8px; }
+.num { font-family: var(--mono); font-weight: 500; color: var(--accent); padding-top: 2px; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.body p, .body ol { margin: 0; }
+.body ol { padding-left: 1.4rem; list-style: lower-alpha; }
+.body ol li { margin-top: 4px; }
+.pts { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+details { border-left: 3px solid var(--accent); background: var(--answer); padding: 6px 14px; font-size: 16px; }
+summary { cursor: pointer; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+details p { margin: 6px 0; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; margin: .6em 0; }
+.cases { overflow-x: auto; }
+footer { color: var(--muted); font-size: 15px; border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (max-width: 480px) { body { font-size: 17px; } .problem { grid-template-columns: 1.9rem minmax(0, 1fr); } }
+@media print { details { display: none; } .tools { display: none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="course">STA 9715 · Applied Probability · Baruch</div>
+  <h1>Chapter 6 Exam A: Jointly Distributed Random Variables</h1>
+  <p>12 problems, 100 points, in mixed order with no topic labels. None of the setups repeat the Chapter 6 notes examples or HW 9–10.</p>
+</header>
+
+<section class="sheet" aria-label="Instructions and table">
+  <span class="label">Instructions</span>
+  <ul>
+    <li>Suggested time: about 2.5 hours in one sitting.</li>
+    <li>Show your work. Leave answers as fractions where natural; otherwise round to 4 decimal places.</li>
+    <li>You may use, for nonnegative integers \(a,b\): \(\displaystyle\int_0^1 p^a(1-p)^b\,dp=\frac{a!\,b!}{(a+b+1)!}\).</li>
+    <li>A calculator is enough. Some standard normal values are below; you will not need all of them.</li>
+  </ul>
+  <span class="label">Standard normal CDF</span>
+  <div class="tablewrap">
+  <table>
+    <tr><th>z</th><td>0.25</td><td>0.41</td><td>0.50</td><td>0.75</td><td>0.79</td><td>0.84</td><td>1.00</td><td>1.28</td><td>1.50</td><td>1.645</td><td>1.96</td></tr>
+    <tr><th>Φ(z)</th><td>0.5987</td><td>0.6591</td><td>0.6915</td><td>0.7734</td><td>0.7852</td><td>0.7995</td><td>0.8413</td><td>0.8997</td><td>0.9332</td><td>0.9500</td><td>0.9750</td></tr>
+  </table>
+  </div>
+</section>
+
+<div class="tools">
+  <button id="toggle" type="button">Show all solutions</button>
+  <span class="pts">Solutions stay hidden when printed.</span>
+</div>
+
+<div class="problem"><div class="num">1</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A bakery has two shops. The numbers of wedding-cake orders that shop A and shop B receive in a week are independent Poisson random variables with means 2 and 3. Let \(A\) and \(B\) be this week's counts and \(T=A+B\).</p>
+  <ol>
+    <li>Find \(P(T=4)\).</li>
+    <li>Find the conditional PMF of \(A\) given \(T=4\). Name the distribution, then compute \(P(A\ge 3\mid T=4)\).</li>
+    <li>Find \(E[A\mid T=n]\) for a general \(n\ge 0\).</li>
+    <li>Find \(P(T=4\mid A=1)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) A sum of independent Poissons is Poisson with the means added, so \(T\sim\text{Po}(5)\): \(P(T=4)=e^{-5}5^4/4! = 0.1755\).</p>
+<p>(b) \(P(A=k\mid T=4)=\dfrac{P(A=k)P(B=4-k)}{P(T=4)}=\dfrac{e^{-2}2^k/k!\cdot e^{-3}3^{4-k}/(4-k)!}{e^{-5}5^4/4!}=\binom4k\left(\tfrac25\right)^k\left(\tfrac35\right)^{4-k}\), \(k=0,\dots,4\). So \(A\mid T=4\sim\text{Bin}(4,2/5)\), and \(P(A\ge3\mid T=4)=4(0.4)^3(0.6)+(0.4)^4=0.1536+0.0256=0.1792\).</p>
+<p>(c) The same computation gives \(A\mid T=n\sim\text{Bin}(n,2/5)\), so \(E[A\mid T=n]=2n/5\).</p>
+<p>(d) Given \(A=1\), \(T=4\) means \(B=3\), and \(B\) is independent of \(A\): \(P(T=4\mid A=1)=P(B=3)=e^{-3}3^3/3!=4.5e^{-3}=0.2240\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">2</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>The joint density of \(X\) and \(Y\) is
+$$f(x,y)=\begin{cases}c\,x & 0&lt;y&lt;x&lt;2\\ 0&\text{otherwise.}\end{cases}$$</p>
+  <ol>
+    <li>Find \(c\).</li>
+    <li>Find the marginal densities \(f_X\) and \(f_Y\). Are \(X\) and \(Y\) independent?</li>
+    <li>Find \(P(X+Y&lt;2)\).</li>
+    <li>Find the conditional density of \(Y\) given \(X=x\), and use it to compute \(P(Y&lt;1/2\mid X=3/2)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(\int_0^2\int_0^x c\,x\,dy\,dx=c\int_0^2x^2\,dx=\tfrac83c=1\), so \(c=3/8\).</p>
+<p>(b) \(f_X(x)=\int_0^x\tfrac38x\,dy=\tfrac38x^2\) for \(0&lt;x&lt;2\). \(f_Y(y)=\int_y^2\tfrac38x\,dx=\tfrac3{16}(4-y^2)\) for \(0&lt;y&lt;2\). Not independent: \(f_X(x)f_Y(y)\ne f(x,y)\) (for example at \(x=1,y=1.5\) the joint density is 0 but the product is positive). The formula \(c\,x\) looks like it factors, but the region \(y&lt;x\) ties the variables together.</p>
+<p>(c) Inside the region, \(x+y&lt;2\) requires \(y&lt;1\) and \(y&lt;x&lt;2-y\):
+$$\int_0^1\int_y^{2-y}\tfrac38x\,dx\,dy=\tfrac3{16}\int_0^1\big[(2-y)^2-y^2\big]dy=\tfrac3{16}\int_0^1(4-4y)\,dy=\tfrac3{16}\cdot2=\tfrac38.$$</p>
+<p>(d) \(f_{Y\mid X}(y\mid x)=\dfrac{\tfrac38x}{\tfrac38x^2}=\dfrac1x\) for \(0&lt;y&lt;x\): given \(X=x\), \(Y\) is uniform on \((0,x)\). So \(P(Y&lt;1/2\mid X=3/2)=\dfrac{1/2}{3/2}=\dfrac13\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">3</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>Four bidders in a sealed-bid auction submit bids that are independent and uniformly distributed between $100 and $200. The highest bidder wins but pays the second-highest bid.</p>
+  <ol>
+    <li>Find the CDF of the highest bid and the probability that the highest bid exceeds $190.</li>
+    <li>Find the density of the amount the winner pays, and its expected value.</li>
+    <li>Find the probability that the winner pays more than $150.</li>
+    <li>Find the probability that all four bids lie within $50 of each other (the range of the bids is less than 50).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Write \(F(x)=(x-100)/100\) and \(f(x)=1/100\) on \((100,200)\), and let \(X_{(1)}\le\dots\le X_{(4)}\) be the ordered bids.</p>
+<p>(a) \(P(X_{(4)}\le x)=P(\text{all four}\le x)=F(x)^4=\left(\frac{x-100}{100}\right)^4\) for \(100\le x\le200\). \(P(X_{(4)}>190)=1-0.9^4=0.3439\).</p>
+<p>(b) The payment is \(X_{(3)}\). With \(n=4,\ j=3\): \(f_{X_{(3)}}(x)=\dfrac{4!}{2!\,1!}F(x)^2(1-F(x))f(x)=\dfrac{12}{100}u^2(1-u)\) with \(u=\frac{x-100}{100}\), for \(100&lt;x&lt;200\). Then \(E[U]=\int_0^1 12u^3(1-u)\,du=12\left(\tfrac14-\tfrac15\right)=\tfrac35\), so the expected payment is \(100+100\cdot\tfrac35=\$160\).</p>
+<p>(c) \(X_{(3)}>150\) exactly when at least two bids exceed 150. Each does so with probability \(1/2\): \(1-\left[\left(\tfrac12\right)^4+4\left(\tfrac12\right)^4\right]=\tfrac{11}{16}=0.6875\).</p>
+<p>(d) On the \((0,1)\) scale the range is less than \(a=0.5\). For \(n\) iid uniforms, \(F_R(a)=n(1-a)a^{n-1}+a^n\): \(4(0.5)(0.125)+0.0625=0.3125\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">4</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>At a coffee bar each customer independently orders a small, medium or large drink with probabilities 0.2, 0.5 and 0.3. The next 10 customers are observed. Let \(S\), \(M\), \(L\) be the numbers of small, medium and large drinks.</p>
+  <ol>
+    <li>Find \(P(S=2,\ M=5,\ L=3)\).</li>
+    <li>Find \(P(L=3)\).</li>
+    <li>Find \(P(M=5\mid L=3)\).</li>
+    <li>Find the probability that every size is ordered at least once.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) Multinomial: \(\dfrac{10!}{2!\,5!\,3!}(0.2)^2(0.5)^5(0.3)^3=2520\times0.04\times0.03125\times0.027=0.0851\).</p>
+<p>(b) Each customer is large or not, so \(L\sim\text{Bin}(10,0.3)\): \(\binom{10}3(0.3)^3(0.7)^7=0.2668\).</p>
+<p>(c) Given \(L=3\), the other 7 customers each order medium with probability \(0.5/0.7=5/7\) (and small with \(2/7\)), so \(M\mid L=3\sim\text{Bin}(7,5/7)\): \(\binom75(5/7)^5(2/7)^2=0.3187\). (Equivalently, divide the answer to (a) by the answer to (b).)</p>
+<p>(d) Inclusion–exclusion on the events "no small", "no medium", "no large":
+$$1-(0.8^{10}+0.5^{10}+0.7^{10})+(0.2^{10}+0.5^{10}+0.3^{10})-0=0.8644.$$
+(The triple intersection is impossible.)</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">5</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>In a large course, a student's midterm score \(X\) and final score \(Y\) have a bivariate normal distribution with \(\mu_X=70\), \(\sigma_X=10\), \(\mu_Y=65\), \(\sigma_Y=15\) and correlation \(\rho=0.6\).</p>
+  <ol>
+    <li>What fraction of students score above 80 on the final?</li>
+    <li>Among students who scored 80 on the midterm, what is the distribution of the final score, and what fraction of them score above 80 on the final?</li>
+    <li>Among students who scored 50 on the final, what fraction scored below 70 on the midterm?</li>
+    <li>If instead \(\rho=0\), find the probability that a student scores above 80 on both exams.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(Y\sim N(65,15^2)\): \(P(Y>80)=1-\Phi(1)=1-0.8413=0.1587\).</p>
+<p>(b) \(Y\mid X=80\sim N\!\left(65+0.6\cdot\tfrac{15}{10}(80-70),\ 15^2(1-0.36)\right)=N(74,\,144)\), standard deviation 12. \(P(Y>80\mid X=80)=1-\Phi(0.5)=1-0.6915=0.3085\).</p>
+<p>(c) \(X\mid Y=50\sim N\!\left(70+0.6\cdot\tfrac{10}{15}(50-65),\ 100(0.64)\right)=N(64,\,64)\), standard deviation 8. \(P(X&lt;70\mid Y=50)=\Phi(0.75)=0.7734\).</p>
+<p>(d) For a bivariate normal, \(\rho=0\) means \(X\) and \(Y\) are independent. \(P(X>80)=1-\Phi(1)=0.1587\), so the answer is \(0.1587^2=0.0252\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">6</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A print job has a setup phase lasting \(X\) hours, uniform on \((0,2)\), followed by a printing phase lasting \(Y\) hours with density \(e^{-y}\), \(y>0\). The two phases are independent. Let \(T=X+Y\) be the total time.</p>
+  <ol>
+    <li>Find the density of \(T\) for \(0&lt;t&lt;2\).</li>
+    <li>Find the density of \(T\) for \(t\ge 2\).</li>
+    <li>Find \(P(T>3)\).</li>
+    <li>Find the probability that the setup takes longer than the printing.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Convolution: \(f_T(t)=\int f_X(t-y)f_Y(y)\,dy\), where \(f_X(t-y)=\tfrac12\) requires \(0&lt;t-y&lt;2\), i.e. \(t-2&lt;y&lt;t\), along with \(y>0\).</p>
+<p>(a) For \(0&lt;t&lt;2\): \(f_T(t)=\int_0^t\tfrac12e^{-y}\,dy=\tfrac12(1-e^{-t})\).</p>
+<p>(b) For \(t\ge2\): \(f_T(t)=\int_{t-2}^t\tfrac12e^{-y}\,dy=\tfrac12\left(e^{-(t-2)}-e^{-t}\right)=\tfrac12(e^2-1)e^{-t}\).</p>
+<p>(c) \(P(T>3)=\int_3^\infty\tfrac12(e^2-1)e^{-t}\,dt=\tfrac12(e^2-1)e^{-3}=\tfrac12(e^{-1}-e^{-3})=0.1590\).</p>
+<p>(d) \(P(X>Y)=\int_0^2\tfrac12P(Y&lt;x)\,dx=\tfrac12\int_0^2(1-e^{-x})\,dx=\tfrac12\left(2-(1-e^{-2})\right)=\tfrac{1+e^{-2}}{2}=0.5677\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">7</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>A drawer holds 9 USB drives: 4 made by brand A, 3 by brand B and 2 by brand C. Three drives are taken at random without replacement. Let \(X\) be the number of brand-A drives and \(Y\) the number of brand-B drives taken.</p>
+  <ol>
+    <li>Find the joint PMF of \(X\) and \(Y\) (a table is fine).</li>
+    <li>Find the marginal PMF of \(X\) and \(E[X]\).</li>
+    <li>Find \(P(X>Y)\).</li>
+    <li>Find the conditional PMF of \(Y\) given \(X=1\). Are \(X\) and \(Y\) independent?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(p(x,y)=\dfrac{\binom4x\binom3y\binom2{3-x-y}}{\binom93}\), with \(\binom93=84\) and \(1\le x+y\le3\) (at most 2 drives can be brand C):</p>
+<div class="tablewrap"><table>
+<tr><th></th><th>y=0</th><th>y=1</th><th>y=2</th><th>y=3</th></tr>
+<tr><th>x=0</th><td>0</td><td>3/84</td><td>6/84</td><td>1/84</td></tr>
+<tr><th>x=1</th><td>4/84</td><td>24/84</td><td>12/84</td><td>0</td></tr>
+<tr><th>x=2</th><td>12/84</td><td>18/84</td><td>0</td><td>0</td></tr>
+<tr><th>x=3</th><td>4/84</td><td>0</td><td>0</td><td>0</td></tr>
+</table></div>
+<p>(b) Row sums: \(p_X(0)=10/84,\ p_X(1)=40/84,\ p_X(2)=30/84,\ p_X(3)=4/84\) (hypergeometric). \(E[X]=(40+60+12)/84=4/3\), which matches \(3\cdot\tfrac49\).</p>
+<p>(c) Cells with \(x>y\): \((1,0),(2,0),(2,1),(3,0)\): \((4+12+18+4)/84=38/84=19/42\).</p>
+<p>(d) \(p_{Y\mid X}(y\mid1)=p(1,y)/p_X(1)\): \(4/40,\ 24/40,\ 12/40\), i.e. \(1/10,\ 3/5,\ 3/10\) for \(y=0,1,2\). Not independent: \(p(0,0)=0\), but \(p_X(0)p_Y(0)=\tfrac{10}{84}\cdot\tfrac{20}{84}>0\). (Also \(p_{Y\mid X}(\cdot\mid1)\ne p_Y\).)</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">8</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>Two customers are served one after the other. Their service times \(X\) and \(Y\) (minutes) are independent, each with density \(2e^{-2t}\), \(t>0\). Let \(U=X\) and \(V=X+Y\), the time at which the second customer finishes.</p>
+  <ol>
+    <li>Use the Jacobian method to find the joint density of \(U\) and \(V\), stating where it is positive.</li>
+    <li>Find the marginal density of \(V\) and \(P(V>1)\).</li>
+    <li>Find the conditional density of \(U\) given \(V=v\). What does it say?</li>
+    <li>Given that both customers were finished after exactly 3 minutes, find the probability that the first one took less than 1 minute.</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(u=x,\ v=x+y\) inverts to \(x=u,\ y=v-u\). \(J=\begin{vmatrix}1&0\\1&1\end{vmatrix}=1\). So \(f_{U,V}(u,v)=f_{X,Y}(u,v-u)\cdot1=2e^{-2u}\cdot2e^{-2(v-u)}=4e^{-2v}\) for \(0&lt;u&lt;v\).</p>
+<p>(b) \(f_V(v)=\int_0^v4e^{-2v}\,du=4v\,e^{-2v}\), \(v>0\) (a gamma density with parameters \((2,2)\)). \(P(V>1)=\int_1^\infty4ve^{-2v}\,dv=\left[-(2v+1)e^{-2v}\right]_1^\infty=3e^{-2}=0.4060\).</p>
+<p>(c) \(f_{U\mid V}(u\mid v)=\dfrac{4e^{-2v}}{4ve^{-2v}}=\dfrac1v\) for \(0&lt;u&lt;v\): given the total, the first customer's finishing time is uniform on \((0,v)\).</p>
+<p>(d) \(P(U&lt;1\mid V=3)=1/3\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">9</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A ferry is loaded with cars whose weights are independent, each normal with mean 1500 kg and standard deviation 200 kg. Trucks weigh independently, each normal with mean 3200 kg and standard deviation 400 kg. The ferry's safe load is 38,500 kg.</p>
+  <ol>
+    <li>With 25 cars aboard, find the probability that the load exceeds the safe limit.</li>
+    <li>Find the probability that a randomly chosen truck weighs more than two randomly chosen cars together.</li>
+    <li>On a different crossing with a 47,000 kg limit, the ferry carries 20 cars and 5 trucks. Find the probability the limit is exceeded.</li>
+    <li>What is the largest number of cars \(n\) the ferry can carry (no trucks) so that the probability of exceeding 38,500 kg is at most 0.05?</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Sums and differences of independent normals are normal, with means added (or subtracted) and variances added.</p>
+<p>(a) Total \(\sim N(25\cdot1500,\ 25\cdot200^2)=N(37500,\,1000^2)\). \(P(>38500)=1-\Phi(1)=0.1587\).</p>
+<p>(b) \(D=T-(C_1+C_2)\sim N(3200-3000,\ 400^2+2\cdot200^2)=N(200,\,240000)\), standard deviation \(489.9\). \(P(D>0)=\Phi(200/489.9)=\Phi(0.41)=0.6591\).</p>
+<p>(c) Mean \(20(1500)+5(3200)=46000\); variance \(20(200^2)+5(400^2)=1{,}600{,}000\), standard deviation \(1264.9\). \(P(>47000)=1-\Phi(0.79)=1-0.7852=0.2148\).</p>
+<p>(d) Need \(1500n+1.645\cdot200\sqrt n\le38500\). \(n=24\): \(36000+329\sqrt{24}=37611.8\le38500\). \(n=25\): \(37500+1645=39145>38500\) (the probability is 0.1587). So \(n=24\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">10</div><div class="body">
+  <span class="pts">7 points</span>
+  <p>Two players each roll their own fair die repeatedly. Let \(X\) be the number of rolls player 1 needs to get the first six, and \(Y\) the same for player 2, independently.</p>
+  <ol>
+    <li>Find the PMF of \(X+Y\), and \(P(X+Y=6)\).</li>
+    <li>Find \(P(X=Y)\).</li>
+    <li>Find the conditional PMF of \(X\) given \(X+Y=n\).</li>
+    <li>Find \(P(X>Y)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>Let \(p=1/6,\ q=5/6\), so \(P(X=k)=pq^{k-1}\), \(k\ge1\).</p>
+<p>(a) Discrete convolution: \(P(X+Y=n)=\sum_{k=1}^{n-1}pq^{k-1}\cdot pq^{n-k-1}=(n-1)p^2q^{n-2}\), \(n\ge2\) (negative binomial with \(r=2\)). \(P(X+Y=6)=5\cdot\tfrac1{36}\left(\tfrac56\right)^4=0.0670\).</p>
+<p>(b) \(P(X=Y)=\sum_{k\ge1}p^2q^{2(k-1)}=\dfrac{p^2}{1-q^2}=\dfrac{p}{2-p}=\dfrac{1}{11}\).</p>
+<p>(c) \(P(X=k\mid X+Y=n)=\dfrac{pq^{k-1}\,pq^{n-k-1}}{(n-1)p^2q^{n-2}}=\dfrac1{n-1}\), \(k=1,\dots,n-1\): uniform.</p>
+<p>(d) By symmetry \(P(X>Y)=P(X&lt;Y)\), so \(P(X>Y)=\tfrac12\left(1-\tfrac1{11}\right)=\tfrac5{11}\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">11</div><div class="body">
+  <span class="pts">9 points</span>
+  <p>A newly installed machine makes components that each pass inspection with an unknown probability \(P\). Based on past machines, \(P\) has density \(6p(1-p)\) for \(0&lt;p&lt;1\). Given \(P=p\), components pass independently. Four components are inspected and \(N\) is the number that pass.</p>
+  <ol>
+    <li>Find \(P(N=3)\).</li>
+    <li>Find the conditional density of \(P\) given \(N=3\).</li>
+    <li>Find \(E[P\mid N=3]\).</li>
+    <li>Find \(P(P>1/2\mid N=3)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(P(N=3)=\int_0^1\binom43p^3(1-p)\cdot6p(1-p)\,dp=24\int_0^1p^4(1-p)^2\,dp=24\cdot\dfrac{4!\,2!}{7!}=\dfrac{24}{105}=\dfrac8{35}=0.2286\).</p>
+<p>(b) \(f_{P\mid N}(p\mid3)=\dfrac{P(N=3\mid P=p)f(p)}{P(N=3)}=\dfrac{24p^4(1-p)^2}{24/105}=105\,p^4(1-p)^2\), \(0&lt;p&lt;1\).</p>
+<p>(c) \(E[P\mid N=3]=105\int_0^1p^5(1-p)^2\,dp=105\cdot\dfrac{5!\,2!}{8!}=\dfrac{105}{168}=\dfrac58\).</p>
+<p>(d) \(105\int_{1/2}^1(p^4-2p^5+p^6)\,dp=105\left[\tfrac{p^5}5-\tfrac{p^6}3+\tfrac{p^7}7\right]_{1/2}^1=105\left(\tfrac1{105}-\tfrac{1}{5\cdot32}+\tfrac{1}{3\cdot64}-\tfrac{1}{7\cdot128}\right)=\dfrac{99}{128}=0.7734\).</p>
+  </details>
+</div></div>
+
+<div class="problem"><div class="num">12</div><div class="body">
+  <span class="pts">8 points</span>
+  <p>The joint CDF of \(X\) and \(Y\) is
+$$F(x,y)=\frac{xy(x+y)}{2},\qquad 0\le x\le1,\ 0\le y\le1,$$
+with \(F(x,y)=F(1,y)\) for \(x>1\), \(F(x,y)=F(x,1)\) for \(y>1\), and \(F=0\) if \(x&lt;0\) or \(y&lt;0\).</p>
+  <ol>
+    <li>Find the joint density of \(X\) and \(Y\).</li>
+    <li>Find the marginal CDF of \(X\) and its density.</li>
+    <li>Find \(P(X>1/2,\ Y>1/2)\) using the CDFs only.</li>
+    <li>Find \(P(X+Y&lt;1)\).</li>
+  </ol>
+  <details><summary>Solution</summary>
+    <p>(a) \(F=\tfrac12(x^2y+xy^2)\), so \(f(x,y)=\dfrac{\partial^2F}{\partial x\,\partial y}=\tfrac12(2x+2y)=x+y\) on \((0,1)^2\).</p>
+<p>(b) \(F_X(x)=F(x,\infty)=F(x,1)=\dfrac{x(x+1)}2\), \(0\le x\le1\), and \(f_X(x)=x+\tfrac12\).</p>
+<p>(c) \(P(X>a,Y>b)=1-F_X(a)-F_Y(b)+F(a,b)\). By symmetry \(F_Y(1/2)=F_X(1/2)=\tfrac38\), and \(F(\tfrac12,\tfrac12)=\tfrac{\frac14\cdot1}{2}=\tfrac18\). So \(1-\tfrac38-\tfrac38+\tfrac18=\tfrac38\).</p>
+<p>(d) \(\int_0^1\int_0^{1-x}(x+y)\,dy\,dx=\int_0^1\left[x(1-x)+\tfrac{(1-x)^2}2\right]dx=\int_0^1\tfrac{1-x^2}{2}\,dx=\tfrac13\).</p>
+  </details>
+</div></div>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+  var btn = document.getElementById("toggle");
+  btn.addEventListener("click", function () {
+    var open = btn.dataset.open !== "1";
+    document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+    btn.dataset.open = open ? "1" : "0";
+    btn.textContent = open ? "Hide all solutions" : "Show all solutions";
+  });
+});
+</script>
+</body>
+</html>
